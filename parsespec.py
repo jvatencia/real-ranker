@@ -2,6 +2,17 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
+# from numbers import success
+from data import success
+
+
+print(success.Success.summary())
+print(success.Success.compute(.1, .1, .1, .1, .1))
+
+
+
+
+
 
 def parse(src: str):
     df = pd.read_csv(src, low_memory=False)
@@ -89,4 +100,5 @@ def parse(src: str):
     dfD.to_csv('debtapercs', index=False)
 
 if __name__=='__main__':
-    parse('debt.csv')
+    # parse('debt.csv')
+    print('yo')
