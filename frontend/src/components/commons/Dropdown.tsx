@@ -4,12 +4,12 @@ import styled from "styled-components";
 import { devices } from "../../utils/Breakpoints";
 
 interface IDropdown {
-  options: Array<any>;
+  options: Array<any> | null;
   addSchool(school: any): void;
 }
 const Dropdown = ({ options, addSchool }: IDropdown) => {
   const [selectedOption, setSelectedOption] = useState([]);
-
+  console.log(options);
   return (
     <>
       <TextLabel>Select College :</TextLabel>
@@ -21,12 +21,13 @@ const Dropdown = ({ options, addSchool }: IDropdown) => {
               `${option?.["INSTNM"]}`.toLocaleUpperCase()
             }
             onChange={(val: any) => setSelectedOption(val)}
+            //@ts-ignore
             options={options}
             placeholder="Search here..."
             selected={selectedOption}
             clearButton
-            isLoading={!options.length}
-            disabled={!options.length}
+            isLoading={options == undefined}
+            disabled={options == undefined}
           />
         </div>
         <button

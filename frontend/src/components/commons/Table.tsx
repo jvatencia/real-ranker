@@ -8,7 +8,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-let parsedData = {};
 let schools: Array<any> = [];
 const Table = ({data}: any) => {
   let [parsedData, setParsedData] = useState({});
@@ -180,7 +179,7 @@ const Table = ({data}: any) => {
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-      { schools.length > 0 ? (
+      {/* { schools.length > 0 ? (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="spanning table">
         <TableHead>
@@ -206,7 +205,7 @@ const Table = ({data}: any) => {
         </TableBody>
       </Table>
     </TableContainer>
-      ) : null}
+      ) : null} */}
     </Container>
   );
 };

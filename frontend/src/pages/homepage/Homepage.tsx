@@ -4,20 +4,21 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Dropdown from "../../components/commons/Dropdown";
 import Table from "../../components/commons/Table";
+import CoolTable from "../../components/commons/CoolTable";
 import { devices } from "../../utils/Breakpoints";
-import { BASE_URL } from "../../utils/Contants";
+import { BASE_URL } from "../../utils/Constants";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 
 const Homepage = () => {
-  const [schoolOptions, setSchoolOptions] = useState([]);
+  const [schoolOptions, setSchoolOptions] = useState(null);
   const [mySchoolList, setMySchoolList] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [failOpen, setFailOpen] = useState(false);
   const [justAddedSchool, setJustAddedSchool] = useState('');
-
+  console.log(schoolOptions);
   const handleClose = (e: any) => {
     setOpen(false);
     setFailOpen(false);
@@ -27,7 +28,8 @@ const Homepage = () => {
     const abortController = new AbortController();
 
     const getAllSchools = () => {
-      const endpoint = `/wp-json/ttg/v2/schools`;
+      // const endpoint = `/wp-json/ttg/v2/schools`;
+      const endpoint = `/data`;
 
       try {
         fetch(`${BASE_URL}${endpoint}`, {
@@ -45,7 +47,8 @@ const Homepage = () => {
             console.log('Error on fetching schools')
           })
           .then((data) => {
-            setSchoolOptions(data);
+            console.log(data);
+            // setSchoolOptions(data);
           });
       } catch (err) {
         console.log(err);
@@ -80,9 +83,9 @@ const Homepage = () => {
   }, [mySchoolList]);
 
   let tableContents;
-  if (mySchoolList && mySchoolList.length > 0)
+  if (true)//mySchoolList && mySchoolList.length > 0)
   {
-    tableContents = <Table data={mySchoolList} />;
+    tableContents = <CoolTable />; //<Table data={mySchoolList} />;
   }
   else 
   {
@@ -102,7 +105,7 @@ const Homepage = () => {
         <br />
         <AuthorTitle>– Benjamin Franklin.</AuthorTitle>
       </QuotesTitle>
-      <Dropdown options={schoolOptions} addSchool={addSchool} />
+      {/* <Dropdown options={schoolOptions} addSchool={addSchool} /> */}
       {tableContents}
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
