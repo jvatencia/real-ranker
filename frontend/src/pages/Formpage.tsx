@@ -4,8 +4,11 @@ import InputBase from '@mui/material/InputBase';
 import { IMaskInput } from 'react-imask';
 import { alpha, styled } from '@mui/material/styles';
 import FormControl from '@mui/material/FormControl';
+import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import SearchSchools from "../components/commons/SearchSchools";
 interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -84,10 +87,10 @@ const Formpage = () => {
   const [page, setPage] = useState(0);
   const [continuable, setContinue] = useState(true);
   const [backable, setBackable] = useState(false);
+  const pages = 3;
   function pageUpdate(pageDiff: number) {
     let newPage = page + pageDiff;
     console.log(page, newPage);
-    let pages = 2;
     if (!(newPage < 0 || newPage === pages)) {
         // update page
         setPage(newPage);
@@ -128,10 +131,12 @@ const Formpage = () => {
   let pageContent: any = null;
   if (page === 0) {
     pageContent = (
-        <Box >
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={9}>
+
         <FormControl variant="standard"
-            sx={{width: 500}}
             error={nameError} 
+            sx={{width: '100%'}}
             >
             <InputLabel shrink htmlFor="name">
                 Name
@@ -142,9 +147,12 @@ const Formpage = () => {
                 onBlur={validateName}
                 />
         </FormControl>
+
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
             error={emailError} 
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             >
             <InputLabel shrink htmlFor="email">
                 Email
@@ -155,8 +163,10 @@ const Formpage = () => {
                 onBlur={validateEmail}
                 />
         </FormControl>
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             error={phoneError} 
             >
             <InputLabel shrink htmlFor="phone">
@@ -169,13 +179,15 @@ const Formpage = () => {
                 inputComponent={TextMaskCustom as any}
                 />
         </FormControl>
-        </Box>
+        </Grid>
+        </Grid>
     );
   } else if (page === 1) {
     pageContent = (
-        <div >
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             // error={nameError} 
             >
             <InputLabel shrink htmlFor="grad">
@@ -187,8 +199,10 @@ const Formpage = () => {
                 // onBlur={validateGrad}
                 />
         </FormControl>
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             // error={nameError} 
             >
             <InputLabel shrink htmlFor="gpa">
@@ -200,8 +214,10 @@ const Formpage = () => {
                 // onBlur={validateGrad}
                 />
         </FormControl>
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             // error={emailError} 
             >
             <InputLabel shrink htmlFor="actSatScore">
@@ -213,8 +229,10 @@ const Formpage = () => {
                 // onBlur={validateEmail}
                 />
         </FormControl>
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             // error={phoneError} 
             >
             <InputLabel shrink htmlFor="firstGen">
@@ -227,8 +245,10 @@ const Formpage = () => {
                 // inputComponent={TextMaskCustom as any}
                 />
         </FormControl>
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             // error={phoneError} 
             >
             <InputLabel shrink htmlFor="acaDis">
@@ -241,8 +261,10 @@ const Formpage = () => {
                 // inputComponent={TextMaskCustom as any}
                 />
         </FormControl>
+        </Grid>
+        <Grid item xs={9}>
         <FormControl variant="standard"
-            sx={{width: 500}}
+            sx={{width: '100%'}}
             // error={phoneError} 
             >
             <InputLabel shrink htmlFor="upwardTraj">
@@ -255,20 +277,35 @@ const Formpage = () => {
                 // inputComponent={TextMaskCustom as any}
                 />
         </FormControl>
-        </div>
+        </Grid>
+        </Grid>
     );
+  } else if (page===2) {
+      pageContent = (
+        <SearchSchools />
+      );
   }
-  console.log(backable, continuable);
+  console.log(page, backable, continuable);
   return (
     <Box 
         component="form"
         sx={{ 
             width: 500,
             display: 'grid',
-            gridTemplateColumns: { sm: '1fr' }}}>
+            gridTemplateColumns: { sm: '1fr' },
+            backgroundColor: '#FFFAF5'}}>
+        <LinearProgress variant='determinate' value={Math.round((page+1)/pages*100)} />
+        <br/>
         {pageContent}
-        <Button onClick={e=> {pageUpdate(-1)}} disabled={!backable} variant="outlined">Back</Button>
-        <Button onClick={e=> {pageUpdate(+1)}} disabled={!continuable} variant="contained">Continue</Button>
+        <br/><br/>
+        <Grid container spacing={2} sx={{textAlign: 'center'}} alignItems="center" >
+          <Grid item xs={5}>
+            <Button sx={{color: 'white',backgroundColor: '#F8CF40', width: '100%'}} onClick={e=> {pageUpdate(-1)}} disabled={!backable} >Back</Button>
+          </Grid>
+          <Grid item xs={5}>
+            <Button sx={{color: 'white', backgroundColor: '#3B45BB', width: '100%'}} onClick={e=> {pageUpdate(+1)}} disabled={!continuable} >Continue</Button>
+          </Grid>
+        </Grid>
     </Box>
   );
 };

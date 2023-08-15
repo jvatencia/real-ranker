@@ -18,7 +18,7 @@ const Dropdown = ({ options, addSchool }: IDropdown) => {
           <Typeahead
             id="id"
             labelKey={(option: any) =>
-              `${option?.["INSTNM"]}`.toLocaleUpperCase()
+              `${option}`
             }
             onChange={(val: any) => setSelectedOption(val)}
             //@ts-ignore
