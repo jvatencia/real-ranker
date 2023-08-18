@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import SearchSchools from "../components/commons/SearchSchools";
+import yeoldeimage from "../assets/yeoldeimage.png";
+import { Typography } from "@mui/material";
 interface CustomProps {
     onChange: (event: { target: { name: string; value: string } }) => void;
     name: string;
@@ -87,7 +89,7 @@ const Formpage = () => {
   const [page, setPage] = useState(0);
   const [continuable, setContinue] = useState(true);
   const [backable, setBackable] = useState(false);
-  const pages = 3;
+  const pages = 4;
   function pageUpdate(pageDiff: number) {
     let newPage = page + pageDiff;
     console.log(page, newPage);
@@ -131,7 +133,26 @@ const Formpage = () => {
   let pageContent: any = null;
   if (page === 0) {
     pageContent = (
-      <Grid container spacing={2} alignItems="center">
+      <Grid 
+        container
+        spacing={2}
+        direction='row'
+        alignItems="center"
+        justifyContent='center'>
+        <Grid item xs={9}>
+          <Typography
+            sx={{
+              color: '#222224',
+              fontFamily: 'Open Sans',
+              fontSize: 14,
+              fontStyle: 'normal',
+              fontWeight: 400,
+              lineHeight: 'normal'
+            }}>
+              Real Ranker works for you, but it needs to know you.
+            </Typography>
+
+        </Grid>
         <Grid item xs={9}>
 
         <FormControl variant="standard"
@@ -184,7 +205,42 @@ const Formpage = () => {
     );
   } else if (page === 1) {
     pageContent = (
-      <Grid container spacing={2} alignItems="center">
+      <Grid 
+        container
+        spacing={2}
+        direction='row'
+        alignItems='center'
+        justifyContent='center'>
+        <Grid item xs={9}>
+          <Box 
+            component="img"
+            src={yeoldeimage}
+          />
+        </Grid>
+        <Grid item xs={9}>
+          <Typography
+            sx={{
+              color: '#222224',
+              fontFamily: 'Open Sans',
+              fontSize: 14,
+              fontStyle: 'normal',
+              fontWeight: 400,
+              lineHeight: 'normal'
+            }}>
+            To get results from our admissions calculator, get actionable college advice, create a curated admissions experience, and get a wholly custom, curated college ranking made just for you... you have to fill out the long form. <br/><br/> Skip parts that you don’t feel comfortable/don’t know. <br/><br/> We don’t sell your data. We don’t double sell your data. We don’t double dog sell your data. (All questions are mandatory but there are options for prefer not to say).
+            </Typography>
+
+        </Grid>
+      </Grid>
+    )
+  } else if (page === 2) {
+    pageContent = (
+      <Grid 
+        container
+        spacing={2}
+        direction='row'
+        alignItems="center"
+        justifyContent='center'>
         <Grid item xs={9}>
         <FormControl variant="standard"
             sx={{width: '100%'}}
@@ -280,7 +336,7 @@ const Formpage = () => {
         </Grid>
         </Grid>
     );
-  } else if (page===2) {
+  } else if (page===3) {
       pageContent = (
         <SearchSchools />
       );
@@ -298,7 +354,7 @@ const Formpage = () => {
         <br/>
         {pageContent}
         <br/><br/>
-        <Grid container spacing={2} sx={{textAlign: 'center'}} alignItems="center" >
+        <Grid container spacing={2} sx={{textAlign: 'center'}} justifyContent="center" alignItems="center" >
           <Grid item xs={5}>
             <Button sx={{color: 'white',backgroundColor: '#F8CF40', width: '100%'}} onClick={e=> {pageUpdate(-1)}} disabled={!backable} >Back</Button>
           </Grid>
