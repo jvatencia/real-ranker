@@ -6,8 +6,9 @@ from flask_jsonpify import jsonpify
 # create the app
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 # initialize the app with the extension
+'''
 db = SQLAlchemy(app)
 
 class School(db.Model):
@@ -66,9 +67,11 @@ class School(db.Model):
 
     def __repr__(self):
         return f'<School {self.instnm}>'
+'''
 @app.route("/data")
 def data():
-    df = pd.read_sql('select * from school', db.engine)
+    # df = pd.read_sql('select * from school', db.engine)
+    df = pd.read_csv('result.csv')
     df_list = df.values.tolist()
     response =  jsonpify([list(df.columns)] + df_list)
     response.headers.add('Access-Control-Allow-Origin', '*')
