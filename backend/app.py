@@ -6,7 +6,7 @@ from flask_jsonpify import jsonpify
 # create the app
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqldb://root:*|_@`lUOgu?O|=D_@34.16.111.180/real-ranker-backend:us-central1:mysql?unix_socket =/cloudsql/real-ranker-backend:real-ranker-db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqldb://root:*|_@`lUOgu?O|=D_@34.16.111.180/schools?unix_socket =/cloudsql/real-ranker-backend:real-ranker-db"
 # initialize the app with the extension
 '''
 db = SQLAlchemy(app)
@@ -74,6 +74,7 @@ SELECT (id , instnm , st_fips , region , ccbasic , ccsizset, adm_rate, pplus_pct
 @app.route("/data")
 def data():
     df = pd.read_sql('select * from school', db.engine)
+    # df = pd.read_csv('./result.csv')
     df_list = df.values.tolist()
     response =  jsonpify([list(df.columns)] + df_list)
     response.headers.add('Access-Control-Allow-Origin', '*')
