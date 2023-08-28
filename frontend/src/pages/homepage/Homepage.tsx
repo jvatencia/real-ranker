@@ -48,7 +48,7 @@ const Homepage = () => {
           })
           .then((data) => {
             console.log(data);
-            // setSchoolOptions(data);
+            setSchoolOptions(data);
           });
       } catch (err) {
         console.log(err);
@@ -105,7 +105,7 @@ const Homepage = () => {
         <br />
         <AuthorTitle>– Benjamin Franklin.</AuthorTitle>
       </QuotesTitle>
-      {/* <Dropdown options={schoolOptions} addSchool={addSchool} /> */}
+      <Dropdown options={schoolOptions} addSchool={addSchool} />
       {tableContents}
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>

@@ -18,7 +18,7 @@ const Dropdown = ({ options, addSchool }: IDropdown) => {
           <Typeahead
             id="id"
             labelKey={(option: any) =>
-              `${option}`
+              `${option['instnm']}`
             }
             onChange={(val: any) => setSelectedOption(val)}
             //@ts-ignore
