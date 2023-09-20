@@ -39,10 +39,12 @@ def refresh_expiring_jwts(response):
             if type(data) is dict:
                 data["access_token"] = access_token 
                 response.data = json.dumps(data)
-        return response
+        pass
     except (RuntimeError, KeyError):
         # Case where there is not a valid JWT. Just return the original respone
-        return response
+        pass
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route('/token', methods=["POST"])
 def create_token():
@@ -64,12 +66,15 @@ def create_token():
 
     access_token = create_access_token(identity=email)
     res["access_token"] = access_token
-    return jsonify(res)
+    response = jsonify(res)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response 
 
 @app.route("/logout", methods=["POST"])
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 
