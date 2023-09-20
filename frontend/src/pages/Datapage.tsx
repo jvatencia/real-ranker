@@ -4,12 +4,6 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import NotesIcon from '@mui/icons-material/Notes';
 
 import SSlider from "../components/commons/SSlider";
 import CollegeCardExpanded from "../components/commons/CollegeCardExpanded";

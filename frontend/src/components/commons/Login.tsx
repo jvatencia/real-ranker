@@ -15,6 +15,7 @@ async function loginUser(credentials: any) {
   return fetch(`${BASE_URL}/token`, {
     method: 'POST',
     headers: {
+      Accept: "application/json",
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(credentials)
@@ -35,6 +36,7 @@ export default function Login({setToken}: ILogin) {
       email,
       password
     });
+    console.log("got token: " + token);
     setToken(token);
   }
 
