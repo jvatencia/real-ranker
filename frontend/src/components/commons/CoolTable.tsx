@@ -1,15 +1,10 @@
-import React, {useState} from 'react';
+import  {useState} from 'react';
 import { darken, lighten, styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { DataGrid, GridCellParams, GridTreeNode } from '@mui/x-data-grid';
-import { useDemoData } from '@mui/x-data-grid-generator';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { GridRowHeightParams } from '@mui/x-data-grid';
 
 function createData(
   id: number,
@@ -27,20 +22,24 @@ function createData(
   return { id, title, college1, college2, filler, status };
 }
 
-let columns = [
+const og_columns = [
   {field: 'title', className: 'super-app-theme--header' ,width: 150, sortable: false, headerName: ''},
   {field: 'college1', width: 160, sortable: false, headerName: 'Michigan State University'},
   {field: 'filler', maxWidth: 15, sortable: false, headerName: ''},
   {field: 'college2', width: 160, sortable: false, headerName: 'Carnegie Mellon University'}
 ];
 
-const rows = [
+const og_rows = [
   createData(0,'Your Score', '92', '86','', 'main'),
   createData(2,'Acceptance Rate', '20%', '71%','', 'bland'),
   createData(3,'Success Score', 'A-', 'B+','', 'secondary'),
+  createData(1011,'', '', '','', 'bland'),
   createData(5,'Value Grade', 'A', 'A', '','secondary'),
+  createData(1012,'', '', '','', 'bland'),
   createData(1,'Outcomes', 'HI/HD', 'HI/HD','', 'secondary'),
+  createData(1013,'', '', '','', 'bland'),
   createData(4,'Cost Score', '80k', '156k', '','secondary'),
+  createData(1014,'', '', '','', 'bland'),
   createData(6,'Diversity Score', 'High', 'High','', 'secondary'),
 ];
 const getBackgroundColor = (color: string, mode: string) =>
@@ -59,15 +58,9 @@ const mainBackgroundColor = '#707AE6';
 const secondaryBackgroundColor = '#A4B3FF';
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   '.MuiDataGrid-cell': {
-    color: '#222224',
-    textAlign: 'center',
-    fontFamily: 'Poppins',
-    fontSize: '16px',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    lineHeight: 'normal',
     display:'flex',
     justifyContent: 'center',
+    borderBottom: 'none',
     '&:nth-col(0n)': {
       justifyContent: 'start'
     },
@@ -83,6 +76,11 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     display:'flex',
     flexDirection: 'column',
     justifyContent: 'center'
+  },
+  '& .super-app-theme--bland': {
+    '&:MuiDataGrid-row': {
+      height: '20px',
+    }
   },
   '& .super-app-theme--main': {
     backgroundColor: mainBackgroundColor,
@@ -126,6 +124,34 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
       },
     },
   },
+  '& .super-app-theme--tertiary': {
+    color: '#222224',
+    textAlign: 'center',
+    fontFamily: 'Poppins',
+    fontSize: '10px',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    lineHeight: 'normal',
+    backgroundColor: secondaryBackgroundColor,
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(
+        secondaryBackgroundColor,
+        'dark'
+      ),
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(
+        secondaryBackgroundColor,
+        'dark',
+      ),
+      '&:hover': {
+      backgroundColor: getSelectedBackgroundColor(
+        secondaryBackgroundColor,
+        'dark',
+        )
+      },
+    },
+  },
 }));
 
 export default function CoolTable() {
@@ -134,7 +160,44 @@ export default function CoolTable() {
   //   rowLength: 25,
   // });
   // console.log(data);
+  const [columns, setColumns] = useState(og_columns)
+  const [rows, setRows] = useState(og_rows);
+  const [notif, setNotif] = useState(false);
+  const [priorColClicked, setPrior] = useState('');
+  function handleOpen(tableToOpen: string, p:any) : void {
+    let rowsNew = og_rows;
+    if (p.row.title === priorColClicked) {
+      setRows(rowsNew);
+      setPrior('');
+      return;
+    }
+    if (p.row.title === 'Success Score') {
+      rowsNew = [
+        createData(0,'Your Score', '92', '86','', 'main'),
+        createData(2,'Acceptance Rate', '20%', '71%','', 'bland'),
+        createData(3,'Success Score', 'A-', 'B+','', 'secondary'),
+        createData(7,'Orientation to grad', '75%', '69%','', 'tertiary'),
+        createData(8,'Student Support', 'Med', 'Low','', 'tertiary'),
+        createData(9,'Left in 2 years', '8 in 10', '5 in 10','', 'tertiary'),
+        createData(10,'Avg time to grad', '4 yrs', '4.5 yrs','', 'tertiary'),
+        createData(1011,'', '', '','', 'bland'),
+        createData(5,'Value Grade', 'A', 'A', '','secondary'),
+        createData(1012,'', '', '','', 'bland'),
+        createData(1,'Outcomes', 'HI/HD', 'HI/HD','', 'secondary'),
+        createData(1013,'', '', '','', 'bland'),
+        createData(4,'Cost Score', '80k', '156k', '','secondary'),
+        createData(1014,'', '', '','', 'bland'),
+        createData(6,'Diversity Score', 'High', 'High','', 'secondary'),
+      ];
+      setNotif(true);
+    }
+    setRows(rowsNew);
+    setPrior(p.row.title);
+  }
   const data = {columns, rows};
+  const handleClose = (e: any) => {
+    setNotif(false);
+  };
   return (
     <Box sx={{
       '& .cold': {
@@ -147,8 +210,16 @@ export default function CoolTable() {
       },
       }}>
       <StyledDataGrid
+        getRowHeight={({ id }: GridRowHeightParams) => {
+          if (1000 < id && id < 1069) {
+            return 20;
+          }
+      
+          return 52;
+        }}
         disableColumnMenu
         disableColumnFilter
+        onRowClick={(p, e) => {handleOpen('success_score', p);}}
         {...data}
         getRowClassName={(params) => `super-app-theme--${params.row.status}`}
         // @ts-ignore
@@ -159,27 +230,11 @@ export default function CoolTable() {
           // return params.value >= 15 ? 'hot' : 'cold';
         }}
       />
-    {/* <TableContainer component={Paper}>
-      <Table aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell></StyledTableCell>
-            <StyledTableCell align="right">U Mich.</StyledTableCell>
-            <StyledTableCell align="right">Auburn</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell >
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.value1}</StyledTableCell>
-              <StyledTableCell align="right">{row.value2}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer> */}
+      <Snackbar open={notif} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {/* @ts-ignore */}
+          Now showing {priorColClicked.toLowerCase()} details.
+        </Alert>
+      </Snackbar>
     </Box>
   );};
