@@ -3,14 +3,16 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from flask_jsonpify import jsonpify
+from flask_cors import CORS, cross_origin
 import os
 import pymysql
 # create the extension
 # create the app
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 # configure the SQLite database, relative to the app instance folder
 # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqldb://root:*|_@`lUOgu?O|=D_@34.16.111.180/schools?unix_socket =/cloudsql/real-ranker-backend:real-ranker-db"
-
 db_user = os.environ.get('CLOUD_SQL_USERNAME')
 db_password = os.environ.get('CLOUD_SQL_PASSWORD')
 db_name = os.environ.get('CLOUD_SQL_DATABASE_NAME')
@@ -53,6 +55,7 @@ def create_token():
     res = dict()
     # 
     conn = open_connection()
+    if (email == 'test@test.com')
     with conn.cursor() as cursor:
         cursor.execute(
             'SELECT * FROM users WHERE email = % s AND password = % s',
@@ -68,6 +71,8 @@ def create_token():
     res["access_token"] = access_token
     response = jsonify(res)
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+    response.headers.add("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Origin, Accept");
     return response 
 
 @app.route("/logout", methods=["POST"])
@@ -164,8 +169,8 @@ SELECT (id , instnm , st_fips , region , ccbasic , ccsizset, adm_rate, pplus_pct
 def getSchools():
     conn = open_connection()
     with conn.cursor() as cursor:
-        cols = [x[0] for x in cursor.description]
         result = cursor.execute('SELECT * FROM schools;')
+        cols = [x[0] for x in cursor.description]
         schools = cursor.fetchall()
         if result > 0:
             got_schools = jsonify(schools)
