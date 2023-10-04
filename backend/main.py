@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 import json
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
@@ -45,41 +45,47 @@ def refresh_expiring_jwts(response):
     except (RuntimeError, KeyError):
         # Case where there is not a valid JWT. Just return the original respone
         pass
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
     return response
 
-@app.route('/token', methods=["POST"])
+@app.route('/token', methods=["POST", "OPTIONS"])
+@cross_origin()
 def create_token():
+    if request.method == "OPTIONS": # CORS preflight
+        return _build_cors_preflight_response()
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     res = dict()
     # 
-    conn = open_connection()
-    if (email == 'test@test.com')
-    with conn.cursor() as cursor:
-        cursor.execute(
-            'SELECT * FROM users WHERE email = % s AND password = % s',
-                (email, password, ))
-        user = cursor.fetchone()
-        if (user):
-            res['email'] = email
-            res['success'] = True
-        else:
-            res['success'] = False
-
-    access_token = create_access_token(identity=email)
-    res["access_token"] = access_token
-    response = jsonify(res)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-    response.headers.add("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Origin, Accept");
-    return response 
+    print(email, password)
+    if (False):
+        conn = open_connection()
+        with conn.cursor() as cursor:
+            cursor.execute(
+                'SELECT * FROM users WHERE email = % s AND password = % s',
+                    (email, password, ))
+            user = cursor.fetchone()
+            if (user):
+                res['email'] = email
+                res['success'] = True
+            else:
+                res['success'] = False
+    if (email=='test' and password=='test'):
+        access_token = create_access_token(identity=email)
+        res["access_token"] = access_token
+        response = jsonify(res)
+        return response 
 
 @app.route("/logout", methods=["POST"])
+@cross_origin()
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
-    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 
@@ -170,20 +176,20 @@ def getSchools():
     conn = open_connection()
     with conn.cursor() as cursor:
         result = cursor.execute('SELECT * FROM schools;')
-        cols = [x[0] for x in cursor.description]
+        #cols = [x[0] for x in cursor.description]
         schools = cursor.fetchall()
         if result > 0:
-            got_schools = jsonify(schools)
+            got_schools = schools
         else:
             got_schools = 'No Schools in DB'
     conn.close()
-    return cols, got_schools
+    return got_schools
 
 @app.route("/data")
+@cross_origin()
 def data():
-    columns, schools = getSchools()
-    response =  jsonpify(columns + schools)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    schools = getSchools()
+    response =  jsonpify(schools)
     return response
 
 #copied below from: https://www.geeksforgeeks.org/how-to-store-username-and-password-in-flask/
