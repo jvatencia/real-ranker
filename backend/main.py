@@ -188,6 +188,8 @@ def getSchools():
 @app.route("/data")
 @cross_origin()
 def data():
+    if request.method == "OPTIONS": # CORS preflight
+        return _build_cors_preflight_response()
     schools = getSchools()
     response =  jsonpify(schools)
     return response
