@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import styled from "styled-components";
 import { BootstrapInput } from "../utilities/BootstrapInput"
@@ -10,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { devices } from "../../utils/Breakpoints";
-
+import { useNavigate } from "react-router-dom";
 async function loginUser(credentials: any) {
   return fetch(`${BASE_URL}/token`, {
     method: 'POST',
@@ -21,15 +20,17 @@ async function loginUser(credentials: any) {
     body: JSON.stringify(credentials)
   })
     .then(data => data.json())
- }
-
-interface ILogin {
-  setToken: any
 }
 
-export default function Login({setToken}: ILogin) {
+interface ILogin {
+  setToken: any,
+  redirectTo: string
+}
+
+export default function Login({setToken, redirectTo}: ILogin) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const token = await loginUser({
@@ -38,6 +39,7 @@ export default function Login({setToken}: ILogin) {
     });
     console.log("got token: " + token);
     setToken(token);
+    navigate(redirectTo);
   }
 
   return(

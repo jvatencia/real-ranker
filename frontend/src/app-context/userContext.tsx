@@ -25,6 +25,7 @@ export const DummyUser:UserContract ={
 export interface AppState {
   user?: UserContract;
   colleges?: Array<object>;
+  token?: string;
   form?: object;
   updateState: (newState: Partial<AppState>) => void;
 }
@@ -35,6 +36,7 @@ export interface AppState {
 const defaultState: AppState = {
   user: {},
   colleges: [],
+  token: '',
   updateState: (newState?: Partial<AppState>) => {},
 };
 
