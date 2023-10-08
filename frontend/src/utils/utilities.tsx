@@ -43,4 +43,8 @@ function toLetterGrade(val: number) {
   }
 }
 
-export { toPercent, toLetterGrade };
+function getScore(college: any, prefix: string) {
+ return .4*college[`${prefix}_relative`] + .6*college[`${prefix}_absolute`]
+}
+
+export { toPercent, toLetterGrade, getScore };

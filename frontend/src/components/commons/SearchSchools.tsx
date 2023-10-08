@@ -10,9 +10,13 @@ import { UserContext } from '../../app-context/userContext';
 import { BASE_URL } from '../../utils/Constants';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
+import {Button} from '@mui/base';
 
 export default function SearchSchools() {
-    const {user, colleges, updateState } = useContext(UserContext);
+
+    const navigate = useNavigate();
+    const {user, colleges, token, updateState } = useContext(UserContext);
     console.log(colleges);
     const [schoolOptions, setSchoolOptions] = useState(null);
     let [schools, setSchools] = useState(colleges!);
@@ -51,24 +55,28 @@ export default function SearchSchools() {
     }, []);
 
     const addSchool = (college: any) => {
-      const isDuplicate = schools.some(
-        (el: any) => parseInt(el?.id) === parseInt(college?.id)
-      );
+      // const isDuplicate = schools.some(
+      //   (el: any) => parseInt(el?.id) === parseInt(college?.id)
+      // );
 
-      if (isDuplicate) {
+      if (false) {
         setJustAddedSchool(college['instnm'])
         setFailOpen(true);
       } else {
-        updateState({colleges: colleges?.concat([college])});
-        setSchools(schools.concat(college));
+        console.log('added!' + college['instnm']);
+        if (colleges && colleges.length >= 0) {
+          updateState({colleges: colleges.concat([college])});
+          setSchools(schools.concat([college]));
+        }
+        else {
+          updateState({colleges: [college]});
+          setSchools([college]);
+        }
         setJustAddedSchool(college['instnm'])
         setOpen(true);
       }
     };
 
-    useEffect(() => {
-      //
-    });
     const handleClose = (e: any) => {
       setOpen(false);
       setFailOpen(false);
@@ -82,15 +90,20 @@ export default function SearchSchools() {
         }
     }
     let selectedSchoolDivs: any = [];
-    schools.map((school) => {
-      selectedSchoolDivs.push(<SelectedCollege removeSchool={removeThisSchool} school={school} />);
-    })
+    if (schools) {
+      schools.map((school) => {
+        selectedSchoolDivs.push(<SelectedCollege removeSchool={removeThisSchool} school={school} />);
+      })
+    }
 	return(
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={6}>
-          <Dropdown options={schoolOptions} addSchool={addSchool} />
+          {schoolOptions && <Dropdown options={schoolOptions} addSchool={addSchool} />}
           {selectedSchoolDivs} 
         </Grid>
+      <Grid item xs={8} sx={{textAlign: 'center'}} justifyContent="center" alignItems="center" >
+          <Button onClick={e=> {navigate('/dataview')}} >Go on to see your data!</Button>
+      </Grid>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           {/* @ts-ignore */}

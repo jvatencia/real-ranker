@@ -33,6 +33,7 @@ const Homepage = () => {
 
       try {
         fetch(`${BASE_URL}${endpoint}`, {
+          method: 'GET',
           signal: abortController.signal,
           headers: {
             Accept: "application/json",

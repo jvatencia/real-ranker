@@ -11,6 +11,7 @@ import PageNotFound from "./components/error/PageNotFound";
 import useToken from './components/commons/Token';
 import Login from './components/commons/Login';
 import { Home } from '@mui/icons-material';
+import { UserContextProvider } from './app-context/userContextProvider';
 function App() {
 
   // const {token, setToken} = useToken();
@@ -53,8 +54,14 @@ function App() {
   return (
     <>
       {/* <RouterProvider router={router} /> */}
-    <BrowserRouter basename={'/'} >
+
+      <UserContextProvider>
+    <BrowserRouter  basename={'/'} >
+
+
     <Routes>
+      <Route element={<Layout />}>
+
         <Route path='login' element={
           <Login setToken={setToken} redirectTo={'/form'}/>
           } />
@@ -76,8 +83,10 @@ function App() {
         <Route path='*' element={
           <Login setToken={setToken} redirectTo={'/form'}/>
           } />
+      </Route>
     </Routes>
 </BrowserRouter>
+      </UserContextProvider>
     </>
   );
 }

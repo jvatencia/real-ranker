@@ -4,6 +4,7 @@ import { IMaskInput } from 'react-imask';
 import FormControl from '@mui/material/FormControl';
 import { BootstrapInput } from "../components/utilities/BootstrapInput";
 import LinearProgress from '@mui/material/LinearProgress';
+import Layout from "../components/layout/Layout";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -305,6 +306,7 @@ const Formpage = () => {
   }
   console.log(page, backable, continuable);
   return (
+
     <Box 
         component="form"
         sx={{ 
