@@ -17,6 +17,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { borders } from '@mui/system';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import  {toPercent, toLetterGrade, getScore} from '../../utils/utilities';
+
+
+
+
 
 const commonStyles = {
   bgcolor: 'background.paper',
@@ -30,6 +35,7 @@ const commonStyles = {
   right: '-25px',
   zIndex:'1000'
 };
+
 
 //const OurTableCell = withStyles({
   //root: {
@@ -64,8 +70,10 @@ const rows = [
   createData('Michigan','A', 'B', 'B', 'D', 'A'),
 
 ];
-
-export default function OutlinedCard2() {
+interface ICard{
+college:any
+}
+export default function OutlinedCard2({college}:ICard) {
 
 
   const [successactive, setSuccessActive] = useState(false);
@@ -78,11 +86,11 @@ export default function OutlinedCard2() {
             <TableCell align="center" sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}>Student Support Score</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >56%</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['comp_orig_yr4_rt']}</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >5.2 Years</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{(4*college['c100_4']/((college['c150_4']+college['c100_4'])))+(6*college['c150_4']/((college['c150_4']+college['c100_4'])))}</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>70%</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{((0.4*college['support_relative'])+(0.6*college['support_absolute']))}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}}>% Left in 2 Years</TableCell>
@@ -92,11 +100,11 @@ export default function OutlinedCard2() {
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Withdrawal Rate</TableCell>
             </TableRow>
             <TableRow>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >72%</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['enrl_orig_yr2_rt']}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>18%</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{college['trans_4']}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >18%</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['wdraw_orig_yr3_rt']}</TableCell>
           </TableRow>
           <TableRow> <Button variant="contained" sx={{ display: 'flex', justifyContent: 'center', position: 'relative', left: '225%', bottom: '-15px' }}>Learn More</Button> <HelpOutlineOutlinedIcon sx={{ color: "#3B45BB" ,display: 'flex', justifyContent: 'center', position: 'relative', left: '446%', bottom: '21px' }}/></TableRow>
           
@@ -131,9 +139,9 @@ const costexpanded = ( <React.Fragment>
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Filler</TableCell>
 </TableRow>
 <TableRow>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >$26,000</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{(college['npt43_pub']+college['npt43_priv'])}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>106,000</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{(college['npt43_pub']+college['npt43_priv'])*((4*college['c100_4']/((college['c150_4']+college['c100_4'])))+(6*college['c150_4']/((college['c150_4']+college['c100_4']))))}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
             <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >Filler</TableCell>
           </TableRow>
@@ -147,30 +155,30 @@ const outcomesexpanded = ( <React.Fragment>
   <TableRow>
             <TableCell align="center" sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}} >Debt/Income Ratio</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Social Mobility Index</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Inventor Score</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Income 90% at 10 Years</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>0.5</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{((0.4*college['weighted_debt_relative'])+(0.6*college['weighted_debt_absolute']))/((0.4*college['weighted_income_relative'])+(0.6*college['weighted_income_absolute']))}</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>0.05</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{college['inventor']}</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>$106,000</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{college['pct90_earn_wne_p10']}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}}>Income 75% at 10 Years</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >TIncome 25% at 10 Years</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Income 25% at 10 Years</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Income 10% at 10 Years</TableCell>
             </TableRow>
             <TableRow>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >$78,000</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['pct75_earn_wne_p10']}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>$56,000</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{college['pct25_earn_wne_p10']}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >$24,000</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['pct10_earn_wne_p10']}</TableCell>
           </TableRow>
           <TableRow> <Button variant="contained" sx={{ display: 'flex', justifyContent: 'center', position: 'relative', left: '225%', bottom: '-15px' }}>Learn More</Button> <HelpOutlineOutlinedIcon sx={{ color: "#3B45BB" ,display: 'flex', justifyContent: 'center', position: 'relative', left: '446%', bottom: '21px' }}/></TableRow>
           </React.Fragment>
@@ -178,32 +186,32 @@ const outcomesexpanded = ( <React.Fragment>
 const [diversityactive, setDiversityActive] = useState(false);
 const diversityexpanded = ( <React.Fragment>
 <TableRow>
-            <TableCell align="center" sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}} >White Population (%)</TableCell>
-            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Black Population (%)</TableCell>
-            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Hispanic Population(%)</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >24%</TableCell>
-            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >9%</TableCell>
-            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>17%</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}}>Asian Population (%)</TableCell>
-            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Parents in Top Quintile of Household Income (%)</TableCell>
+            <TableCell align="center" sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}} >Parents in Top Quintile of Household Income (%)</TableCell>
             <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
             <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Parents in Bottom Quintile of Household Income (%)</TableCell>
+            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
+            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Parents in Top 10% of Household Income</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['par_q5']}</TableCell>
+            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['par_q1']}</TableCell>
+            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
+            <TableCell align="center" sx={{borderBottom: "none", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{college['par_top10pc']}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}}>Parents in Top 1% of Household Income</TableCell>
+            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
+            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Parents in Top 0.1% of Household Income</TableCell>
+            <TableCell sx={{borderBottom: "none" , width: '20%', whiteSpace: 'wrap'}}/>
+            <TableCell align="center" sx={{borderBottom: "none", width: '20%', whiteSpace: 'wrap'}} >Economic Inclusion Score</TableCell>
             </TableRow>
             <TableRow>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >32%</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{college['par_top1pc']}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>32%</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}}>{college['par_toppt1pc']}</TableCell>
             <TableCell sx={{borderColor: "black" , width: '20%', whiteSpace: 'wrap'}}/>
-            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >4%</TableCell>
+            <TableCell align="center" sx={{ borderColor: "black", fontFamily:'Poppins', fontSize:'16px', width: '20%', whiteSpace: 'wrap'}} >{(0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute'])}</TableCell>
           </TableRow>
           <TableRow> <Button variant="contained" sx={{ display: 'flex', justifyContent: 'center', position: 'relative', left: '225%', bottom: '-15px' }}>Learn More</Button> <HelpOutlineOutlinedIcon sx={{ color: "#3B45BB" ,display: 'flex', justifyContent: 'center', position: 'relative', left: '446%', bottom: '21px' }}/></TableRow>
 
@@ -229,9 +237,8 @@ const diversityexpanded = ( <React.Fragment>
     <CardHeader
 
      
-        title="Columbia University in the City of New York"
-        subheader="New York, New York"
-
+        title={college['instnm']}
+        subheader={college['stabbr']}
         
   action={
           <Box component="span" sx={{ display: 'flex', justifyContent: 'right'}}> 
@@ -240,7 +247,7 @@ justifyContent="center"
   alignItems="center" >  
     <Typography align="center" sx={{color: "black" , fontSize:'10px',position:'relative',bottom:'14px',left:'10px'}}>Your Score </Typography> 
 
-  <Typography align="center" sx={{color: "#3B45BB" ,fontSize:'24px', fontFamily:'Poppins',position:'relative',bottom:'-14px',left:'-25px'}}>90 </Typography> </Box>
+  <Typography align="center" sx={{color: "#3B45BB" ,fontSize:'24px', fontFamily:'Poppins',position:'relative',bottom:'-14px',left:'-25px'}}>{toLetterGrade((((0.4*college['success_relative'])+(0.6*college['success_absolute']))+((0.4*college['outcomes_relative'])+(0.6*college['outcomes_absolute']))+((0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute'])))/3)} </Typography> </Box>
 </Box>
         
 }
@@ -273,18 +280,17 @@ justifyContent="center"
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
             <TableRow
-              key={row.name}
+              key={college['instnm']}
               sx={{ '&:last-child td, &:last-child th': { borderbottom: 1 , borderColor:"black"} }}
             >
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{row.success}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{row.value}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{row.cost}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{row.outcomes}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{row.diversity}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{((0.4*college['success_relative'])+(0.6*college['success_absolute']))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{((0.4*college['value_relative'])+(0.6*college['value_absolute']))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{((0.4*college['cost_relative'])+(0.6*college['cost_absolute']))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{((0.4*college['outcomes_relative'])+(0.6*college['outcomes_absolute']))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{(0.5*(((0.4*college['social_diversity_score_relative'])+(0.6*college['social_diversity_score_absolute']))+((0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute']))))}</TableCell>
             </TableRow>
-          ))}
+
           {successactive ? successexpanded : null}
           {valueactive ? valueexpanded : null}
           {costactive ? costexpanded : null}

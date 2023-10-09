@@ -9,6 +9,8 @@ import SSlider from "../components/commons/SSlider";
 import CollegeCardExpanded from "../components/commons/CollegeCardExpanded";
 
 import CoolTable from "../components/commons/CoolTable";
+import { useContext } from 'react';
+import { UserContext } from '../app-context/userContext';
 
 const Datapage = () => {
   const [schoolOptions, setSchoolOptions] = useState(null);
@@ -21,9 +23,17 @@ const Datapage = () => {
     setFailOpen(false);
   };
   const [value, setValue] = useState(0);
+  const {user, colleges, updateState } = useContext(UserContext);
+
   let content: any;
   if (value == 0) {
-    content = <CollegeCardExpanded />;
+  if (colleges && colleges.length>0){
+    content = colleges.map( (college)=> { return <CollegeCardExpanded college={college} />});
+    }
+    else {
+    content=undefined;
+    }
+    console.log(content)
   } else if (value == 1) {
     content = <CoolTable />;
   } else if (value == 2) {
