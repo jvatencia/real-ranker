@@ -87,7 +87,6 @@ columnsWeCareAbout = [
 ]
 
 original_cols_to_keep = ['INSTNM', 'CCBASIC', 'CCSIZSET', 'ST_FIPS', 'REGION', 'ADM_RATE', 'CONTROL', 'COMP_ORIG_YR4_RT', 'ENRL_ORIG_YR2_RT', 'ENRL_ORIG_YR3_RT', 'WDRAW_ORIG_YR3_RT', 'COMP_ORIG_YR3_RT', 'C100_4', 'C150_4',   'SUPPORT WITHOUT C100 and C150', 'SUPPORT WITH C100 and C150', 'C150_4_BLACK', 'C150_4_HISP', 'C150_4_NHPI', 'C150_4_PELL', 'LO_INC_WDRAW_ORIG_YR3_RT', 'IND_WDRAW_ORIG_YR3_RT', 'FIRSTGEN_WDRAW_ORIG_YR3_RT', 'LO_INC_COMP_ORIG_YR4_RT', 'IND_COMP_ORIG_YR4_RT', 'FIRSTGEN_COMP_ORIG_YR4_RT', 'COST SCORE 1', 'COST SCORE 2', 'COST SCORE 3', 'COST SCORE 4', 'COST SCORE 5', 'NPT41', 'NPT42', 'NPT43', 'NPT44', 'NPT45', 'PCT10_EARN_WNE_P10', 'PCT25_EARN_WNE_P10', 'PCT75_EARN_WNE_P10', 'PCT90_EARN_WNE_P10', 'PLUS_DEBT_INST_COMP_MD', 'PLUS_DEBT_ALL_NOCOMP_MD', 'DEBT_MDN', 'CUML_DEBT_P90', 'CUML_DEBT_P75', 'CUML_DEBT_P25', 'CUML_DEBT_P10', 'VALUE 1', 'VALUE 2', 'VALUE 3', 'VALUE 4', 'VALUE 5', 'PELL_EVER', 'AGEGE24', 'DEPENDENT', 'FIRST_GEN']
-colsThatDontExist = ['support', 'transfer','>4 Year to Graduate','Relative Risk of Not Graduating', 'support without c100 and c150', 'support with c100 and c150', 'cost score 1', 'cost score 2', 'cost score 3', 'cost score 4', 'cost score 5', 'npt41', 'npt42', 'npt43', 'npt44', 'npt45', 'value 1', 'value 2', 'value 3', 'value 4', 'value 5']
 
 def parse_new(src: str):
     # load source csv
@@ -186,9 +185,24 @@ def parse_new(src: str):
     for col in prefixes:
         scoreCols.append('%s_absolute' % col)
         scoreCols.append('%s_relative' % col)
-    df[colsWeWant+['st_fips', 'region']+scoreCols+spartans].to_csv('results_final.csv')
-    df.to_csv('everything.csv')
+    df[colsWeWant+['st_fips', 'region']+scoreCols+spartans].to_csv('drink.csv', index=False)
+    # df.to_csv('drink2.csv', index=False)
+from orderColumns import parseByLine, s2
+def export():
+    columnOrder = parseByLine(s2)
+    drink = pd.read_csv('drink.csv', low_memory=False)
+    if 'Unnamed: 0' in drink.columns:
+        drink = drink.drop(columns=['Unnamed: 0'])
+    mixer = pd.read_csv('mixer.csv', low_memory=False)
+    mixer.columns = ['_'.join(c.lower().split()) for c in mixer.columns]
+    drink = pd.merge(drink, mixer, how='left', on='instnm')
+    drink['id'] = [i+1 for i in range(len(drink))]
+    drink[columnOrder].to_csv('cocktail.csv', index=False)
+    print('all done!')
+    # print(len(columnOrder))
 
+    # print(df.columns)
+    # print(len(df.columns))
 
 def getRelativeAndAbsolutePercentiles(df, column, ascending=False):
     df=df.dropna(subset=[column])
@@ -282,5 +296,6 @@ def generateAlterationStatement():
 
 
 if __name__=='__main__':
-    generateAlterationStatement()
-    # parse_new('Most-Recent-Cohorts-Institution.csv')
+    parse_new('Most-Recent-Cohorts-Institution.csv')
+    export()
+    # generateAlterationStatement()
