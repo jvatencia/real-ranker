@@ -113,10 +113,10 @@ def parse_new(src: str):
             except:
                 notPresent.append(col)
                 colsWeWant.pop()
-        if 'ugds' in col:
-            ## Things to bring up:
-            ### - equation for parent plus loan debt (currently taking mean)?
-            print(col)
+        # if 'ugds' in col:
+        #     ## Things to bring up:
+        #     ### - equation for parent plus loan debt (currently taking mean)?
+        #     print(col)
     print("not presents: \n" + str(notPresent))
     df.drop_duplicates(subset=['instnm'], inplace=True)
 
@@ -195,8 +195,23 @@ def export():
         drink = drink.drop(columns=['Unnamed: 0'])
     mixer = pd.read_csv('mixer.csv', low_memory=False)
     mixer.columns = ['_'.join(c.lower().split()) for c in mixer.columns]
+    nextup = getRelativeAndAbsolutePercentiles(mixer, 'social_diversity_score')
+    nextup['instnm'] = nextup['school']
+    mixer = pd.merge(mixer, nextup, on='instnm', how='left')
+    print(mixer.columns)
+    nextup = getRelativeAndAbsolutePercentiles(mixer, 'economic_inclusion_score')
+    nextup['instnm'] = nextup['school']
+    mixer = pd.merge(mixer, nextup, on='instnm', how='left')
+    quitit = list()
+    for col in mixer.columns:
+        if '_x' in col or '_y' in col:
+            quitit.append(col)
+    mixer = mixer.drop(columns=quitit)
+    colsToKeep = set(mixer.columns) - set(drink.columns)
+    mixer = mixer[list(colsToKeep) + ['instnm']]
     drink = pd.merge(drink, mixer, how='left', on='instnm')
     drink['id'] = [i+1 for i in range(len(drink))]
+    drink['school_x'] = ['useless' for i in range(len(drink))]
     drink[columnOrder].to_csv('cocktail.csv', index=False)
     print('all done!')
     # print(len(columnOrder))
