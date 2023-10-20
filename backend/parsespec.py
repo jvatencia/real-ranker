@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-
+import warnings
 # from numbers import success
 # from data import cost, outcomes, success, support, value
 import data.weighted_debt_average as debt
@@ -36,7 +36,9 @@ import data.outcomes as outcomes
     Median parent plus loan debt (DONE)
         Columns: ['PPLUS_PCT_LOW', 'PPLUS_PCT_HIGH', 'PLUS_DEBT_ALL_MD']
 """
-
+stealthMode = True
+if (stealthMode):
+    warnings.filterwarnings("ignore")
 columnsWeCareAbout = [
     #identifiers
     'ccbasic',
@@ -88,6 +90,67 @@ columnsWeCareAbout = [
 
 original_cols_to_keep = ['INSTNM', 'CCBASIC', 'CCSIZSET', 'ST_FIPS', 'REGION', 'ADM_RATE', 'CONTROL', 'COMP_ORIG_YR4_RT', 'ENRL_ORIG_YR2_RT', 'ENRL_ORIG_YR3_RT', 'WDRAW_ORIG_YR3_RT', 'COMP_ORIG_YR3_RT', 'C100_4', 'C150_4',   'SUPPORT WITHOUT C100 and C150', 'SUPPORT WITH C100 and C150', 'C150_4_BLACK', 'C150_4_HISP', 'C150_4_NHPI', 'C150_4_PELL', 'LO_INC_WDRAW_ORIG_YR3_RT', 'IND_WDRAW_ORIG_YR3_RT', 'FIRSTGEN_WDRAW_ORIG_YR3_RT', 'LO_INC_COMP_ORIG_YR4_RT', 'IND_COMP_ORIG_YR4_RT', 'FIRSTGEN_COMP_ORIG_YR4_RT', 'COST SCORE 1', 'COST SCORE 2', 'COST SCORE 3', 'COST SCORE 4', 'COST SCORE 5', 'NPT41', 'NPT42', 'NPT43', 'NPT44', 'NPT45', 'PCT10_EARN_WNE_P10', 'PCT25_EARN_WNE_P10', 'PCT75_EARN_WNE_P10', 'PCT90_EARN_WNE_P10', 'PLUS_DEBT_INST_COMP_MD', 'PLUS_DEBT_ALL_NOCOMP_MD', 'DEBT_MDN', 'CUML_DEBT_P90', 'CUML_DEBT_P75', 'CUML_DEBT_P25', 'CUML_DEBT_P10', 'VALUE 1', 'VALUE 2', 'VALUE 3', 'VALUE 4', 'VALUE 5', 'PELL_EVER', 'AGEGE24', 'DEPENDENT', 'FIRST_GEN']
 
+def getEP(df: pd.DataFrame):
+    extraPercentiles = getRelativeAndAbsolutePercentiles(df, 'c150_4', ascending=False)
+    ep = getRelativeAndAbsolutePercentiles(df, 'c150_4_pell', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'c150_4_black', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'c150_4_hisp', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'c150_4_nhpi', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'c150_4_aian', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+
+    ep = getRelativeAndAbsolutePercentiles(df, 'ind_comp_orig_yr4_rt', ascending=False) #?
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'lo_inc_comp_orig_yr4_rt', ascending=False) #?
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'firstgen_comp_orig_yr4_rt', ascending=False) 
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'comp_orig_yr4_rt', ascending=False) 
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'ind_wdraw_orig_yr3_rt', ascending=True) #? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'lo_inc_wdraw_orig_yr3_rt', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'firstgen_wdraw_orig_yr3_rt', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+
+    ep = getRelativeAndAbsolutePercentiles(df, 'cuml_debt_p10', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'cuml_debt_p25', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'cuml_debt_p75', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'cuml_debt_p90', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'pct10_earn_wne_p10', ascending=False)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'pct25_earn_wne_p10', ascending=False)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'pct75_earn_wne_p10', ascending=False)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'pct90_earn_wne_p10', ascending=False)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    
+    ep = getRelativeAndAbsolutePercentiles(df, 'pplus_pct_low', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'pplus_pct_high', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'plus_debt_all_md', ascending=True)#? kinda sure
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+
+    ep = getRelativeAndAbsolutePercentiles(df, 'wdraw_orig_yr3_rt', ascending=True)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'c100_4', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'trans_4', ascending=True)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    return extraPercentiles
+
+
 def parse_new(src: str):
     # load source csv
     df = pd.read_csv(src, low_memory=False)
@@ -113,37 +176,66 @@ def parse_new(src: str):
             except:
                 notPresent.append(col)
                 colsWeWant.pop()
-        # if 'ugds' in col:
-        #     ## Things to bring up:
-        #     ### - equation for parent plus loan debt (currently taking mean)?
-        #     print(col)
-    print("not presents: \n" + str(notPresent))
     df.drop_duplicates(subset=['instnm'], inplace=True)
-
+    extraPercentiles = getEP(df)
     # for each computed statistic for which we desire a percentile:
     ## collect the computed pre-percentile value
     debt_col = list()
-    support_col = list()
+    support_race_col = list()
+    support_eco_col = list()
     income_col = list()
     ppld_col = list()
     for i, row in df.iterrows():
-        support_col.append(support.compute_on_row(row))
-        debt_col.append(debt.compute_on_row(row))
-        income_col.append(income.compute_on_row(row))
-        ppld_col.append(ppld.compute_on_row(row))
+        try:
+            extraPercentile = extraPercentiles.loc[extraPercentiles['school']==row['instnm']].iloc[0, :]
+        except:
+            extraPercentile = None
+        support_eco_col.append(support.compute_eco_on_row(extraPercentile)) #DONE (i think)
+        support_race_col.append(support.compute_race_on_row(row, extraPercentile)) #DONE (i think)
+        debt_col.append(debt.compute_on_row(extraPercentile)) #DONE (i think)
+        income_col.append(income.compute_on_row(extraPercentile))
+        ppld_col.append(ppld.compute_on_row(extraPercentile))
     df['weighted_debt'] = debt_col
     df['weighted_income'] = income_col
-    df['support'] = support_col
+    df['support_race'] = support_race_col
+    df['support_eco'] = support_eco_col
     df['parent_plus_loan_debt'] = ppld_col
-
+    # we need these to run after above two lines so they aren't in getEP()
+    ep = getRelativeAndAbsolutePercentiles(df, 'weighted_debt', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'weighted_income', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'support_race', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    ep = getRelativeAndAbsolutePercentiles(df, 'support_eco', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    extraPercentiles.to_csv('check this out.csv', index=False)
+    df['school'] = df['instnm']
     #second pass, for values that require computation of priors
-    success_col = list()
     outcomes_col = list()
+    support_col = list()
     for i, row in df.iterrows():
-        success_col.append(success.compute_on_row(row))
-        outcomes_col.append(outcomes.compute_on_row(row))
+        try:
+            extraPercentile = extraPercentiles.loc[extraPercentiles['school']==row['instnm']].iloc[0, :]
+        except:
+            extraPercentile = None
+        support_col.append(support.compute_on_row(extraPercentile)) #DONE (i think)
+        outcomes_col.append(outcomes.compute_on_row(row, extraPercentile))
+    df['support'] = support_col
+    df['support_absolute'] = support_col
+    df['support_relative'] = support_col
+    df['outcomes_absolute'] = outcomes_col
+    df['outcomes_relative'] = outcomes_col
+    ep = getRelativeAndAbsolutePercentiles(df, 'support', ascending=False)
+    extraPercentiles = pd.merge(extraPercentiles, ep, on='school', how='left')
+    success_col = list()
+    for i, row in df.iterrows():
+        try:
+            extraPercentile = extraPercentiles.loc[extraPercentiles['school']==row['instnm']].iloc[0, :]
+        except:
+            extraPercentile = None
+        success_col.append(success.compute_on_row(row, extraPercentile))
     df['success'] = success_col
-    df['outcomes'] = outcomes_col
 
     df['key'] = df['instnm']
     ## then get the corresponding percentiles
@@ -151,24 +243,26 @@ def parse_new(src: str):
         'support', 'weighted_debt', 'weighted_income', 'parent_plus_loan_debt', 
         'success', 'outcomes'
     ]
-    supportAdded = getRelativeAndAbsolutePercentiles(df, 'support', ascending=True)
-    supportAdded['key'] = supportAdded['school']
-    df = df.join(supportAdded, lsuffix='_ng', rsuffix='_ndded')
-    added = getRelativeAndAbsolutePercentiles(df, 'weighted_debt', ascending=True)
+
+    # df['success'] = df['success'].apply(pd.to_numeric, errors='coerce')
+    # supportAdded = getRelativeAndAbsolutePercentiles(df, 'support', ascending=False)
+    # supportAdded['key'] = supportAdded['school']
+    # df = df.join(supportAdded, lsuffix='_ng', rsuffix='_ndded')
+    added = getRelativeAndAbsolutePercentiles(df, 'weighted_debt', ascending=False)
     added['key'] = added['school']
     df = df.join(added, lsuffix='_og', rsuffix='_odded')
     added=getRelativeAndAbsolutePercentiles(df, 'weighted_income', ascending=False)
     added['key'] = added['school']
     df = df.join(added, lsuffix='_ag', rsuffix='_added')
-    added=getRelativeAndAbsolutePercentiles(df, 'parent_plus_loan_debt', ascending=True)
+    added=getRelativeAndAbsolutePercentiles(df, 'parent_plus_loan_debt', ascending=False)
     added['key'] = added['school']
     df = df.join(added, lsuffix='_bg', rsuffix='_bdded')
-    added=getRelativeAndAbsolutePercentiles(df, 'success', ascending=True)
+    added=getRelativeAndAbsolutePercentiles(df, 'success', ascending=False)
     added['key'] = added['school']
     df = df.join(added, lsuffix='_cog', rsuffix='_cdded')
-    added = getRelativeAndAbsolutePercentiles(df, 'outcomes', ascending=False)
-    added['key'] = added['school']
-    df = df.join(added, lsuffix='_dog', rsuffix='_ddded')
+    # added = getRelativeAndAbsolutePercentiles(df, 'outcomes', ascending=False)
+    # added['key'] = added['school']
+    # df = df.join(added, lsuffix='_dog', rsuffix='_ddded')
     #cost requires percentiles for each npt4{1/2/3/4/5}_{pub/priv} permutation
     cost_cols = ['NPT41_PUB', 'NPT42_PUB', 'NPT43_PUB', 'NPT44_PUB', 'NPT45_PUB', 'NPT41_PRIV', 'NPT42_PRIV', 'NPT43_PRIV', 'NPT44_PRIV', 'NPT45_PRIV']
     for cost_col in cost_cols:
@@ -198,7 +292,6 @@ def export():
     nextup = getRelativeAndAbsolutePercentiles(mixer, 'social_diversity_score')
     nextup['instnm'] = nextup['school']
     mixer = pd.merge(mixer, nextup, on='instnm', how='left')
-    print(mixer.columns)
     nextup = getRelativeAndAbsolutePercentiles(mixer, 'economic_inclusion_score')
     nextup['instnm'] = nextup['school']
     mixer = pd.merge(mixer, nextup, on='instnm', how='left')
@@ -213,7 +306,6 @@ def export():
     drink['id'] = [i+1 for i in range(len(drink))]
     drink['school_x'] = ['useless' for i in range(len(drink))]
     drink[columnOrder].to_csv('cocktail.csv', index=False)
-    print('all done!')
     # print(len(columnOrder))
 
     # print(df.columns)
@@ -221,6 +313,7 @@ def export():
 
 def getRelativeAndAbsolutePercentiles(df, column, ascending=False):
     df=df.dropna(subset=[column])
+    print('Percentiles for %s are considering %i other schools' % (column, len(df)))
     df.reset_index(inplace=True)
     # create dictionary mapping from school names to their indices in the source dataframe
     schoolIdxLookup = dict([(schoolName, i) for i, schoolName in enumerate(df['instnm'])])
@@ -235,7 +328,8 @@ def getRelativeAndAbsolutePercentiles(df, column, ascending=False):
 
     #calculate percentiles, relative as well as absolute
     l = []
-    for i in tqdm(range(0,nl), total=nl):
+    # for i in tqdm(range(0,nl), total=nl):
+    for i in range(0,nl):
         cn=test.loc[i]['instnm'] #THIS DOES WORK, THE DATA FRAME LOOKS AT THE COLUMN EXCLUDING ALL EMPTY VALUES
         comparableIdx = schoolIdxLookup[cn]
         if (hashedRelativeRanks[comparableIdx] != None):
@@ -251,7 +345,7 @@ def getRelativeAndAbsolutePercentiles(df, column, ascending=False):
             adm1=adm2+0.1
         result=test.loc[(test['ccbasic']== ccb) | (test['ccsizset']== ccs) | (test['st_fips']== state) | (test['region']== region) | (test['adm_rate'] >adm2) & (test['adm_rate'] < adm1)] 
         news=result.dropna(subset=[column])
-        new = news.sort_values(column, ascending=True) #include column 
+        new = news.sort_values(column, ascending=ascending) #include column 
         new.reset_index(inplace=True)
         nz=len(new) #WE SHOULD KEEP NAMES ATTACHED TO THEIR VALUE AND DROP ENTIRE ROW FROM DATAFRAME IF THE ROW IS EMPTY
         indiez = None
@@ -275,8 +369,8 @@ def getRelativeAndAbsolutePercentiles(df, column, ascending=False):
     dfD['%s_absolute' % (column)] = [np.nan for i in range(len(schoolIdxLookup))]
     dfD['%s_relative' % (column)] = [np.nan for i in range(len(schoolIdxLookup))]
     dfD = pd.DataFrame(dfD)
-    print('... cleaning ...')
-    for e in tqdm(l, total=len(l)):
+    # for e in tqdm(l, total=len(l)):
+    for e in l:
         cn, column, absoluteRank, relativeRank = e
         rowIdx = schoolIdxLookup[cn]
         dfD.at[rowIdx,'school'] = cn
@@ -298,11 +392,8 @@ def generateAlterationStatement():
     }
     for col in leftoverColumns:
         if ('.' in col):
-            print(col)
             continue
         postCol = '_'.join(col.lower().split())
-        if (postCol != col):
-            print(postCol + ' YO')
         res += '%s %s, ' % (postCol, typeDef.get(postCol, 'FLOAT'))
     res += ')'
     print(res)
