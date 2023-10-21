@@ -4,8 +4,11 @@ def summary():
 
 def compute(pplus_pct_low, pplus_pct_high, plus_debt_all_md):
     return stats.mean([pplus_pct_high, pplus_pct_low, plus_debt_all_md])
-
+import numpy as np
+from .utilities import getBalancedScore
 def compute_on_row(row):
+    if (type(row) == type(None)):
+        return np.nan
     return compute(
-        row['pplus_pct_low'], row['pplus_pct_high'], row['plus_debt_all_md']
+        getBalancedScore('pplus_pct_low', row), getBalancedScore('pplus_pct_high', row), getBalancedScore('plus_debt_all_md', row)
     )

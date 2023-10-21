@@ -31,11 +31,24 @@ def compute_eco(c150_pell, c150, ind_comp, lo_inc_comp, firstgen_comp, comp, ind
         return ((c150_pell-c150) + comp_avg + wdraw_avg) / 3
     except:
         return np.nan
-
-def compute_on_row(row):
-    return .5*compute_race(row['c150_4_black'], row['c150_4_hisp'], row['c150_4_nhpi'], row['c150_4_aian'], row['c150_4'],
-                   row['ugds_black'], row['ugds_hisp'], row['ugds_nhpi'], row['ugds_aian'], row['ugds']) + .5*compute_eco(
-                    row['c150_4_pell'], row['c150_4'],
-                    row['ind_comp_orig_yr4_rt'], row['lo_inc_comp_orig_yr4_rt'], row['firstgen_comp_orig_yr4_rt'], row['comp_orig_yr4_rt'],
-                    row['ind_wdraw_orig_yr3_rt'], row['lo_inc_wdraw_orig_yr3_rt'], row['firstgen_wdraw_orig_yr3_rt'], row['wdraw_orig_yr3_rt']
+from .utilities import getBalancedScore 
+import numpy as np
+def compute_race_on_row(row, rowE):
+    if (type(row) == type(None)):
+        return np.nan
+    if (type(rowE) == type(None)):
+        return np.nan
+    return compute_race(getBalancedScore('c150_4_black', rowE), getBalancedScore('c150_4_hisp', rowE), getBalancedScore('c150_4_nhpi', rowE), getBalancedScore('c150_4_aian', rowE), getBalancedScore('c150_4', rowE),
+                   row['ugds_black'], row['ugds_hisp'], row['ugds_nhpi'], row['ugds_aian'], row['ugds'])
+def compute_eco_on_row(row):
+    if (type(row) == type(None)):
+        return np.nan
+    return compute_eco(
+                    getBalancedScore('c150_4_pell', row), getBalancedScore('c150_4', row),
+                    getBalancedScore('ind_comp_orig_yr4_rt', row), getBalancedScore('lo_inc_comp_orig_yr4_rt', row), getBalancedScore('firstgen_comp_orig_yr4_rt', row), getBalancedScore('comp_orig_yr4_rt', row),
+                    getBalancedScore('ind_wdraw_orig_yr3_rt', row), getBalancedScore('lo_inc_wdraw_orig_yr3_rt', row), getBalancedScore('firstgen_wdraw_orig_yr3_rt', row), getBalancedScore('wdraw_orig_yr3_rt', row)
                    )
+def compute_on_row(row):
+    if (type(row) == type(None)):
+        return np.nan
+    return .5*row['support_eco'] + .5*row['support_race']
