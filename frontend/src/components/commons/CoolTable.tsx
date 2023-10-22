@@ -138,6 +138,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     '&:nth-col(0n)': {
       justifyContent: 'start'
     },
+
   },
   '.MuiDataGrid-columnHeaderTitle': {
     color: '#222224',
@@ -290,7 +291,7 @@ export default function CoolTable() {
         color: '#1a3e72',
       },
       '& .orange': {
-        backgroundColor: '#F8CF40',
+        backgroundColor: '#FADE88',
         // color: '#1a3e72',
       },
       }}>
@@ -301,6 +302,7 @@ export default function CoolTable() {
           }
       
           return 52;
+
         }}
         disableColumnMenu
         disableColumnFilter
