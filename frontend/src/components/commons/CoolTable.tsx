@@ -30,7 +30,7 @@ const og_columns = [
   {field: 'college2', width: 160, sortable: false, headerName: 'Carnegie Mellon University'}
 ];
 
-function makeData(colleges: Array<any>) {
+function makeData(colleges: Array<any>, form: any) {
   let columns: Array<any>=[{field: 'title', className: 'super-app-theme--header' ,width: 150, sortable: false, headerName: ''},]
   let rows: Array<any>=[
   {id: 0, title: 'Your Score', filler: '', status: 'main'},
@@ -75,14 +75,18 @@ function makeData(colleges: Array<any>) {
     rows[3][key] = ''
     //Value Grade
     // TODO fix this
-    rows[4][key] = toLetterGrade(Math.random());
+    let cost = getScore(college, `npt4${form['familyIncome']}`)
+    console.log('COST BELOW');
+    console.log(cost);
+    let income = getScore(college, 'weighted_income');
+    rows[4][key] = toLetterGrade(cost / income);
     rows[5][key] = ''
     // Outcomes
     rows[6][key] = toLetterGrade(getScore(college, 'outcomes'));
     rows[7][key] = ''
     // Cost Score
-    let costScore = getScore(college, cost_prefix);
-    rows[8][key] = toLetterGrade(costScore);
+    // let costScore = getScore(college, cost_prefix);
+    rows[8][key] = toLetterGrade(cost);
     rows[9][key] = ''
     // Diversity Score
     let eci = getScore(college, 'economic_inclusion_score')
@@ -151,6 +155,9 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     display:'flex',
     flexDirection: 'column',
     justifyContent: 'center'
+  },
+  '.MuiDataGrid-columnHeader': {
+    backgroundColor: '#FADE88'
   },
   '& .super-app-theme--bland': {
     '&:MuiDataGrid-row': {
@@ -229,7 +236,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
 }));
 export default function CoolTable() {
-  const {user, colleges, updateState } = useContext(UserContext);
+  const {user, colleges, form, updateState } = useContext(UserContext);
   console.log('colleges');
   console.log(colleges);
   // const { data } = useDemoData({
@@ -279,7 +286,7 @@ export default function CoolTable() {
     columns: og_columns
   };
   if (colleges && colleges.length > 0){
-    data = makeData(colleges);//{columns, rows};
+    data = makeData(colleges, form);//{columns, rows};
   }
   const handleClose = (e: any) => {
     setNotif(false);
