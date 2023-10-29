@@ -71,10 +71,13 @@ const rows = [
 
 ];
 interface ICard{
-college:any
+college:any,
+form: any
 }
-export default function OutlinedCard2({college}:ICard) {
+export default function OutlinedCard2({college, form}:ICard) {
 
+  let cost = getScore(college, `npt4${form['familyIncome']}`)
+  let value = getScore(college, `value_${form['familyIncome']}`)
 
   const [successactive, setSuccessActive] = useState(false);
   const successexpanded = ( <React.Fragment>
@@ -285,8 +288,8 @@ justifyContent="center"
               sx={{ '&:last-child td, &:last-child th': { borderbottom: 1 , borderColor:"black"} }}
             >
               <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade((0.4*college['success_relative'])+(0.6*college['success_absolute']))}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade((0.4*college['value_relative'])+(0.6*college['value_absolute']))}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade((0.4*college['cost_relative'])+(0.6*college['cost_absolute']))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(value)}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(cost)}</TableCell>
               <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade((0.4*college['outcomes_relative'])+(0.6*college['outcomes_absolute']))}</TableCell>
               <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(0.5*(((0.4*college['social_diversity_score_relative'])+(0.6*college['social_diversity_score_absolute']))+((0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute']))))}</TableCell>
             </TableRow>

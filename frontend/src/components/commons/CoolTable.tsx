@@ -76,10 +76,13 @@ function makeData(colleges: Array<any>, form: any) {
     //Value Grade
     // TODO fix this
     let cost = getScore(college, `npt4${form['familyIncome']}`)
+    let value = getScore(college, `value_${form['familyIncome']}`)
     console.log('COST BELOW');
     console.log(cost);
-    let income = getScore(college, 'weighted_income');
-    rows[4][key] = toLetterGrade(cost / income);
+    console.log('VALUE BELOW');
+    console.log(value);
+    // let income = getScore(college, 'weighted_income');
+    rows[4][key] = toLetterGrade(value);
     rows[5][key] = ''
     // Outcomes
     rows[6][key] = toLetterGrade(getScore(college, 'outcomes'));
