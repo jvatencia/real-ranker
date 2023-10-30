@@ -11,9 +11,11 @@ import { BASE_URL } from '../../utils/Constants';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-import {Button} from '@mui/base';
-
-export default function SearchSchools() {
+import Button from '@mui/material/Button';
+interface ISearchSchools {
+  onFinish: any
+}
+export default function SearchSchools({onFinish}: ISearchSchools) {
 
     const navigate = useNavigate();
     const {user, colleges, token, updateState } = useContext(UserContext);
@@ -101,8 +103,11 @@ export default function SearchSchools() {
           {schoolOptions && <Dropdown options={schoolOptions} addSchool={addSchool} />}
           {selectedSchoolDivs} 
         </Grid>
-      <Grid item xs={8} sx={{textAlign: 'center'}} justifyContent="center" alignItems="center" >
+      {/* <Grid item xs={8} sx={{textAlign: 'center'}} justifyContent="center" alignItems="center" >
           <Button onClick={e=> {navigate('/dataview')}} >Go on to see your data!</Button>
+      </Grid> */}
+      <Grid item xs={5}>
+        <Button sx={{color: 'white',backgroundColor: '#F8CF40', width: '100%'}} onClick={e=> {navigate('/dataview'); onFinish()}}>View College Scores</Button>
       </Grid>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>

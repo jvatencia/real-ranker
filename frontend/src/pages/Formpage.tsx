@@ -1,4 +1,5 @@
-import { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState, forwardRef, useContext } from "react";
+import { UserContext } from "../app-context/userContext";
 import InputLabel from '@mui/material/InputLabel';
 import { IMaskInput } from 'react-imask';
 import FormControl from '@mui/material/FormControl';
@@ -8,6 +9,8 @@ import Layout from "../components/layout/Layout";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import SearchSchools from "../components/commons/SearchSchools";
 import yeoldeimage from "../assets/yeoldeimage.png";
 import { Typography } from "@mui/material";
@@ -49,10 +52,12 @@ const Formpage = () => {
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
+  const [familyIncome, setFamilyIncome] = useState(0);
   const [page, setPage] = useState(0);
   const [continuable, setContinue] = useState(true);
   const [backable, setBackable] = useState(false);
   const pages = 4;
+  const {user, colleges, form, updateState } = useContext(UserContext);
   function pageUpdate(pageDiff: number) {
     let newPage = page + pageDiff;
     console.log(page, newPage);
@@ -71,6 +76,23 @@ const Formpage = () => {
         setContinue(true);
     }
   }
+
+  function saveFormToContext () {
+    updateState({ form: {
+      name,
+      email,
+      phone,
+      grad,
+      actSatScore,
+      gpa,
+      firstGen,
+      academicDisruption,
+      upwardTrajectory,
+      familyIncome
+    }})
+    return;
+  }
+
   function validateName() {
     if (name.length == 0) {
         setNameError(true);
@@ -296,12 +318,31 @@ const Formpage = () => {
                 // inputComponent={TextMaskCustom as any}
                 />
         </FormControl>
+        <Grid item xs={9}>
+        <FormControl fullWidth>
+          <InputLabel id="fam-income">Family Income Range</InputLabel>
+          <Select
+            labelId="fam-income"
+            id="fam-income-select"
+            value={familyIncome}
+            label="Family Income"
+//@ts-ignore
+            onChange={e => {console.log(e); setFamilyIncome(e.target.value)}}
+          >
+            <MenuItem value={1}>$0 - $30k</MenuItem>
+            <MenuItem value={2}>$30k - $48k</MenuItem>
+            <MenuItem value={3}>$48k - $75k</MenuItem>
+            <MenuItem value={4}>$75k - $110k</MenuItem>
+            <MenuItem value={5}>$110k +</MenuItem>
+          </Select>
+        </FormControl>
+        </Grid>
         </Grid>
         </Grid>
     );
   } else if (page===3) {
       pageContent = (
-        <SearchSchools />
+        <SearchSchools onFinish={() => saveFormToContext()}/>
       );
   }
   console.log(page, backable, continuable);
@@ -318,7 +359,7 @@ const Formpage = () => {
         <br/>
         {pageContent}
         <br/><br/>
-        <Grid container spacing={2} sx={{textAlign: 'center'}} justifyContent="center" alignItems="center" >
+        <Grid v-if={page !== 3} container spacing={2} sx={{textAlign: 'center'}} justifyContent="center" alignItems="center" >
           <Grid item xs={5}>
             <Button sx={{color: 'white',backgroundColor: '#F8CF40', width: '100%'}} onClick={e=> {pageUpdate(-1)}} disabled={!backable} >Back</Button>
           </Grid>
