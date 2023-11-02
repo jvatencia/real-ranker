@@ -299,11 +299,27 @@ export default function CoolTable() {
       '& .cold': {
         backgroundColor: '#b9d5ff91',
         color: '#1a3e72',
+        // borderTop: 2,
+        // borderBottom: 2
       },
       '& .orange': {
         backgroundColor: '#FADE88',
+        borderLeft: 2,
+        borderRight:2
         // color: '#1a3e72',
       },
+      '& .lightblue': {
+
+        backgroundColor: '#A4B3FF',
+        borderTop: 2,
+        borderBottom: 2
+        // color: '#1a3e72',
+      },
+      // '& .fullybordered': {
+        // border:2,
+        // borderBottom: 0,
+        // borderTop: 0
+      // }
       }}>
       <StyledDataGrid
         getRowHeight={({ id }: GridRowHeightParams) => {
@@ -319,14 +335,25 @@ export default function CoolTable() {
         loading={colleges === undefined || colleges.length === 0}
         onRowClick={(p, e) => {handleOpen('success_score', p);}}
         {...data}
-        getRowClassName={(params) => `super-app-theme--${params.row.status}`}
         // @ts-ignore
         getCellClassName={(params: GridCellParams<any, any, number>) => {
-          if (params.field.startsWith('college')) {
+          if (params.row.title.includes('Score') ||
+              params.row.title.includes('Grade') ||
+              params.row.title.includes('Outcomes')) {
+            console.log('happened for:');
+            console.log(params.row);
+            return 'lightblue';//secondaryBackgroundColor;
+          }
+          else if (params.field.startsWith('college')) {
             return 'orange';
           }
+          // console.log("LOOKIE HERE");
+          // console.log(params.value);
+          // console.log(params.field);
+          // console.log(params.row);
           // return params.value >= 15 ? 'hot' : 'cold';
         }}
+        getRowClassName={(params) => `super-app-theme--${params.row.status}`}
       />
       <Snackbar open={notif} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
