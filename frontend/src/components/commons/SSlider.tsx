@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -7,38 +8,62 @@ import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
+import { UserContext } from '../../app-context/userContext';
+
 const Input = styled(MuiInput)`
   width: 42px;
 `;
 
 export default function SSlider() {
-  const [sValue, successsetValue] = React.useState<number>(
-    10,
-  );
+
+  const {user, colleges, userScores, updateState } = useContext(UserContext);
+  //@ts-ignore
+  const [sValue, successsetValue] = React.useState<number>(userScores['success']*100);
 
  const [vValue, valuesetValue] = React.useState<number>(
-    10,
+  //@ts-ignore
+    userScores['value']*100
   );
 
   const [cValue, costsetValue] = React.useState<number>(
-    10,
+  //@ts-ignore
+    userScores['cost']*100
   );
 
    const [oValue, outcomessetValue] = React.useState<number>(
-    10,
+  //@ts-ignore
+    userScores['outcomes']*100
   );
 
     const [dValue, diversitysetValue] = React.useState<number>(
-    10,
+  //@ts-ignore
+    userScores['diversity']*100
   );
-    const [value, setValue] = React.useState<number>(
-    50,
-  );
+
+
+  function sumValues() {
+    return sValue + vValue + cValue + oValue + dValue
+    }
+  const [value, setValue] = React.useState<number>(
+      100 - sumValues()
+    );
   function isInBounds(bucketValue: number, difference: number) {
     if (bucketValue - difference < 0 || bucketValue - difference > 100) {
       return false;
     }
     return true;
+  }
+
+  function updateValues() {
+    updateState({
+      userScores: {
+        success: sValue/100,
+        value: vValue/100,
+        cost: cValue/100,
+        outcomes: oValue/100,
+        diversity: dValue/100
+      }
+    })
   }
 
   const handleSliderChangesuccess = (event: Event, newValue: number | number[]) => {
@@ -49,6 +74,7 @@ export default function SSlider() {
         successsetValue(newValue);
       }
     }
+    updateValues();
   };
  const handleSliderChangevalue = (event: Event, newValue: number| number[]) => {
     if (typeof newValue === 'number') {
@@ -58,6 +84,7 @@ export default function SSlider() {
         valuesetValue(newValue);
       }
     }
+    updateValues();
   };
   const handleSliderChangecost = (event: Event, newValue: number| number[]) => {
     if (typeof newValue === 'number') {
@@ -67,6 +94,7 @@ export default function SSlider() {
         costsetValue(newValue);
       }
     }
+    updateValues();
   };
   const handleSliderChangeoutcome = (event: Event, newValue: number| number[]) => {
     if (typeof newValue === 'number') {
@@ -76,6 +104,7 @@ export default function SSlider() {
         outcomessetValue(newValue);
       }
     }
+    updateValues();
   };
   const handleSliderChangediversity = (event: Event, newValue: number| number[]) => {
     if (typeof newValue === 'number') {
@@ -85,6 +114,7 @@ export default function SSlider() {
         diversitysetValue(newValue);
       }
     }
+    updateValues();
   };
 
 return(

@@ -318,6 +318,7 @@ const Formpage = () => {
                 // inputComponent={TextMaskCustom as any}
                 />
         </FormControl>
+        </Grid>
         <Grid item xs={9}>
         <FormControl fullWidth>
           <InputLabel id="fam-income">Family Income Range</InputLabel>
@@ -336,7 +337,6 @@ const Formpage = () => {
             <MenuItem value={5}>$110k +</MenuItem>
           </Select>
         </FormControl>
-        </Grid>
         </Grid>
         </Grid>
     );

@@ -99,7 +99,7 @@ export default function SearchSchools({onFinish}: ISearchSchools) {
     }
 	return(
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           {schoolOptions && <Dropdown options={schoolOptions} addSchool={addSchool} />}
           {selectedSchoolDivs} 
         </Grid>

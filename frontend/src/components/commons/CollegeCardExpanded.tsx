@@ -72,12 +72,31 @@ const rows = [
 ];
 interface ICard{
 college:any,
-form: any
+form: any,
+userScores: any
 }
-export default function OutlinedCard2({college, form}:ICard) {
+function weighted_mult_sum(weights: Array<number>, nums: Array<number>) {
+  let sum = 0;
+  for (let i = 0; i < weights.length; i++) {
+    let weight = weights[i]; let num = nums[i];
+    sum += weight*num;
+  }
+  return sum;
+}
+export default function OutlinedCard2({college, form, userScores}:ICard) {
 
-  let cost = getScore(college, `npt4${form['familyIncome']}`)
-  let value = getScore(college, `value_${form['familyIncome']}`)
+  let cost = getScore(college, `npt4${form['familyIncome']}`);
+  let value = getScore(college, `value_${form['familyIncome']}`);
+  let success = (0.4*college['success_relative'])+(0.6*college['success_absolute']);
+  let outcomes = (0.4*college['outcomes_relative'])+(0.6*college['outcomes_absolute']);
+  let diversity = 0.5*(((0.4*college['social_diversity_score_relative'])+(0.6*college['social_diversity_score_absolute']))+((0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute'])));
+  let yourscore = '...';
+  if ('success' in userScores) {
+    let wms = weighted_mult_sum([userScores['success'], userScores['value'], userScores['cost'], userScores['diversity'], userScores['outcomes']], [success, value, cost, diversity, outcomes] );
+    console.log('your grade: ');
+    console.log(wms);
+    yourscore = toLetterGrade(wms);
+  }
 
   const [successactive, setSuccessActive] = useState(false);
   const successexpanded = ( <React.Fragment>
@@ -250,7 +269,7 @@ justifyContent="center"
   alignItems="center" >  
     <Typography align="center" sx={{color: "black" , fontSize:'10px',position:'relative',bottom:'14px',left:'10px'}}>Your Score </Typography> 
 
-  <Typography align="center" sx={{color: "#3B45BB" ,fontSize:'24px', fontFamily:'Poppins',position:'relative',bottom:'-14px',left:'-25px'}}>{toLetterGrade((((0.4*college['success_relative'])+(0.6*college['success_absolute']))+((0.4*college['outcomes_relative'])+(0.6*college['outcomes_absolute']))+((0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute'])))/3)} </Typography> </Box>
+  <Typography align="center" sx={{color: "#3B45BB" ,fontSize:'24px', fontFamily:'Poppins',position:'relative',bottom:'-14px',left:'-25px'}}>{yourscore} </Typography> </Box>
 </Box>
         
 }
@@ -287,11 +306,11 @@ justifyContent="center"
               key={college['instnm']}
               sx={{ '&:last-child td, &:last-child th': { borderbottom: 1 , borderColor:"black"} }}
             >
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade((0.4*college['success_relative'])+(0.6*college['success_absolute']))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(success)}</TableCell>
               <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(value)}</TableCell>
               <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(cost)}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade((0.4*college['outcomes_relative'])+(0.6*college['outcomes_absolute']))}</TableCell>
-              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(0.5*(((0.4*college['social_diversity_score_relative'])+(0.6*college['social_diversity_score_absolute']))+((0.4*college['economic_inclusion_score_relative'])+(0.6*college['economic_inclusion_score_absolute']))))}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(outcomes)}</TableCell>
+              <TableCell align="center" sx={{borderBottom: "1px solid black", fontFamily:'Poppins', fontSize:'16px'}}>{toLetterGrade(diversity)}</TableCell>
             </TableRow>
 
           {successactive ? successexpanded : null}

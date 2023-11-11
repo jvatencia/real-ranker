@@ -27,16 +27,25 @@ export interface AppState {
   colleges?: Array<object>;
   token?: string;
   form?: object;
+  userScores: object;
   updateState: (newState: Partial<AppState>) => void;
 }
 
 /**
  * Default application state
  */
-const defaultState: AppState = {
+export const defaultState: AppState = {
   user: {},
   colleges: [],
   token: '',
+  form: {},
+  userScores: {
+    'success':.20,
+    'value':.20,
+    'cost':.20,
+    'diversity':.20,
+    'outcomes':.20
+  },
   updateState: (newState?: Partial<AppState>) => {},
 };
 

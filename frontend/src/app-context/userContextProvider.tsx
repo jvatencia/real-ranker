@@ -2,7 +2,7 @@
 // ----------------------------------
 
 import React, { useState } from "react";
-import { AppState, UserContext } from "./userContext";
+import { AppState, UserContext, defaultState } from "./userContext";
 
 interface Props {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export const UserContextProvider: React.FunctionComponent<Props> = (
   /**
    * Using react hooks, set the default state
    */
-  const [state, setState] = useState({});
+  const [state, setState] = useState(defaultState);
 
   /**
    * Declare the update state method that will handle the state values

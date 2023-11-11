@@ -23,14 +23,16 @@ const Datapage = () => {
     setFailOpen(false);
   };
   const [value, setValue] = useState(0);
-  const {user, colleges, form, updateState } = useContext(UserContext);
+  const {user, colleges, form, userScores, updateState } = useContext(UserContext);
   console.log('Form: ' );
   console.log(form);
+  console.log('User scores: ' );
+  console.log(userScores);
 
   let content: any;
   if (value == 0) {
   if (colleges && colleges.length>0){
-    content = colleges.map( (college)=> { return <CollegeCardExpanded college={college} form={form} />});
+    content = colleges.map( (college)=> { return <CollegeCardExpanded college={college} form={form} userScores={userScores} />});
     }
     else {
     content=undefined;

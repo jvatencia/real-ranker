@@ -24,7 +24,7 @@ function createData(
   return { id, title, college1, college2, filler, status };
 }
 const og_columns = [
-  {field: 'title', className: 'super-app-theme--header' ,width: 150, sortable: false, headerName: ''},
+  {field: '', className: 'super-app-theme--header' ,width: 150, sortable: false, headerName: ''},
   {field: 'college1', width: 160, sortable: false, headerName: 'Michigan State University'},
   {field: 'filler', maxWidth: 15, sortable: false, headerName: ''},
   {field: 'college2', width: 160, sortable: false, headerName: 'Carnegie Mellon University'}
@@ -33,6 +33,7 @@ const og_columns = [
 function makeData(colleges: Array<any>, form: any) {
   let columns: Array<any>=[{field: 'title', className: 'super-app-theme--header' ,width: 150, sortable: false, headerName: ''},]
   let rows: Array<any>=[
+  {id: -1, title: '', filler: '', status: 'header'},
   {id: 0, title: 'Your Score', filler: '', status: 'main'},
   {id: 2, title: 'Acceptance Rate', filler: '', status: 'bland'},
   {id: 3, title: 'Success Score', filler: '', status: 'secondary'},
@@ -52,7 +53,7 @@ function makeData(colleges: Array<any>, form: any) {
     let college = colleges[i];
     console.log(key, college['instnm']);
     columns.push(
-      {field: key, width: 160, sortable: false, headerName: college['instnm']}
+      {field: key, width: 160, sortable: false, headerName: ''}//college['instnm']}
     );
     if (i !== colleges.length-1) {
       columns.push(
@@ -66,13 +67,15 @@ function makeData(colleges: Array<any>, form: any) {
     else {
       cost_prefix = 'npt43_pub';
     }
+    //College INSTNMs
+    rows[0][key] = college['instnm']
     //Your Score
-    rows[0][key] = toLetterGrade((getScore(college, 'success') + getScore(college, 'outcomes') + getScore(college, cost_prefix) + getScore(college, 'economic_inclusion_score')) / 4)
+    rows[0+1][key] = toLetterGrade((getScore(college, 'success') + getScore(college, 'outcomes') + getScore(college, cost_prefix) + getScore(college, 'economic_inclusion_score')) / 4)
     //Acceptance Rate
-    rows[1][key] = toPercent(college['adm_rate']);
+    rows[1+1][key] = toPercent(college['adm_rate']);
     //Success Score
-    rows[2][key] = toLetterGrade(getScore(college, 'success'))
-    rows[3][key] = ''
+    rows[2+1][key] = toLetterGrade(getScore(college, 'success'))
+    rows[3+1][key] = ''
     //Value Grade
     // TODO fix this
     let cost = getScore(college, `npt4${form['familyIncome']}`)
@@ -82,15 +85,15 @@ function makeData(colleges: Array<any>, form: any) {
     console.log('VALUE BELOW');
     console.log(value);
     // let income = getScore(college, 'weighted_income');
-    rows[4][key] = toLetterGrade(value);
-    rows[5][key] = ''
+    rows[4+1][key] = toLetterGrade(value);
+    rows[5+1][key] = ''
     // Outcomes
-    rows[6][key] = toLetterGrade(getScore(college, 'outcomes'));
-    rows[7][key] = ''
+    rows[6+1][key] = toLetterGrade(getScore(college, 'outcomes'));
+    rows[7+1][key] = ''
     // Cost Score
     // let costScore = getScore(college, cost_prefix);
-    rows[8][key] = toLetterGrade(cost);
-    rows[9][key] = ''
+    rows[8+1][key] = toLetterGrade(cost);
+    rows[9+1][key] = ''
     // Diversity Score
     let eci = getScore(college, 'economic_inclusion_score')
     let res = '';
@@ -101,7 +104,7 @@ function makeData(colleges: Array<any>, form: any) {
       let sds = getScore(college, 'social_diversity_score')
       res = toLetterGrade(.5*eci + .5*sds);
     }
-    rows[10][key] = res;
+    rows[10+1][key] = res;
   }
 
   return {
@@ -147,6 +150,10 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     },
 
   },
+  '& .MuiDataGrid-withBorderColor': {
+    border: 2,
+    borderColor: 'black'
+  },
   '.MuiDataGrid-columnHeaderTitle': {
     color: '#222224',
     textAlign: 'center',
@@ -157,11 +164,13 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     lineHeight: 'normal',
     display:'flex',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  '.MuiDataGrid-columnHeader': {
-    backgroundColor: '#FADE88'
-  },
+  // '.MuiDataGrid-columnHeader': {
+  //   // backgroundColor: '#FADE88',
+  //   border: 2,
+  //   borderColor: 'black'
+  // },
   '& .super-app-theme--bland': {
     '&:MuiDataGrid-row': {
       height: '20px',
@@ -187,6 +196,8 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
         ),
       },
     },
+  },
+  '& .super-app-theme--header': {
   },
   '& .super-app-theme--secondary': {
     backgroundColor: secondaryBackgroundColor,
@@ -255,34 +266,9 @@ export default function CoolTable() {
     let rowsNew = og_rows;
 
     console.log(p.row.title);
-    // if (p.row.title === priorColClicked) {
-    //   // setRows(rowsNew);
-    //   setPrior('');
-    //   return;
-    // }
-    // if (p.row.title === 'Success Score') {
-    //   rowsNew = [
-    //     // TODO change college
-    //     createData(0,'Your Score', '92', '86','', 'main'),
-    //     createData(2,'Acceptance Rate', '20%', '71%','', 'bland'),
-    //     createData(3,'Success Score', 'A-', 'B+','', 'secondary'),
-    //     createData(7,'Orientation to grad', '75%', '69%','', 'tertiary'),
-    //     createData(8,'Student Support', 'Med', 'Low','', 'tertiary'),
-    //     createData(9,'Left in 2 years', '8 in 10', '5 in 10','', 'tertiary'),
-    //     createData(10,'Avg time to grad', '4 yrs', '4.5 yrs','', 'tertiary'),
-    //     createData(1011,'', '', '','', 'bland'),
-    //     createData(5,'Value Grade', 'A', 'A', '','secondary'),
-    //     createData(1012,'', '', '','', 'bland'),
-    //     createData(1,'Outcomes', 'HI/HD', 'HI/HD','', 'secondary'),
-    //     createData(1013,'', '', '','', 'bland'),
-    //     createData(4,'Cost Score', '80k', '156k', '','secondary'),
-    //     createData(1014,'', '', '','', 'bland'),
-    //     createData(6,'Diversity Score', 'High', 'High','', 'secondary'),
-    //   ];
-    //   setNotif(true);
-    // }
-    // setRows(rowsNew);
-    // setPrior(p.row.title);
+    // open your table here Agi!
+
+    // - yo momma
   }
   let data: any =  {
     rows: og_rows,
@@ -295,33 +281,54 @@ export default function CoolTable() {
     setNotif(false);
   };
   return (
-    <Box sx={{
-      '& .cold': {
-        backgroundColor: '#b9d5ff91',
-        color: '#1a3e72',
-        // borderTop: 2,
-        // borderBottom: 2
-      },
-      '& .orange': {
-        backgroundColor: '#FADE88',
-        borderLeft: 2,
-        borderRight:2
-        // color: '#1a3e72',
-      },
-      '& .lightblue': {
-
-        backgroundColor: '#A4B3FF',
-        borderTop: 2,
-        borderBottom: 2
-        // color: '#1a3e72',
-      },
-      // '& .fullybordered': {
-        // border:2,
-        // borderBottom: 0,
-        // borderTop: 0
-      // }
-      }}>
+    <Box >
       <StyledDataGrid
+        sx={{
+              width:"fit-content", 
+              "& .MuiTableCell-root": {
+                border: "0px solid"
+              },
+              '& .MuiDataGrid-withBorderColor': {
+                border: 0,
+
+              },
+              '& .cold': {
+                backgroundColor: '#b9d5ff91',
+                color: '#1a3e72',
+                // borderTop: 2,
+                // borderBottom: 2,
+
+              },
+              '& .orange': {
+                backgroundColor: '#FADE88',
+                borderLeft: 2,
+                borderRight:2
+                // color: '#1a3e72',
+              },
+              '& .header': {
+                backgroundColor: '#FADE88',
+                borderLeft: 2,
+                borderRight:2,
+                borderTop: "2px solid",
+                // color: '#1a3e72',
+              },
+              '& .lightblue': {
+
+                backgroundColor: '#A4B3FF',
+                borderTop: 2,
+                borderBottom: 2,
+                // border:2
+                // color: '#1a3e72',
+              },
+              // '& .fullybordered': {
+                // border:2,
+                // borderBottom: 0,
+                // borderTop: 0
+              // }
+              }}
+        slots={{
+          columnHeaders: () => null,
+        }}
         getRowHeight={({ id }: GridRowHeightParams) => {
           if (1000 < id && id < 1069) {
             return 20;
@@ -345,8 +352,11 @@ export default function CoolTable() {
             return 'lightblue';//secondaryBackgroundColor;
           }
           else if (params.field.startsWith('college')) {
+            if (params.row.status == 'header'){
+              return 'header';
+            }
             return 'orange';
-          }
+          } 
           // console.log("LOOKIE HERE");
           // console.log(params.value);
           // console.log(params.field);
