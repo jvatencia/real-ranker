@@ -78,11 +78,11 @@ def create_token():
                 res['success'] = True
             else:
                 res['success'] = False
-    if (email=='test' and password=='test'):
-        access_token = create_access_token(identity=email)
-        res["access_token"] = access_token
-        response = jsonify(res)
-        return response
+    # if (email=='test' and password=='test'):
+    #     access_token = create_access_token(identity=email)
+    #     res["access_token"] = access_token
+    response = jsonify(res)
+    return response
 
 @app.route("/logout", methods=["POST"])
 @cross_origin()
