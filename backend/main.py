@@ -63,13 +63,16 @@ def create_token():
     res = dict()
     # 
     print(email, password)
-    if (False):
+    if (True):
         conn = open_connection()
         with conn.cursor() as cursor:
+            result = cursor.execute('SELECT * FROM users')
+            print(result)
             cursor.execute(
                 'SELECT * FROM users WHERE email = % s AND password = % s',
                     (email, password, ))
             user = cursor.fetchone()
+            print(user)
             if (user):
                 res['email'] = email
                 res['success'] = True
@@ -79,7 +82,7 @@ def create_token():
         access_token = create_access_token(identity=email)
         res["access_token"] = access_token
         response = jsonify(res)
-        return response 
+        return response
 
 @app.route("/logout", methods=["POST"])
 @cross_origin()

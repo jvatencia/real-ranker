@@ -4,11 +4,13 @@ const ProtectedRoute = (props: any) => {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const checkUserToken = () => {
-        // const userToken = localStorage.getItem('user-token');
-        // if (!userToken || userToken === 'undefined') {
-        //     setIsLoggedIn(false);
-        //     return navigate('/auth/login');
-        // }
+        const userToken = localStorage.getItem('user-token');
+        if (!userToken || userToken === 'undefined') {
+            setIsLoggedIn(false);
+            console.log('not logged in!');
+            return navigate('/auth/login');
+        }
+            console.log('logged in:)');
         setIsLoggedIn(true);
     }
     useEffect(() => {
