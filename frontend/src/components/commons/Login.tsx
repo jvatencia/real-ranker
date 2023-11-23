@@ -40,10 +40,16 @@ export default function Login({setToken, redirectTo}: ILogin) {
       email,
       password
     });
-    console.log("got token: ");
-    console.log(token);
-    setToken(token);
-    navigate(redirectTo);
+    if (token.success) {
+      console.log("got token: ");
+      console.log(token);
+      setToken(token);
+      navigate(redirectTo);
+    }
+    else {
+      console.log('failed!'
+      );
+    }
   }
 
   return(
