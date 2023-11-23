@@ -175,9 +175,11 @@ SELECT (id , instnm , st_fips , region , ccbasic , ccsizset, adm_rate, pplus_pct
 def getSchools():
     conn = open_connection()
     with conn.cursor() as cursor:
-        result = cursor.execute('SELECT * FROM schools;')
+        result = cursor.execute('SELECT * FROM schools')
+        print('yoy')
         #cols = [x[0] for x in cursor.description]
         schools = cursor.fetchall()
+        print('yoyo')
         if result > 0:
             got_schools = schools
         else:
@@ -185,13 +187,14 @@ def getSchools():
     conn.close()
     return got_schools
 
+#@cross_origin()
 @app.route("/data")
-@cross_origin()
 def data():
     if request.method == "OPTIONS": # CORS preflight
         return _build_cors_preflight_response()
     schools = getSchools()
     response =  jsonpify(schools)
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 #copied below from: https://www.geeksforgeeks.org/how-to-store-username-and-password-in-flask/
@@ -209,7 +212,7 @@ def data():
 #         email = request.form['email']
 
 #         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-#         cursor.execute('SELECT * FROM user WHERE email = % s',
+#         cursor.execute('SELECT TOP 1000 * FROM user WHERE email = % s',
 #                        (email, ))
 #         account = cursor.fetchone()
 #         if account:

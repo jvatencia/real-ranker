@@ -4,7 +4,3 @@ env_variables:
   CLOUD_SQL_PASSWORD: summat 
   CLOUD_SQL_DATABASE_NAME: schools
   CLOUD_SQL_CONNECTION_NAME: real-ranker-backend:us-central1:real-ranker-db
-handlers:
-  - url: /
-    http_headers:
-      Access-Control-Allow-Origin: https://real-ranker-beta.uc.r.appspot.com
