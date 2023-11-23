@@ -11,11 +11,12 @@ import Box from "@mui/material/Box";
 import { devices } from "../../utils/Breakpoints";
 import { useNavigate } from "react-router-dom";
 async function loginUser(credentials: any) {
+  console.log(JSON.stringify(credentials));
   return fetch(`${BASE_URL}/token`, {
     method: 'POST',
     headers: {
       Accept: "application/json",
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json; charset=utf8'
     },
     body: JSON.stringify(credentials)
   })
@@ -33,11 +34,14 @@ export default function Login({setToken, redirectTo}: ILogin) {
   const navigate = useNavigate();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    console.log(email);
+    console.log(password);
     const token = await loginUser({
       email,
       password
     });
-    console.log("got token: " + token);
+    console.log("got token: ");
+    console.log(token);
     setToken(token);
     navigate(redirectTo);
   }
