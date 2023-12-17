@@ -4,6 +4,7 @@ import { createBrowserRouter, BrowserRouter, Routes, Route, RouterProvider, Form
 import ProtectedRoute from './components/commons/ProtectedRoute';
 import Layout from "./components/layout/Layout";
 import Homepage from "./pages/homepage/Homepage";
+import CreateAccount from "./pages/CreateAccount";
 import Datapage from "./pages/Datapage";
 import Formpage from "./pages/Formpage";
 import "./index.css";
@@ -78,6 +79,11 @@ function App() {
           <Route path='form' element={
               <ProtectedRoute>
                   <Formpage />
+              </ProtectedRoute>
+          } />
+          <Route path='create_account' element={
+              <ProtectedRoute>
+                  <CreateAccount />
               </ProtectedRoute>
           } />
         <Route path='*' element={

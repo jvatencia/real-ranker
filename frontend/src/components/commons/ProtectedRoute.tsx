@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Route, useNavigate } from "react-router-dom";
 const ProtectedRoute = (props: any) => {
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const checkUserToken = () => {
         const userToken = localStorage.getItem('user-token');
         if (!userToken || userToken === 'undefined') {
-            setIsLoggedIn(false);
+            setIsLoggedIn(true);
             console.log('not logged in!');
-            return navigate('/auth/login');
+            // return navigate('/auth/login');
         }
-            console.log('logged in:)');
+        console.log('logged in:)');
         setIsLoggedIn(true);
     }
     useEffect(() => {

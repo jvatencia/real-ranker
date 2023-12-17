@@ -48,4 +48,12 @@ function getScore(college: any, prefix: string) {
  return .4*college[`${prefix}_relative`] + .6*college[`${prefix}_absolute`]
 }
 
-export { toPercent, toLetterGrade, getScore };
+function validateEmail(email: string) {
+  //https://mailtrap.io/blog/validate-emails-in-react/ from this
+  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)){
+      return true;
+  } else {
+      return false;
+  }
+}
+export { toPercent, toLetterGrade, getScore, validateEmail };

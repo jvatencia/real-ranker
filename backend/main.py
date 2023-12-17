@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, make_response
+from werkzeug.security import generate_password_hash, check_password_hash
 import json
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
@@ -61,27 +62,56 @@ def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     res = dict()
-    # 
     print(email, password)
-    if (True):
-        conn = open_connection()
-        with conn.cursor() as cursor:
-            result = cursor.execute('SELECT * FROM users')
-            print(result)
-            cursor.execute(
-                'SELECT * FROM users WHERE email = % s AND password = % s',
-                    (email, password, ))
-            user = cursor.fetchone()
-            print(user)
-            if (user):
-                res['email'] = email
-                res['success'] = True
-            else:
-                res['success'] = False
+    conn = open_connection()
+    with conn.cursor() as cursor:
+        result = cursor.execute('SELECT * FROM users')
+        print(result)
+        cursor.execute(
+            'SELECT * FROM users WHERE email = % s',
+                (email, ))
+        user = cursor.fetchone()
+        print(user)
+        if (user and check_password_hash(user.password, password)):
+            res['email'] = email
+            res['success'] = True
+        else:
+            res['success'] = False
     # if (email=='test' and password=='test'):
-    #     access_token = create_access_token(identity=email)
-    #     res["access_token"] = access_token
+    access_token = create_access_token(identity=email)
+    res["access_token"] = access_token
     response = jsonify(res)
+    return response
+
+@app.route("/signup", methods=["POST"])
+@cross_origin()
+def signup():
+    # code to validate and add user to database goes here
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    # if this returns a user, then the email already exists in database
+    conn = open_connection()
+    with conn.cursor() as cursor:
+        cursor.execute(
+            'SELECT * FROM users WHERE email = % s AND password = % s',
+                (email, password, ))
+        user = cursor.fetchone()
+
+    if user: # if a user is found, we want to redirect back to signup page so user can try again
+        response = jsonify({"success": False, "msg": "email already present"})
+        # unset_jwt_cookies(response)
+        return response 
+
+    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+    password = generate_password_hash(password)
+    conn = open_connection()
+    with conn.cursor() as cursor:
+        cursor.execute(
+            'INSERT INTO users (email, password) VALUES (%s, %s)',
+                (email, password)
+            )
+    response = jsonify({"success": True, "msg": "account created"})
     return response
 
 @app.route("/logout", methods=["POST"])
@@ -94,8 +124,9 @@ def logout():
 
 def open_connection():
     unix_socket = '/cloudsql/{}'.format(db_connection_name)
+    print(os.environ.get('GAE_ENV'))
     try:
-        if os.environ.get('GAE_ENV') == 'standard':
+        if True:#os.environ.get('GAE_ENV') == 'standard':
             conn = pymysql.connect(user=db_user, password=db_password,
                                 unix_socket=unix_socket, db=db_name,
                                 cursorclass=pymysql.cursors.DictCursor
