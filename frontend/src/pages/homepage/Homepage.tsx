@@ -5,8 +5,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Dropdown from "../../components/commons/Dropdown";
 import Table from "../../components/commons/Table";
 import CoolTable from "../../components/commons/CoolTable";
-import { devices } from "../../utils/Breakpoints";
-import { BASE_URL } from "../../utils/Constants";
+import { devices } from "../../utils/breakpoints";
+import { BASE_URL } from "../../utils/constants";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -88,8 +88,7 @@ const Homepage = () => {
   {
     tableContents = <CoolTable />; //<Table data={mySchoolList} />;
   }
-  else 
-  {
+  else {
     tableContents = <Card sx={{ minWidth: 275 }}>
       <CardContent>
         <Typography variant="h5" component="div">

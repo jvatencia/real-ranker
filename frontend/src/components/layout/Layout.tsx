@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import thetestguy from "../../assets/thetestguy.png";
-import { devices } from "../../utils/Breakpoints";
+import { devices } from "../../utils/breakpoints";
 
 const Layout = () => {
   const location = useLocation();
@@ -20,33 +20,33 @@ const Layout = () => {
   return (
     <Host>
       <Header>
-      <Box
-  component="img"
-  sx={{
-    // height: 233,
-    // width: 350,
-    width: 133,
-    height: 39,
-    float: 'left',
-    marginLeft: '10%'
-    // maxHeight: { xs: 233, md: 167 },
-    // maxWidth: { xs: 350, md: 250 },
-  }}
-  src={thetestguy}
-/>
-      <Typography gutterBottom sx={{
-        fontFamily:'Poppins',
-        color: '#222224',
-        fontSize:'20px' ,
-        fontStyle:'normal',
-        fontWeight:700,
-        lineHeight:'normal',
-        float: 'right',
-        marginRight: '10%'
+        <Box
+          component="img"
+          sx={{
+            // height: 233,
+            // width: 350,
+            width: 133,
+            height: 39,
+            float: 'left',
+            marginLeft: '10%'
+            // maxHeight: { xs: 233, md: 167 },
+            // maxWidth: { xs: 350, md: 250 },
+          }}
+          src={thetestguy}
+        />
+        <Typography gutterBottom sx={{
+          fontFamily: 'Poppins',
+          color: '#222224',
+          fontSize: '20px',
+          fontStyle: 'normal',
+          fontWeight: 700,
+          lineHeight: 'normal',
+          float: 'right',
+          marginRight: '10%'
         }}>
           Real Ranker
-      </Typography>
-</Header>
+        </Typography>
+      </Header>
 
       {/* ROUTE CONTENT */}
       <Main>

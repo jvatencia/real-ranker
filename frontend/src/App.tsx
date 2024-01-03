@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react';
+import { useState, useContext } from 'react';
 import { UserContext } from './app-context/userContext';
 import { createBrowserRouter, BrowserRouter, Routes, Route, RouterProvider, Form } from "react-router-dom";
 import ProtectedRoute from './components/commons/ProtectedRoute';
@@ -13,11 +13,26 @@ import useToken from './components/commons/Token';
 import Login from './components/commons/Login';
 import { Home } from '@mui/icons-material';
 import { UserContextProvider } from './app-context/userContextProvider';
+import { createTheme, PaletteColorOptions, ThemeProvider } from '@mui/material';
+
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    light: PaletteColorOptions;
+    dark: PaletteColorOptions;
+  }
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    light?: PaletteColorOptions;
+    dark?: PaletteColorOptions;
+  }
+}
+
 function App() {
 
   // const {token, setToken} = useToken();
-  const {token, updateState} = useContext(UserContext);
-  const setToken = (t: string) => { updateState({token: t}); localStorage.setItem('user-token', t);};
+  const { token, updateState } = useContext(UserContext);
+  const setToken = (t: string) => { updateState({ token: t }); localStorage.setItem('user-token', t); };
   console.log(token);
   // if (token==='aa') {
   //   return (
@@ -52,48 +67,77 @@ function App() {
   //   },
   // ]);
 
+  const theme = createTheme({
+    palette: {
+      mode: 'light',
+      primary: {
+        // main: '#0070ba'
+        main: '#a4b3ff'
+      },
+      secondary: {
+        main: '#707ae6'
+      },
+      success: {
+        main: '#84e1a9'
+      },
+      warning: {
+        // main: '#FADE88'
+        main: '#fce8ab'
+      },
+      error: {
+        main: '#f28291'
+      },
+      light: {
+        main: '#f4f5f8'
+      },
+      dark: {
+        main: '#222224'
+      }
+    },
+  });
+
   return (
-    <>
+    <ThemeProvider theme={theme}>
       {/* <RouterProvider router={router} /> */}
 
       <UserContextProvider>
-    <BrowserRouter  basename={'/'} >
+        <BrowserRouter basename={'/'} >
 
 
-    <Routes>
-      <Route element={<Layout />}>
+          <Routes>
+            <Route element={<Layout />}>
 
-        <Route path='login' element={
-          <Login setToken={setToken} redirectTo={'/form'}/>
-          } />
-        <Route path="" element={
+              <Route path='login' element={
+                <Login setToken={setToken} redirectTo={'/form'} />
+              } />
+              <Route path="" element={
                 <ProtectedRoute>
-                    <Homepage />
+                  <Homepage />
                 </ProtectedRoute>
-            } />
-          <Route path='dataview' element={
-              <ProtectedRoute>
+              } />
+              <Route path='dataview' element={
+                <ProtectedRoute>
                   <Datapage />
-              </ProtectedRoute>
-          } />
-          <Route path='form' element={
-              <ProtectedRoute>
+                </ProtectedRoute>
+              } />
+              <Route path='form' element={
+                <ProtectedRoute>
                   <Formpage />
-              </ProtectedRoute>
-          } />
-          <Route path='create_account' element={
-              <ProtectedRoute>
+                </ProtectedRoute>
+              } />
+              <Route path='create_account' element={
+                <ProtectedRoute>
                   <CreateAccount />
-              </ProtectedRoute>
-          } />
-        <Route path='*' element={
-          <Login setToken={setToken} redirectTo={'/form'}/>
-          } />
-      </Route>
-    </Routes>
-</BrowserRouter>
+                </ProtectedRoute>
+              } />
+              <Route path='*' element={
+                <Login setToken={setToken} redirectTo={'/form'} />
+              } />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </UserContextProvider>
-    </>
+    </ThemeProvider>
   );
 }
 

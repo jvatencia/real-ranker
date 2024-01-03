@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import styled from "styled-components";
-import { devices } from "../../utils/Breakpoints";
+import { devices } from "../../utils/breakpoints";
 
 interface IDropdown {
   options: Array<any> | null;
