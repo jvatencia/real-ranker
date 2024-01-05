@@ -6,7 +6,7 @@ interface Credentials {
     password: string;
 }
 
-export const login = (credentials: Credentials) => {
+export const authenticate = (credentials: Credentials) => {
     return new Promise((resolve, reject) => {
         axios.post(`${BASE_URL}/token`, credentials, { headers: DEFAULT_HEADERS }).then((response) => {
             resolve(response.data);

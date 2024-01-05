@@ -4,7 +4,7 @@ const useStyles = makeStyles(
     (theme: any) => ({
         tabContainer: {
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         tabButton: {
             padding: '8px 16px',
@@ -16,6 +16,7 @@ const useStyles = makeStyles(
             fontWeight: 'bold',
             transition: '0.3s linear',
             userSelect: 'none',
+            boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
             "&:not(:first-child)": {
                 borderRightWidth: 0,
             },

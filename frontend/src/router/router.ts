@@ -4,29 +4,34 @@ import LoginPage from "../pages/auth/LoginPage";
 import HomePage from "../pages/home/HomePage";
 import PageNotFound from "../pages/errors/PageNotFound";
 import DashboardPage from "../pages/dashboard/DashboardPage";
+import GettingStartedPage from "../pages/getting-started/GettingStartedPage";
 
 const routes: RouteObject[] = [
     {
         path: '/',
-        element: <Layout />,
+        Component: Layout,
         children: [
             {
                 path: 'login',
-                element: <LoginPage />
+                Component: LoginPage,
             },
             {
                 path: 'home',
-                element: <HomePage />
+                Component: HomePage,
+            },
+            {
+                path: 'getting-started',
+                Component: GettingStartedPage,
             },
             {
                 path: 'dashboard',
-                element: <DashboardPage />
-            }
+                Component: DashboardPage,
+            },
         ]
     },
     {
         path: '*',
-        element: <PageNotFound />,
+        Component: PageNotFound,
 
     }
 ];

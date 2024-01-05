@@ -21,6 +21,9 @@ const useStyles = makeStyles(
         },
         boxStyling: {
             padding: '10px 16px',
+            [theme.breakpoints.down('md')]: {
+                padding: '5px 8px',
+            }
         }
     })
 );

@@ -1,9 +1,9 @@
-import { Button, FormControl, FormGroup, Input, InputLabel, Paper, TextField } from "@mui/material";
+import { Button, FormGroup, Paper, TextField } from "@mui/material";
 import ResponsiveBox from "../../components/commons/ResponsiveBox";
 import { makeStyles } from "@mui/styles";
-import { styled } from "@mui/system";
-import { login } from "../../api/auth.api";
 import { useState } from "react";
+import useAuthStore from "../../store/auth/auth.store";
+import CustomFormControl from "../../components/styled/CustomFormControl";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -18,19 +18,15 @@ const useStyles = makeStyles(
     })
 )
 
-const CustomFormControl = styled((FormControl))(({ theme }) => ({
-    marginBottom: '10px'
-}))
 export default function LoginPage() {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const login = useAuthStore((state) => state.login);
 
     const loginUser = async (e: any) => {
         e.preventDefault();
-        const response = await login({ email, password });
-
-        console.log(response);
+        login({ email, password });
     }
 
     const onInputChange = (event: any, input: 'email' | 'password') => {

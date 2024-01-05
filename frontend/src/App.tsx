@@ -4,17 +4,19 @@ import { createTheme, PaletteColorOptions, StyledEngineProvider, Theme, ThemePro
 import AppRouter from './router/router';
 import { RouterProvider } from 'react-router-dom';
 import router from './router/router';
+import OverlayLoader from './components/utilities/OverlayLoader';
+import { SnackbarProvider } from 'notistack';
 
 
 declare module '@mui/material/styles' {
   interface Palette {
-    light: PaletteColorOptions;
-    dark: PaletteColorOptions;
+    light: Palette['primary'];
+    dark: Palette['primary'];
   }
   // allow configuration using `createTheme`
   interface PaletteOptions {
-    light?: PaletteColorOptions;
-    dark?: PaletteColorOptions;
+    light?: PaletteOptions['primary'];
+    dark?: PaletteOptions['primary'];
   }
 }
 
@@ -25,9 +27,15 @@ declare module '@mui/styles' {
   }
 }
 
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    custom: true;
+  }
+}
+
 function App() {
 
-  const theme = createTheme({
+  let theme = createTheme({
     palette: {
       mode: 'light',
       primary: {
@@ -75,10 +83,36 @@ function App() {
     },
   });
 
+  theme = createTheme(theme, {
+    palette: {
+      light: theme.palette.augmentColor({
+        color: {
+          main: '#f4f5f8',
+          dark: '#d7d8da',
+          light: '#f5f6f9',
+          contrastText: '#000000'
+        },
+        name: 'light',
+      }),
+      dark: theme.palette.augmentColor({
+        color: {
+          main: '#222224',
+          dark: '#1e1e20',
+          light: '#38383a',
+          contrastText: '#ffffff'
+        },
+        name: 'dark',
+      }),
+    },
+  });
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <SnackbarProvider maxSnack={5}>
+          <OverlayLoader />
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </ThemeProvider>
     </StyledEngineProvider >
   );
