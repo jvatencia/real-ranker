@@ -13,6 +13,7 @@ const useStyles = makeStyles(
             marginTop: '10px'
         },
         filterTabContainer: {
+            marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
             [theme.breakpoints.down('md')]: {
@@ -42,7 +43,7 @@ export default function ResultTabContent() {
             {
                 activeTab === 'list' ?
                     selectedColleges.map((college, index: number) => (
-                        <CollegeCard college={college} key={`collegeCardComp${index}`} />
+                        <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={() => console.log('openDialog here')} />
                     ))
                     :
                     <ResultCard colleges={selectedColleges} />

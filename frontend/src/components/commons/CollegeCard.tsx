@@ -88,7 +88,7 @@ const UserGrade = styled('div')(({ theme }) => ({
 const ScoreLabel = styled('div')(({ theme }) => ({
     fontSize: 12,
     fontWeight: 'normal',
-    color: '#fff',
+    color: theme.palette.dark.main,
     background: theme.palette.primary.main,
     padding: '5px',
     transform: 'translateY(-13px)',

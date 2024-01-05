@@ -6,6 +6,7 @@ import { Navigate, useLocation, useNavigate, useSearchParams } from "react-route
 import useCollegeStore from "../../store/college/college.store";
 import ResultTabContent from "./components/ResultTabContent";
 import { useTheme } from "@mui/system";
+import { makeStyles } from "@mui/styles";
 
 const getTabContent = ({ activeTab }: any) => {
     switch (activeTab) {
@@ -14,8 +15,20 @@ const getTabContent = ({ activeTab }: any) => {
         case 'graph': return null;
     }
 }
+
+const useStyles = makeStyles(
+    (theme) => ({
+        tabContainer: {
+            display: 'flex',
+            alignItems: 'center',
+            [theme.breakpoints.down('md')]: {
+                justifyContent: 'center'
+            }
+        }
+    })
+)
 export default function DashboardPage() {
-    const location = useLocation();
+    const classes = useStyles();
     const theme = useTheme();
     const buttons = [
         { key: 'result', title: 'Result', isActive: true },
@@ -55,11 +68,13 @@ export default function DashboardPage() {
     return (
         <ResponsiveBox hasPadding style={{ marginTop: '20px' }}>
             <PageBody>
-                <ButtonTabs
-                    setActiveTab={updateTab}
-                    activeTab={activeTab}
-                    buttons={buttons}
-                />
+                <div className={classes.tabContainer}>
+                    <ButtonTabs
+                        setActiveTab={updateTab}
+                        activeTab={activeTab}
+                        buttons={buttons}
+                    />
+                </div>
                 {getTabContent({ activeTab })}
             </PageBody>
         </ResponsiveBox>
