@@ -8,6 +8,8 @@ import StepperFormOtherInfo from "./components/StepperFormOtherInfo";
 import StepperDisclaimer from "./components/StepperDisclaimer";
 import SelectUniversity from "./components/SelectUniversity";
 import { makeStyles } from "@mui/styles";
+import useCollegeStore from "../../store/college/college.store";
+import { useShallow } from "zustand/react/shallow";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -55,6 +57,9 @@ export default function GettingStartedPage() {
 
     const [activeStep, setActiveStep] = useState(0);
     const isTablet = useMediaQuery(devices.tablet);
+    const collegeForm = useCollegeStore(useShallow((state) => state.form));
+
+
 
     return (
         <ResponsiveBox hasPadding>
@@ -69,7 +74,7 @@ export default function GettingStartedPage() {
                     ))}
                 </Stepper>
                 <div>
-                    {getStepContent({ activeStep, setActiveStep, outerClasses: classes })}
+                    {getStepContent({ activeStep, setActiveStep, outerClasses: classes, collegeForm })}
                 </div>
             </PageBody>
         </ResponsiveBox >

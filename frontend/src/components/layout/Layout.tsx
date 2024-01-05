@@ -6,7 +6,7 @@ const useStyles = makeStyles(
   (theme: any) => ({
     app: {
       backgroundColor: theme.palette.light.light,
-      height: '100vh',
+      minHeight: '100vh',
       width: '100%',
       transition: '0.3s ease-in-out',
       [theme.breakpoints.down('md')]: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles(
     }
   })
 )
-const Layout = () => {
+const Layout = ({ children }: any) => {
   const classes = useStyles();
 
   return (
@@ -23,7 +23,7 @@ const Layout = () => {
       <AppHeader />
 
       <main>
-        <Outlet />
+        {children}
       </main>
     </div>
   );

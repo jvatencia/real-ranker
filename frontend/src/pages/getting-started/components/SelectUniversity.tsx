@@ -5,6 +5,7 @@ import useCollegeStore from "../../../store/college/college.store";
 import { useShallow } from "zustand/react/shallow";
 import { Typeahead } from "react-bootstrap-typeahead";
 import CustomFormControl from "../../../components/styled/CustomFormControl";
+import { useNavigate } from "react-router-dom";
 
 
 const useStyles = makeStyles(
@@ -31,18 +32,20 @@ const SelectUniversity = ({ activeStep, setActiveStep, outerClasses }: SelectUni
     const fetchUniversities = useCollegeStore((state) => state.fetchUniversities);
     const setSelectedCollege = useCollegeStore((state) => state.setSelectedCollege);
     const [selectedColleges, setSelectedColleges] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
         console.log(colleges)
         if (colleges.length === 0) {
-            // fetchUniversities();
+            fetchUniversities();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [colleges]);
 
     const handleNext = () => {
-        setActiveStep(activeStep + 1);
-        setSelectedCollege(selectedColleges);
+        if (selectedColleges.length > 0) {
+            setSelectedCollege(selectedColleges);
+            navigate('/dashboard');
+        }
     }
 
     const handleBack = () => {

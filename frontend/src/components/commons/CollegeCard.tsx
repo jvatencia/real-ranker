@@ -3,6 +3,7 @@ import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined } from "@mui/icons-material";
 import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom } from "@mui/material";
 import { useState } from "react";
+import useCollegeStore from "../../store/college/college.store";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
@@ -13,6 +14,9 @@ const CollegeCardContainer = styled('div')(({ theme }) => ({
     color: theme.palette.dark.main,
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column-reverse'
+    },
+    [theme.breakpoints.up('md')]: {
+        maxWidth: '700px'
     }
 }));
 
@@ -131,8 +135,6 @@ interface ToolTipContentProps {
 
 interface CollegeCardProps {
     college: any;
-    form?: any;
-    userScores?: any;
     openDialog?: any;
 }
 
@@ -203,7 +205,9 @@ const GradeCustomToolTip = (props: ToolTipContentProps) => {
     );
 }
 
-function CollegeCard({ college, form, userScores, openDialog }: Readonly<CollegeCardProps>) {
+function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
+    const form = useCollegeStore((state) => state.form);
+    const userScores = useCollegeStore((state) => state.userScore);
 
     const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
 

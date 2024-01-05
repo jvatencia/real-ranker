@@ -37,6 +37,8 @@ const useAuthStore = create<AuthState & Actions>()(
                 const response = await authenticate(credentials);
                 console.log(response);
                 setLoader(false);
+
+                set((state) => ({ token: '123124124124', auth: { email: 'someone@thetestguy.com', name: 'The Test Guy' } }));
             },
             logout: () => { },
             reset: () => {

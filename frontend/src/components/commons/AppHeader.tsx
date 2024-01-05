@@ -1,6 +1,12 @@
 import { makeStyles } from "@mui/styles";
 import thetestguy from "../../assets/thetestguy.png";
 import ResponsiveBox from "./ResponsiveBox";
+import useAuthStore from "../../store/auth/auth.store";
+import { IconButton, Popover } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import { useState } from "react";
 
 const useStyles = makeStyles((theme: any) => ({
     header: {
@@ -12,6 +18,7 @@ const useStyles = makeStyles((theme: any) => ({
         justifyContent: 'center',
         transition: '0.3s ease-in-out',
         backgroundColor: theme.palette.light.main,
+        fontFamily: 'Poppins',
         [theme.breakpoints.down('md')]: {
             height: '56px',
             boxShadow: 'none'
@@ -22,6 +29,9 @@ const useStyles = makeStyles((theme: any) => ({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
+        [theme.breakpoints.down('md')]: {
+            padding: '0 8px'
+        }
     },
     realRankerLabel: {
         fontFamily: 'Poppins',
@@ -30,22 +40,83 @@ const useStyles = makeStyles((theme: any) => ({
         fontStyle: 'normal',
         fontWeight: 700,
         lineHeight: 'normal',
+    },
+    popOverContent: {
+        padding: '10px 0px',
+        width: ''
+    },
+    popOverItem: {
+        display: 'flex',
+        alignItemsCenter: 'center',
+        justifyContent: 'space-between',
+        cursor: 'pointer',
+        padding: '5px 10px',
+        "&:hover": {
+            backgroundColor: 'rgba(0,0,0,0.1)'
+        }
+    },
+    popOverItemTitle: {
+        marginLeft: '30px'
     }
 }));
-
 function AppHeader() {
     const classes = useStyles();
+    const isAuthenticated = useAuthStore((state => !!state.token));
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'header-popover' : undefined;
 
     return (
         <header className={classes.header}>
-            <ResponsiveBox hasPadding>
+            <ResponsiveBox style={{ padding: '0 16px' }} >
                 <div className={classes.headerContent}>
                     <div>
                         <img src={thetestguy} alt="" />
                     </div>
-                    <div className={classes.realRankerLabel}>
-                        Real Ranker
-                    </div>
+                    {
+                        isAuthenticated ?
+                            <div>
+                                <IconButton aria-label="profile" size="large"
+                                    onClick={handleClick}
+                                    aria-describedby={id}>
+                                    <AccountCircleIcon color="primary" fontSize="inherit" />
+                                </IconButton>
+
+                                <Popover
+                                    id={id}
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    onClose={handleClose}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                >
+                                    <div className={classes.popOverContent}>
+                                        <div className={classes.popOverItem}>
+                                            <PersonIcon />
+                                            <span className={classes.popOverItemTitle}>Profile</span>
+                                        </div>
+                                        <div className={classes.popOverItem}>
+                                            <LogoutIcon />
+                                            <span className={classes.popOverItemTitle}>Log Out</span>
+                                        </div>
+                                    </div>
+                                </Popover>
+                            </div>
+                            :
+                            <div className={classes.realRankerLabel}>
+                                Real Ranker
+                            </div>
+                    }
                 </div>
             </ResponsiveBox>
         </header>

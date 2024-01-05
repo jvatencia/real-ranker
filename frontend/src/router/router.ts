@@ -5,16 +5,13 @@ import HomePage from "../pages/home/HomePage";
 import PageNotFound from "../pages/errors/PageNotFound";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import GettingStartedPage from "../pages/getting-started/GettingStartedPage";
+import PrivateRoutes from "../components/utilities/PrivateRoutes";
 
 const routes: RouteObject[] = [
     {
         path: '/',
-        Component: Layout,
+        Component: PrivateRoutes,
         children: [
-            {
-                path: 'login',
-                Component: LoginPage,
-            },
             {
                 path: 'home',
                 Component: HomePage,
@@ -26,8 +23,12 @@ const routes: RouteObject[] = [
             {
                 path: 'dashboard',
                 Component: DashboardPage,
-            },
+            }
         ]
+    },
+    {
+        path: '/login',
+        Component: LoginPage,
     },
     {
         path: '*',
