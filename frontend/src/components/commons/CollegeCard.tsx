@@ -9,14 +9,16 @@ const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
     padding: '20px',
     background: '#fff',
-    margin: '10px 0',
+    margin: '10px auto',
+    borderRadius: '5px',
     display: 'flex',
     color: theme.palette.dark.main,
     [theme.breakpoints.down('md')]: {
-        flexDirection: 'column-reverse'
+        flexDirection: 'column-reverse',
+        margin: '10px 0'
     },
     [theme.breakpoints.up('md')]: {
-        maxWidth: '700px'
+        maxWidth: '700px',
     }
 }));
 

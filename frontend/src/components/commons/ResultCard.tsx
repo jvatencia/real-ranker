@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
+import useCollegeStore from "../../store/college/college.store";
 
 // styled('div')(({ theme }) => ({}))
 const ResultCardContainer = styled('div')(({ theme }) => ({
@@ -161,13 +162,15 @@ const EmptySecondaryRow = ({ collegesDisplay, rowNumber }: any) => {
     );
 }
 
-function ResultCard({ colleges, form, userScores }: any) {
+function ResultCard({ colleges }: any) {
     const theme = useTheme();
     const [index, setIndex] = useState(0);
     const [mounted, setMounted] = useState(false);
     const [data, setData] = useState([]);
     const [collegesDisplay, setCollegesDisplay] = useState([]);
     const [toDisplay, setToDisplay] = useState(2);
+    const form = useCollegeStore((state) => state.form);
+    const userScores = useCollegeStore((state) => state.userScore);
     const matches = useMediaQuery('(max-width:700px)');
 
     useEffect(() => {

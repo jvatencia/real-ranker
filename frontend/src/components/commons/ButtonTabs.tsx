@@ -1,4 +1,6 @@
+import { useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { devices } from "../../utils/breakpoints";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -43,6 +45,7 @@ const useStyles = makeStyles(
 interface ButtonTab {
     key: string,
     title: string,
+    icon?: React.ReactNode
 }
 
 interface ButtonTabsProps {
@@ -53,7 +56,14 @@ interface ButtonTabsProps {
 
 export default function ButtonTabs({ buttons, activeTab, setActiveTab }: Readonly<ButtonTabsProps>) {
     const classes = useStyles();
+    const matches = useMediaQuery(devices.tablet)
+    const handleTitle = (button: ButtonTab) => {
+        if (button.icon !== undefined) {
+            return !matches && button.title;
+        }
 
+        return button.title;
+    }
     return (
         <div className={classes.tabContainer}>
             {
@@ -62,7 +72,7 @@ export default function ButtonTabs({ buttons, activeTab, setActiveTab }: Readonl
                         onClick={(e) => setActiveTab(btn.key)}
                         key={`btnTab${btn.key}${index}`}
                         className={`${classes.tabButton} ${activeTab === btn.key ? classes.tabButtonActive : ''}`}>
-                        {btn.title}
+                        {btn.icon || null} {handleTitle(btn)}
                     </div>
                 ))
             }
