@@ -170,7 +170,7 @@ function ResultCard({ colleges }: any) {
     const [collegesDisplay, setCollegesDisplay] = useState([]);
     const [toDisplay, setToDisplay] = useState(2);
     const form = useCollegeStore((state) => state.form);
-    const userScores = useCollegeStore((state) => state.userScore);
+    // const userScores = useCollegeStore((state) => state.userScore);
     const matches = useMediaQuery('(max-width:700px)');
 
     useEffect(() => {

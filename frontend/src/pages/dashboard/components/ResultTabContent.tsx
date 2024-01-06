@@ -6,6 +6,7 @@ import SegmentIcon from '@mui/icons-material/Segment';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import { makeStyles } from "@mui/styles";
 import ResultCard from "../../../components/commons/ResultCard";
+import InfoModal from "../../../components/commons/InfoModal";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -30,6 +31,16 @@ export default function ResultTabContent() {
         { key: 'summary', title: 'Summary', icon: <SegmentIcon /> },
     ];
     const classes = useStyles();
+    const [showDialog, setShowDialog] = useState(false);
+    const [dialogProps, setDialogProps] = useState({
+        title: '',
+        description: ''
+    });
+
+    const openDialog = (title: string, description: string) => {
+        setDialogProps({ title, description })
+        setShowDialog(true);
+    }
 
     return (
         <div className={classes.resultTabContainer}>
@@ -43,11 +54,18 @@ export default function ResultTabContent() {
             {
                 activeTab === 'list' ?
                     selectedColleges.map((college, index: number) => (
-                        <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={() => console.log('openDialog here')} />
+                        <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
                     ))
                     :
                     <ResultCard colleges={selectedColleges} />
             }
+
+            <InfoModal
+                showDialog={showDialog}
+                setShowDialog={setShowDialog}
+                title={dialogProps.title}
+                description={dialogProps.description}
+            />
         </div>
     )
 }

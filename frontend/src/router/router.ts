@@ -1,5 +1,4 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
-import Layout from "../components/layout/Layout";
 import LoginPage from "../pages/auth/LoginPage";
 import HomePage from "../pages/home/HomePage";
 import PageNotFound from "../pages/errors/PageNotFound";

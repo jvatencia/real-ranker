@@ -1,4 +1,3 @@
-import { Outlet } from "react-router-dom";
 import AppHeader from "../commons/AppHeader";
 import { makeStyles } from "@mui/styles";
 

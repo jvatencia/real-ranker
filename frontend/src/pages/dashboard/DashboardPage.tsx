@@ -2,10 +2,9 @@ import ResponsiveBox from "../../components/commons/ResponsiveBox";
 import PageBody from "../../components/commons/PageBody";
 import ButtonTabs from "../../components/commons/ButtonTabs";
 import { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useCollegeStore from "../../store/college/college.store";
 import ResultTabContent from "./components/ResultTabContent";
-import { useTheme } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 
 const getTabContent = ({ activeTab }: any) => {
@@ -29,7 +28,6 @@ const useStyles = makeStyles(
 )
 export default function DashboardPage() {
     const classes = useStyles();
-    const theme = useTheme();
     const buttons = [
         { key: 'result', title: 'Result', isActive: true },
         { key: 'college_profile', title: 'College Profile', isActive: false },

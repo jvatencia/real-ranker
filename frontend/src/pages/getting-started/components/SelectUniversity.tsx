@@ -1,4 +1,4 @@
-import { Button, CircularProgress, ClassNameMap, InputLabel } from "@mui/material";
+import { Button, CircularProgress, ClassNameMap } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";

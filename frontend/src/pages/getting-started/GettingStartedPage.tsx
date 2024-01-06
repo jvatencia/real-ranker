@@ -1,4 +1,4 @@
-import { Step, StepContent, StepLabel, Stepper, useMediaQuery } from "@mui/material";
+import { Step, StepLabel, Stepper, useMediaQuery } from "@mui/material";
 import PageBody from "../../components/commons/PageBody";
 import ResponsiveBox from "../../components/commons/ResponsiveBox";
 import { useState } from "react";
@@ -56,7 +56,6 @@ export default function GettingStartedPage() {
     ];
 
     const [activeStep, setActiveStep] = useState(0);
-    const isTablet = useMediaQuery(devices.tablet);
     const collegeForm = useCollegeStore(useShallow((state) => state.form));
 
 
