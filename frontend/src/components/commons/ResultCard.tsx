@@ -6,6 +6,7 @@ import { useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
+import { RemoveOutlined } from "@mui/icons-material";
 
 // styled('div')(({ theme }) => ({}))
 const ResultCardContainer = styled('div')(({ theme }) => ({
@@ -62,7 +63,7 @@ const ResultCardCollegeToggle = styled('div')(({ theme }) => ({
 const ResultCardSecondaryRow = styled('div')(({ theme }) => ({
     width: '100%',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
 }));
 
 const ResultCardPrimaryRow = styled('div')(({ theme }) => ({
@@ -75,7 +76,10 @@ const ResultCardPrimaryRow = styled('div')(({ theme }) => ({
     borderBottomWidth: '1px',
     borderTopWidth: 0,
     borderLeftWidth: 0,
-    borderStyle: 'solid'
+    borderStyle: 'solid',
+    transition: '0.3s linear',
+    height: '60px',
+    overflow: 'hidden'
 }));
 
 const ResultCardSecondaryItemContainer = styled('div')(({ theme }) => ({
@@ -162,6 +166,99 @@ const EmptySecondaryRow = ({ collegesDisplay, rowNumber }: any) => {
     );
 }
 
+const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
+    const [toggle, setToggle] = useState(false);
+
+    const handleToggle = (e: any) => {
+        setToggle(!toggle)
+    }
+    return (
+        <>
+            <ResultCardPrimaryRow style={{
+                justifyContent: 'space-between',
+                flexDirection: 'column',
+                height: !toggle ? 60 : 60 * (category.scores.length + 1)
+            }}>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%'
+                }}>
+                    <ResultCardPrimaryItemLabel
+                        style={{ color: theme.palette.dark.main }}
+                    >
+                        <div onClick={handleToggle}>
+                            {!toggle ?
+                                <AddIcon
+
+                                    fontSize="small" style={{
+                                        marginRight: '5px',
+                                        color: theme.palette.secondary.main,
+                                        cursor: 'pointer'
+                                    }} /> :
+                                <RemoveOutlined
+
+                                    fontSize="small" style={{
+                                        marginRight: '5px',
+                                        color: theme.palette.secondary.main,
+                                        cursor: 'pointer'
+                                    }} />
+                            }
+                        </div>
+                        {category.label}
+                    </ResultCardPrimaryItemLabel>
+                    <ResultCardPrimaryItemContainer>
+                        {
+                            colleges.map((college: any) => (
+                                <ResultCardPrimaryItem
+                                    style={{ color: theme.palette.dark.main }}
+                                    key={`collegeSuccessScore${college['name'].replace(' ', '')}`}>
+                                    <div>{toLetterGrade(college.success.score)}</div>
+                                </ResultCardPrimaryItem>
+                            ))
+                        }
+                    </ResultCardPrimaryItemContainer>
+                </div>
+                {
+                    scoreLabels.map((item: any, scoreIndex: number) => (
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%'
+                        }} key={`college${category.label.replace(/ /g, '')}Array${scoreIndex}`}>
+                            <ResultCardPrimaryItemLabel
+                                style={{ color: theme.palette.dark.main }}
+                            >
+                                {item.key}
+                            </ResultCardPrimaryItemLabel>
+                            <ResultCardPrimaryItemContainer>
+                                {
+                                    colleges.map((college: any, index: number) => (
+                                        <ResultCardPrimaryItem
+                                            style={{ color: theme.palette.dark.main }}
+                                            key={`collegeSuccessScore${index}`}>
+                                            {
+                                                college[category.key]?.moreInfo[scoreIndex]?.value != null &&
+                                                <div>{toLetterGrade(college[category.key].moreInfo[scoreIndex].value)}</div>
+                                            }
+                                        </ResultCardPrimaryItem>
+                                    ))
+                                }
+
+                            </ResultCardPrimaryItemContainer>
+                        </div>
+
+                    ))
+                }
+            </ResultCardPrimaryRow>
+            <EmptySecondaryRow collegesDisplay={colleges} rowNumber={category.label.replace(/ /g, '')} />
+        </>
+
+    )
+}
+
 function ResultCard({ colleges }: any) {
     const theme = useTheme();
     const [index, setIndex] = useState(0);
@@ -172,7 +269,62 @@ function ResultCard({ colleges }: any) {
     const form = useCollegeStore((state) => state.form);
     // const userScores = useCollegeStore((state) => state.userScore);
     const matches = useMediaQuery('(max-width:700px)');
-
+    const categories = [
+        {
+            key: 'success',
+            label: 'Success Score',
+            scores: [
+                { key: 'Orientation to Graduation' },
+                { key: 'Average Time to Graduation' },
+                { key: 'Student Support Score' },
+                { key: '% Left in 2 Years' },
+                { key: 'Withdrawal Rate' }
+            ]
+        },
+        {
+            key: 'value',
+            label: 'Value Grade',
+            scores: [
+                { key: 'Worth More to Pay More' },
+                { key: 'Filler' },
+                { key: 'Filler' },
+                { key: 'Some Professions' },
+            ]
+        },
+        {
+            key: 'outcomes',
+            label: 'Outcomes',
+            scores: [
+                { key: 'Debt/Income Ratio' },
+                { key: 'Inventor Score' },
+                { key: 'Income 90% at 10 Years' },
+                { key: 'Income 75% at 10 Years' },
+                { key: 'Income 25% at 10 Years' },
+                { key: 'Income 10% at 10 Years' },
+            ]
+        },
+        {
+            key: 'cost',
+            label: 'Cost Score',
+            scores: [
+                { key: 'Net Price for Your Income Range' },
+                { key: 'Net Cost of Your Degree' },
+                { key: 'Filler' },
+            ]
+        },
+        {
+            key: 'diversity',
+            label: 'Diversity Score',
+            scores: [
+                { key: 'Parents in Top Quintile of Household Income (%)' },
+                { key: 'Parents in Bottom Quintile of Household Income (%)' },
+                { key: 'Parents in Top 10% of Household Income' },
+                { key: 'Parents in Top 1% of Household Income' },
+                { key: 'Parents in Top 0.1% of Household Income' },
+                { key: 'Economic Inclusion Score' },
+            ]
+        }
+    ];
     useEffect(() => {
         setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
         initData(colleges);
@@ -224,26 +376,70 @@ function ResultCard({ colleges }: any) {
     const buttonsDisplay = index > 0;
 
     const initData = (colleges: Array<any>) => {
-        let items: any = [];
-        colleges.forEach((college) => {
+        const items: any = colleges.map((college) => {
             let npt43Key = college['npt43_priv'] > 0 ? 'npt43_priv' : 'npt43_pub';
             npt43Key = college.hasOwnProperty(`${npt43Key}_absolute`) && college.hasOwnProperty(`${npt43Key}_relative`) ? npt43Key : 'npt43';
 
-            const collegeData: any = {
+            return {
                 name: college['instnm'],
-                cost: getScore(college, `npt4${form['familyIncome']}`),
-                value: getScore(college, `value_${form['familyIncome']}`),
-                success: (0.4 * college['success_relative']) + (0.6 * college['success_absolute']),
-                outcomes: (0.4 * college['outcomes_relative']) + (0.6 * college['outcomes_absolute']),
-                diversity: 0.5 * (((0.4 * college['social_diversity_score_relative'])
-                    + (0.6 * college['social_diversity_score_absolute']))
-                    + ((0.4 * college['economic_inclusion_score_relative'])
-                        + (0.6 * college['economic_inclusion_score_absolute']))),
+                displayLabels: ['success', 'value', 'cost', 'outcomes', 'diversity'],
+                cost: {
+                    score: getScore(college, `npt4${form['familyIncome']}`),
+                    moreInfo: [
+                        { key: 'Net Price for Your Income Range', value: (college['npt43_pub'] + college['npt43_priv']) },
+                        { key: 'Net Cost of Your Degree', value: ((college['npt43_pub'] + college['npt43_priv']) * ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))))).toFixed(2) },
+                        { key: 'Filler', value: 'Filler' },
+                    ]
+                },
+                value: {
+                    score: getScore(college, `value_${form['familyIncome']}`),
+                    moreInfo: [
+                        { key: 'Worth More to Pay More', value: null },
+                        { key: 'Filler', value: null },
+                        { key: 'Filler', value: null },
+                        { key: 'Some Professions', value: null },
+                    ]
+                },
+                success: {
+                    score: (0.4 * college['success_relative']) + (0.6 * college['success_absolute']),
+                    moreInfo: [
+                        { key: 'Orientation to Graduation', value: toPercent(college['comp_orig_yr4_rt']) },
+                        { key: 'Average Time to Graduation', value: ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4'])))).toFixed(2) },
+                        { key: 'Student Support Score', value: toPercent(((0.4 * college['support_relative']) + (0.6 * college['support_absolute']))) },
+                        { key: '% Left in 2 Years', value: toPercent(college['enrl_orig_yr2_rt']) },
+                        { key: 'Withdrawal Rate', value: toPercent(college['wdraw_orig_yr3_rt']) },
+                    ]
+                },
+                outcomes: {
+                    score: (0.4 * college['outcomes_relative']) + (0.6 * college['outcomes_absolute']),
+                    moreInfo: [
+                        { key: 'Debt/Income Ratio', value: (((0.4 * college['weighted_debt_relative']) + (0.6 * college['weighted_debt_absolute'])) / ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute']))).toFixed(2) },
+                        { key: 'Inventor Score', value: college['inventor'] },
+                        { key: 'Income 90% at 10 Years', value: college['pct90_earn_wne_p10'] },
+                        { key: 'Income 75% at 10 Years', value: college['pct75_earn_wne_p10'] },
+                        { key: 'Income 25% at 10 Years', value: college['pct25_earn_wne_p10'] },
+                        { key: 'Income 10% at 10 Years', value: college['pct10_earn_wne_p10'] },
+                    ]
+                },
+                diversity: {
+                    score: 0.5 * (((0.4 * college['social_diversity_score_relative'])
+                        + (0.6 * college['social_diversity_score_absolute']))
+                        + ((0.4 * college['economic_inclusion_score_relative'])
+                            + (0.6 * college['economic_inclusion_score_absolute']))),
+                    moreInfo: [
+                        { key: 'Parents in Top Quintile of Household Income (%)', value: toPercent(college['par_q5']) },
+                        { key: 'Parents in Bottom Quintile of Household Income (%)', value: toPercent(college['par_q1']) },
+                        { key: 'Parents in Top 10% of Household Income', value: toPercent(college['par_top10pc']) },
+                        { key: 'Parents in Top 1% of Household Income', value: toPercent(college['par_top1pc']) },
+                        { key: 'Parents in Top 0.1% of Household Income', value: toPercent(college['par_toppt1pc']) },
+                        { key: 'Economic Inclusion Score', value: toPercent((0.4 * college['economic_inclusion_score_relative']) + (0.6 * college['economic_inclusion_score_absolute'])) },
+                    ]
+                },
                 admissionRate: college['adm_rate'],
-                userScore: (getScore(college, 'success') + getScore(college, 'outcomes') + getScore(college, npt43Key) + getScore(college, 'economic_inclusion_score')) / 4
+                userScore: (getScore(college, 'success') + getScore(college, 'outcomes') + getScore(college, npt43Key) + getScore(college, 'economic_inclusion_score')) / 4,
+
             };
 
-            items.push(collegeData);
         })
 
         setData(items);
@@ -316,123 +512,17 @@ function ResultCard({ colleges }: any) {
                                     }
                                 </ResultCardSecondaryItemContainer>
                             </ResultCardSecondaryRow>
-
-                            <ResultCardPrimaryRow style={{ justifyContent: 'space-between' }}>
-                                <ResultCardPrimaryItemLabel
-                                    style={{ color: theme.palette.dark.main }}
-                                >
-                                    <AddIcon fontSize="small" style={{
-                                        marginRight: '5px',
-                                        color: theme.palette.secondary.main
-                                    }} />Success Score
-                                </ResultCardPrimaryItemLabel>
-                                <ResultCardPrimaryItemContainer>
-                                    {
-                                        collegesDisplay.map((college: any) => (
-                                            <ResultCardPrimaryItem
-                                                style={{ color: theme.palette.dark.main }}
-                                                key={`collegeSuccessScore${college['name'].replace(' ', '')}`}>
-                                                <div>{toLetterGrade(college.success)}</div>
-                                            </ResultCardPrimaryItem>
-                                        ))
-                                    }
-                                </ResultCardPrimaryItemContainer>
-                            </ResultCardPrimaryRow>
-
-                            <EmptySecondaryRow collegesDisplay={collegesDisplay} rowNumber={'SuccessScore'} />
-
-                            <ResultCardPrimaryRow style={{ justifyContent: 'space-between' }}>
-                                <ResultCardPrimaryItemLabel
-                                    style={{ color: theme.palette.dark.main }}
-                                >
-                                    <AddIcon fontSize="small" style={{
-                                        marginRight: '5px',
-                                        color: theme.palette.secondary.main
-                                    }} />Value Grade
-                                </ResultCardPrimaryItemLabel>
-                                <ResultCardPrimaryItemContainer>
-                                    {
-                                        collegesDisplay.map((college: any) => (
-                                            <ResultCardPrimaryItem
-                                                style={{ color: theme.palette.dark.main }}
-                                                key={`collegeValueGrade${college['name'].replace(' ', '')}`}>
-                                                <div>{toLetterGrade(college.value)}</div>
-                                            </ResultCardPrimaryItem>
-                                        ))
-                                    }
-                                </ResultCardPrimaryItemContainer>
-                            </ResultCardPrimaryRow>
-
-                            <EmptySecondaryRow collegesDisplay={collegesDisplay} rowNumber={'ValueGrade'} />
-
-                            <ResultCardPrimaryRow style={{ justifyContent: 'space-between' }}>
-                                <ResultCardPrimaryItemLabel
-                                    style={{ color: theme.palette.dark.main }}
-                                >
-                                    <AddIcon fontSize="small" style={{
-                                        marginRight: '5px',
-                                        color: theme.palette.secondary.main
-                                    }} />Outcomes
-                                </ResultCardPrimaryItemLabel>
-                                <ResultCardPrimaryItemContainer>
-                                    {
-                                        collegesDisplay.map((college: any) => (
-                                            <ResultCardPrimaryItem
-                                                style={{ color: theme.palette.dark.main }}
-                                                key={`collegeOutcomes${college['name'].replace(' ', '')}`}>
-                                                <div>{toLetterGrade(college.outcomes)}</div>
-                                            </ResultCardPrimaryItem>
-                                        ))
-                                    }
-                                </ResultCardPrimaryItemContainer>
-                            </ResultCardPrimaryRow>
-                            <EmptySecondaryRow collegesDisplay={collegesDisplay} rowNumber={'Outcomes'} />
-
-                            <ResultCardPrimaryRow style={{ justifyContent: 'space-between' }}>
-                                <ResultCardPrimaryItemLabel
-                                    style={{ color: theme.palette.dark.main }}
-                                >
-                                    <AddIcon fontSize="small" style={{
-                                        marginRight: '5px',
-                                        color: theme.palette.secondary.main
-                                    }} />Cost score
-                                </ResultCardPrimaryItemLabel>
-                                <ResultCardPrimaryItemContainer>
-                                    {
-                                        collegesDisplay.map((college: any) => (
-                                            <ResultCardPrimaryItem
-                                                style={{ color: theme.palette.dark.main }}
-                                                key={`collegeCostScore${college['name'].replace(' ', '')}`}>
-                                                <div>{toLetterGrade(college.cost)}</div>
-                                            </ResultCardPrimaryItem>
-                                        ))
-                                    }
-                                </ResultCardPrimaryItemContainer>
-                            </ResultCardPrimaryRow>
-                            <EmptySecondaryRow collegesDisplay={collegesDisplay} rowNumber={'CostScore'} />
-
-                            <ResultCardPrimaryRow style={{ justifyContent: 'space-between' }}>
-                                <ResultCardPrimaryItemLabel
-                                    style={{ color: theme.palette.dark.main }}
-                                >
-                                    <AddIcon fontSize="small" style={{
-                                        marginRight: '5px',
-                                        color: theme.palette.secondary.main
-                                    }} />Diversity score
-                                </ResultCardPrimaryItemLabel>
-                                <ResultCardPrimaryItemContainer>
-                                    {
-                                        collegesDisplay.map((college: any) => (
-                                            <ResultCardPrimaryItem
-                                                style={{ color: theme.palette.dark.main }}
-                                                key={`collegeDiversityScore${college['name'].replace(' ', '')}`}>
-                                                <div>{toLetterGrade(college.diversity)}</div>
-                                            </ResultCardPrimaryItem>
-                                        ))
-                                    }
-                                </ResultCardPrimaryItemContainer>
-                            </ResultCardPrimaryRow>
-                            <EmptySecondaryRow collegesDisplay={collegesDisplay} rowNumber={'DiversityScore'} />
+                            {
+                                categories.map((category, index) => (
+                                    <PrimaryToggleRow
+                                        key={`primaryToggleRow${category.label.replace(/ /g, '')}${index}`}
+                                        category={category}
+                                        colleges={collegesDisplay}
+                                        theme={theme}
+                                        scoreLabels={category.scores}
+                                    />
+                                ))
+                            }
 
                         </ResultCardHeaderContent>
                         <ResultCardCollegeToggle onClick={nextPage}>

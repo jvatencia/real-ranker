@@ -71,6 +71,11 @@ function AppHeader() {
         setAnchorEl(null);
     };
 
+    const profilePopoverItems = [
+        { icon: <PersonIcon />, title: 'Profile', handler: () => null },
+        { icon: <LogoutIcon />, title: 'Log Out', handler: () => null },
+    ];
+
     const open = Boolean(anchorEl);
     const id = open ? 'header-popover' : undefined;
 
@@ -101,14 +106,14 @@ function AppHeader() {
                                     }}
                                 >
                                     <div className={classes.popOverContent}>
-                                        <div className={classes.popOverItem}>
-                                            <PersonIcon />
-                                            <span className={classes.popOverItemTitle}>Profile</span>
-                                        </div>
-                                        <div className={classes.popOverItem}>
-                                            <LogoutIcon />
-                                            <span className={classes.popOverItemTitle}>Log Out</span>
-                                        </div>
+                                        {
+                                            profilePopoverItems.map((item, index) => (
+                                                <div className={classes.popOverItem} onClick={item.handler} key={`profilePopoverItem${index}`}>
+                                                    {item.icon}
+                                                    <span className={classes.popOverItemTitle}>{item.title}</span>
+                                                </div>
+                                            ))
+                                        }
                                     </div>
                                 </Popover>
                             </div>
