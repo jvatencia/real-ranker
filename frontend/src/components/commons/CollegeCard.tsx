@@ -4,6 +4,7 @@ import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, Pa
 import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom } from "@mui/material";
 import { useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
+import { devices } from "../../utils/breakpoints";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
@@ -184,7 +185,7 @@ const GradeCustomToolTip = (props: ToolTipContentProps) => {
         setOpen(!open);
     };
 
-    const matches = useMediaQuery('(max-width:900px)');
+    const matches = useMediaQuery(devices.mobileL);
 
     return (
         <ClickAwayListener onClickAway={handleTooltipClose}>
@@ -193,11 +194,12 @@ const GradeCustomToolTip = (props: ToolTipContentProps) => {
                     PopperProps={{
                         disablePortal: true,
                     }}
-                    placement={matches ? 'left' : 'right'}
+                    placement={matches ? 'top' : 'right'}
                     disableFocusListener
                     disableHoverListener
                     TransitionComponent={Zoom}
                     disableTouchListener
+                    style={{ marginBottom: matches ? '7px' : 'unset' }}
                     open={open}
                     title={<ToolTipContent {...props} handleTooltipClose={handleTooltipClose} />}>
                     <GradeInfoIcon onClick={handleTooltipOpen} />

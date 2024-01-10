@@ -1,7 +1,4 @@
-import { UserContext } from './app-context/userContext';
-import { UserContextProvider } from './app-context/userContextProvider';
-import { createTheme, PaletteColorOptions, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material';
-import AppRouter from './router/router';
+import { createTheme, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material';
 import { RouterProvider } from 'react-router-dom';
 import router from './router/router';
 import OverlayLoader from './components/utilities/OverlayLoader';

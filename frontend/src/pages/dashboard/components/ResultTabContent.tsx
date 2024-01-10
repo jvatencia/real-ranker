@@ -7,6 +7,7 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 import { makeStyles } from "@mui/styles";
 import ResultCard from "../../../components/commons/ResultCard";
 import InfoModal from "../../../components/commons/InfoModal";
+import ComparisonSliders from "../../../components/commons/ComparisonSliders";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -57,7 +58,10 @@ export default function ResultTabContent() {
                         <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
                     ))
                     :
-                    <ResultCard colleges={selectedColleges} />
+                    <>
+                        {/* <ResultCard colleges={selectedColleges} /> */}
+                        <ComparisonSliders colleges={selectedColleges} />
+                    </>
             }
 
             <InfoModal

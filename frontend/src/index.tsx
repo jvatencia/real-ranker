@@ -1,6 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
 import App from "./App";
+import 'swiper/css';
+
 import reportWebVitals from "./reportWebVitals";
 
 const root = document.getElementById("root") as HTMLElement;

@@ -29,7 +29,7 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
         firstGen: '',
         academicDisruption: '',
         upwardTrajectory: '',
-        familyIncome: ''
+        familyIncome: 3
     });
 
     const handleNext = () => {
