@@ -59,7 +59,7 @@ export default function ResultTabContent() {
                     ))
                     :
                     <>
-                        {/* <ResultCard colleges={selectedColleges} /> */}
+                        <ResultCard colleges={selectedColleges} />
                         <ComparisonSliders colleges={selectedColleges} />
                     </>
             }

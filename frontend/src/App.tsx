@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import router from './router/router';
 import OverlayLoader from './components/utilities/OverlayLoader';
 import { SnackbarProvider } from 'notistack';
+import CustomModal from './components/utilities/CustomModal';
 
 
 declare module '@mui/material/styles' {
@@ -108,6 +109,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <SnackbarProvider maxSnack={5}>
           <OverlayLoader />
+          <CustomModal />
           <RouterProvider router={router} />
         </SnackbarProvider>
       </ThemeProvider>

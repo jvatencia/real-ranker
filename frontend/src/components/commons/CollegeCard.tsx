@@ -5,6 +5,7 @@ import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery
 import { useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
 import { devices } from "../../utils/breakpoints";
+import ModalController from "../../utils/modal";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
@@ -145,7 +146,8 @@ const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, han
     const theme = useTheme();
     const onLinkClick = () => {
         handleTooltipClose();
-        openDialog(college['instnm'], gradeCategory);
+        // openDialog(college['instnm'], gradeCategory);
+        ModalController.showModal();
     }
     return (
         <div>
