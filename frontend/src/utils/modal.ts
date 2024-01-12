@@ -1,8 +1,22 @@
-import { MutableRefObject } from "react"
+import { MutableRefObject, ReactNode } from "react"
 
 export type CustomModalRef = {
-    show: () => void,
+    show: (options?: any) => void,
     hide: () => void
+}
+
+type CustomModalButtonOptions = {
+    text: string,
+    role?: string,
+    handler?: () => null
+}
+
+export type CustomModalOptions = {
+    type: 'default' | 'fullscreen' | 'alert',
+    header?: string | ReactNode,
+    buttons?: CustomModalButtonOptions[],
+    content?: ReactNode,
+
 }
 
 export default class ModalController {
@@ -12,8 +26,8 @@ export default class ModalController {
         this.modalRef = ref;
     }
 
-    static showModal = () => {
-        this.modalRef.current?.show();
+    static showModal = (options: CustomModalOptions) => {
+        this.modalRef.current?.show(options);
     }
 
     static hideModal = () => {

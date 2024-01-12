@@ -147,7 +147,7 @@ const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, han
     const onLinkClick = () => {
         handleTooltipClose();
         // openDialog(college['instnm'], gradeCategory);
-        ModalController.showModal();
+        // ModalController.showModal();
     }
     return (
         <div>

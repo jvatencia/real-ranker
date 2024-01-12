@@ -8,6 +8,7 @@ function CustomModal() {
     const modalVisible = useHelper((state) => state.showModal);
     const setModalVisible = useHelper((state) => state.setModalVisibility);
     const modalRef = useRef<CustomModalRef>();
+    const [options, setOptions] = useState();
 
     useLayoutEffect(() => {
         ModalController.setModalRef(modalRef)

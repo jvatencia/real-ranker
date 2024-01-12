@@ -8,7 +8,9 @@ import { makeStyles } from "@mui/styles";
 import ResultCard from "../../../components/commons/ResultCard";
 import InfoModal from "../../../components/commons/InfoModal";
 import ComparisonSliders from "../../../components/commons/ComparisonSliders";
-
+import TuneIcon from '@mui/icons-material/Tune';
+import { useMediaQuery } from "@mui/material";
+import { devices } from "../../../utils";
 const useStyles = makeStyles(
     (theme) => ({
         resultTabContainer: {
@@ -18,12 +20,46 @@ const useStyles = makeStyles(
             marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
-            [theme.breakpoints.down('md')]: {
-                justifyContent: 'flex-end'
+            justifyContent: 'space-between',
+            // [theme.breakpoints.down('md')]: {
+            //     justifyContent: 'flex-end'
+            // }
+        },
+        filterButton: {
+            padding: '8px 16px',
+            border: '1px solid ' + theme.palette.dark.main,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            transition: '0.3s linear',
+            userSelect: 'none',
+            boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
+            borderRadius: '5px',
+            "&:hover": {
+                backgroundColor: theme.palette.primary.main,
             }
         }
     })
-)
+);
+
+const FilterButton = ({ classes, icon, title }: any) => {
+    const matches = useMediaQuery(devices.tablet)
+    const handleTitle = () => {
+        if (icon !== undefined) {
+            return !matches && title;
+        }
+
+        return title;
+    }
+
+    return (
+        <div className={classes.filterButton}>
+            {icon} {handleTitle()}
+        </div>
+    );
+}
 export default function ResultTabContent() {
     const selectedColleges = useCollegeStore((state) => state.selectedColleges);
     const [activeTab, setActiveTab] = useState('list');
@@ -46,6 +82,7 @@ export default function ResultTabContent() {
     return (
         <div className={classes.resultTabContainer}>
             <div className={classes.filterTabContainer}>
+                <FilterButton classes={classes} icon={<TuneIcon />} title="Sliders" />
                 <ButtonTabs
                     setActiveTab={setActiveTab}
                     activeTab={activeTab}
