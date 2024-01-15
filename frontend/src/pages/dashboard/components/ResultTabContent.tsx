@@ -11,6 +11,8 @@ import ComparisonSliders from "../../../components/commons/ComparisonSliders";
 import TuneIcon from '@mui/icons-material/Tune';
 import { useMediaQuery } from "@mui/material";
 import { devices } from "../../../utils";
+import CategorySliderModal from "../../../components/commons/CategorySliderModal";
+
 const useStyles = makeStyles(
     (theme) => ({
         resultTabContainer: {
@@ -44,7 +46,7 @@ const useStyles = makeStyles(
     })
 );
 
-const FilterButton = ({ classes, icon, title }: any) => {
+const FilterButton = ({ classes, icon, title, onClick }: any) => {
     const matches = useMediaQuery(devices.tablet)
     const handleTitle = () => {
         if (icon !== undefined) {
@@ -55,20 +57,23 @@ const FilterButton = ({ classes, icon, title }: any) => {
     }
 
     return (
-        <div className={classes.filterButton}>
+        <div className={classes.filterButton} onClick={onClick}>
             {icon} {handleTitle()}
         </div>
     );
 }
 export default function ResultTabContent() {
+    const classes = useStyles();
+
     const selectedColleges = useCollegeStore((state) => state.selectedColleges);
-    const [activeTab, setActiveTab] = useState('list');
     const buttons = [
         { key: 'list', title: 'List', icon: <SummarizeIcon /> },
         { key: 'summary', title: 'Summary', icon: <SegmentIcon /> },
     ];
-    const classes = useStyles();
+
+    const [activeTab, setActiveTab] = useState('list');
     const [showDialog, setShowDialog] = useState(false);
+    const [filterModalState, setFilterModalState] = useState(false);
     const [dialogProps, setDialogProps] = useState({
         title: '',
         description: ''
@@ -79,10 +84,15 @@ export default function ResultTabContent() {
         setShowDialog(true);
     }
 
+    const setSliderModalState = () => {
+        console.log('setSliderModalState');
+        setFilterModalState(!filterModalState);
+    }
+
     return (
         <div className={classes.resultTabContainer}>
             <div className={classes.filterTabContainer}>
-                <FilterButton classes={classes} icon={<TuneIcon />} title="Sliders" />
+                <FilterButton classes={classes} onClick={setSliderModalState} icon={<TuneIcon />} title="Sliders" />
                 <ButtonTabs
                     setActiveTab={setActiveTab}
                     activeTab={activeTab}
@@ -106,6 +116,12 @@ export default function ResultTabContent() {
                 setShowDialog={setShowDialog}
                 title={dialogProps.title}
                 description={dialogProps.description}
+            />
+            <CategorySliderModal
+                showDialog={filterModalState}
+                handleClose={() => {
+                    setFilterModalState(false);
+                }}
             />
         </div>
     )

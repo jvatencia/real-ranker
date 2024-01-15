@@ -17,6 +17,7 @@ type Actions = {
     removeCollege: (college: any) => any;
     setForm: (form: any) => any;
     reset: () => void;
+    updateUserScores: (score: any) => void;
 }
 
 const persistStorage: StateStorage = localStorage;
@@ -37,11 +38,11 @@ const initialState: CollegeState = {
     colleges: [],
     selectedColleges: [],
     userScore: {
-        success: 0,
-        value: 0,
-        cost: 0,
-        outcomes: 0,
-        diversity: 0
+        success: 20,
+        value: 20,
+        cost: 20,
+        outcomes: 20,
+        diversity: 20
     },
     form: {}
 }
@@ -70,7 +71,8 @@ const useCollegeStore = create<CollegeState & Actions>()(
             setForm: (form: any) => set((state) => ({ form: { ...state.form, ...form } })),
             reset: () => {
                 set(initialState);
-            }
+            },
+            updateUserScores: (score: any) => set((state) => ({ userScore: { ...state.userScore, ...score } }))
         })),
         storageOptions
     )

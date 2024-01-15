@@ -2,10 +2,9 @@ import { styled, useTheme } from "@mui/system";
 import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined } from "@mui/icons-material";
 import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
 import { devices } from "../../utils/breakpoints";
-import ModalController from "../../utils/modal";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
@@ -144,11 +143,12 @@ interface CollegeCardProps {
 
 const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, handleTooltipClose }: ToolTipContentProps) => {
     const theme = useTheme();
+
     const onLinkClick = () => {
         handleTooltipClose();
-        // openDialog(college['instnm'], gradeCategory);
-        // ModalController.showModal();
+        openDialog(college['instnm'], gradeCategory);
     }
+
     return (
         <div>
             {
@@ -215,19 +215,29 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
     const form = useCollegeStore((state) => state.form);
     const userScores = useCollegeStore((state) => state.userScore);
 
-    const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
+    useEffect(() => {
+        console.log('[CollegeCard] userScores', userScores);
+    }, [userScores]);
 
+    const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
         return weights.reduce((a: number, b: number, index: number) => {
             return a + (b * nums[index]);
         }, 0);
     }
+
     const cost = getScore(college, `npt4${form['familyIncome']}`);
     const value = getScore(college, `value_${form['familyIncome']}`);
     const success = (0.4 * college['success_relative']) + (0.6 * college['success_absolute']);
     const outcomes = (0.4 * college['outcomes_relative']) + (0.6 * college['outcomes_absolute']);
     const diversity = 0.5 * (((0.4 * college['social_diversity_score_relative']) + (0.6 * college['social_diversity_score_absolute'])) + ((0.4 * college['economic_inclusion_score_relative']) + (0.6 * college['economic_inclusion_score_absolute'])));
     const yourscore = toLetterGrade(
-        weighted_mult_sum([userScores['success'], userScores['value'], userScores['cost'], userScores['diversity'], userScores['outcomes']], [success, value, cost, diversity, outcomes])
+        weighted_mult_sum([
+            userScores['success'] / 100,
+            userScores['value'] / 100,
+            userScores['cost'] / 100,
+            userScores['diversity'] / 100,
+            userScores['outcomes'] / 100],
+            [success, value, cost, diversity, outcomes])
     );
     const successArray = [
         { key: 'Orientation to Graduation', value: toPercent(college['comp_orig_yr4_rt']) },
