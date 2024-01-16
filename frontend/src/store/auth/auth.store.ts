@@ -34,13 +34,16 @@ const useAuthStore = create<AuthState & Actions>()(
             login: async (credentials: any) => {
                 const setLoader = useHelper.getState().setLoader;
                 setLoader(true);
-                const response = await authenticate(credentials);
-                console.log(response);
-                setLoader(false);
+                // const response = await authenticate(credentials);
+                // console.log(response);
 
                 set((state) => ({ token: '123124124124', auth: { email: 'someone@thetestguy.com', name: 'The Test Guy' } }));
+                setLoader(false);
+
             },
-            logout: () => { },
+            logout: () => {
+                set(initialState);
+            },
             reset: () => {
                 set(initialState);
             }

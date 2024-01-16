@@ -66,6 +66,7 @@ function AppHeader() {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+    const logout = useAuthStore((state) => state.logout);
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -73,7 +74,7 @@ function AppHeader() {
 
     const profilePopoverItems = [
         { icon: <PersonIcon />, title: 'Profile', handler: () => null },
-        { icon: <LogoutIcon />, title: 'Log Out', handler: () => null },
+        { icon: <LogoutIcon />, title: 'Log Out', handler: logout },
     ];
 
     const open = Boolean(anchorEl);
