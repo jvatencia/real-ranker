@@ -37,16 +37,16 @@ function App() {
     palette: {
       mode: 'light',
       primary: {
-        main: '#a4b3ff',
-        dark: '#909ee0',
-        light: '#adbbff',
-        contrastText: '#000000'
+        main: '#412a7c',
+        dark: '#39256d',
+        light: '#543f89',
+        contrastText: '#ffffff'
       },
       secondary: {
-        main: '#707ae6',
-        dark: '#636bca',
-        light: '#7e87e9',
-        contrastText: '#000000'
+        main: '#53359f',
+        dark: '#492f8c',
+        light: '#6449a9',
+        contrastText: '#ffffff'
       },
       success: {
         main: '#84e1a9',
@@ -55,9 +55,9 @@ function App() {
         contrastText: '#000000'
       },
       warning: {
-        main: '#fce8ab',
-        dark: '#decc96',
-        light: '#fceab3',
+        main: '#f8cf40',
+        dark: '#dab638',
+        light: '#f9d453',
         contrastText: '#000000'
       },
       error: {

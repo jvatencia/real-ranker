@@ -41,6 +41,7 @@ function InfoModal({ showDialog, setShowDialog, title, description }: InfoModalP
             <DialogTitle>{title}</DialogTitle>
             <DialogContent className={classes.dialogContent}>
                 {description}
+                <iframe src="https://www.tiktok.com/embed/7325527158502346026" frameBorder="0" title="collegeAdmissionsTiktokVid" className={classes.youtubeIframe}></iframe>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">

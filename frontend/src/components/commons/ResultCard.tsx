@@ -57,7 +57,8 @@ const ResultCardCollegeToggle = styled('div')(({ theme }) => ({
     flexGrow: 1,
     alignSelf: 'normal',
     borderColor: theme.palette.dark.main,
-    borderLeftWidth: '1px'
+    borderLeftWidth: '1px',
+    color: theme.palette.light.main,
 }));
 
 const ResultCardSecondaryRow = styled('div')(({ theme }) => ({
@@ -85,7 +86,8 @@ const ResultCardPrimaryRow = styled('div')(({ theme }) => ({
 const ResultCardSecondaryItemContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    color: theme.palette.light.main,
 }));
 
 const ResultCardPrimaryItemContainer = styled('div')(({ theme }) => ({
@@ -102,7 +104,7 @@ const ResultCardSecondaryItemLabel = styled('div')(({ theme }) => ({
     width: 'calc(100% - 220px)',
     color: theme.palette.dark.main,
     fontSize: '14px',
-    padding: '0 10px'
+    padding: '0 10px',
 }));
 
 const ResultCardPrimaryItemLabel = styled('div')(({ theme }) => ({
@@ -132,7 +134,8 @@ const ResultCardSecondaryItem = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
-    fontSize: '20px'
+    fontSize: '20px',
+    color: theme.palette.dark.main
 }));
 
 const ResultCardPrimaryItem = styled('div')(({ theme }) => ({
@@ -186,7 +189,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                     width: '100%'
                 }}>
                     <ResultCardPrimaryItemLabel
-                        style={{ color: theme.palette.dark.main }}
+                        style={{ color: theme.palette.light.main }}
                     >
                         <div onClick={handleToggle}>
                             {!toggle ?
@@ -194,14 +197,14 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
 
                                     fontSize="small" style={{
                                         marginRight: '5px',
-                                        color: theme.palette.secondary.main,
+                                        color: theme.palette.warning.main,
                                         cursor: 'pointer'
                                     }} /> :
                                 <RemoveOutlined
 
                                     fontSize="small" style={{
                                         marginRight: '5px',
-                                        color: theme.palette.secondary.main,
+                                        color: theme.palette.warning.main,
                                         cursor: 'pointer'
                                     }} />
                             }
@@ -212,7 +215,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                         {
                             colleges.map((college: any) => (
                                 <ResultCardPrimaryItem
-                                    style={{ color: theme.palette.dark.main }}
+                                    style={{ color: theme.palette.light.main }}
                                     key={`collegeSuccessScore${college['name'].replace(' ', '')}`}>
                                     <div>{toLetterGrade(college.success.score)}</div>
                                 </ResultCardPrimaryItem>

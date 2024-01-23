@@ -5,6 +5,7 @@ import PageNotFound from "../pages/errors/PageNotFound";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import GettingStartedPage from "../pages/getting-started/GettingStartedPage";
 import PrivateRoutes from "../components/utilities/PrivateRoutes";
+import WelcomePage from "../pages/home/WelcomePage";
 
 const routes: RouteObject[] = [
     {
@@ -24,6 +25,10 @@ const routes: RouteObject[] = [
                 Component: DashboardPage,
             }
         ]
+    },
+    {
+        path: '/welcome',
+        Component: WelcomePage,
     },
     {
         path: '/login',

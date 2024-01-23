@@ -40,7 +40,8 @@ const useStyles = makeStyles(
             boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
             borderRadius: '5px',
             "&:hover": {
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.secondary.main,
+                color: theme.palette.light.main
             }
         }
     })

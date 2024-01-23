@@ -33,11 +33,13 @@ const useStyles = makeStyles(
                 borderRightWidth: '1px'
             },
             "&:hover": {
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.secondary.main,
+                color: theme.palette.light.main,
             }
         },
         tabButtonActive: {
             backgroundColor: theme.palette.primary.main,
+            color: theme.palette.warning.main
         }
     })
 );

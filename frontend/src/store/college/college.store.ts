@@ -8,6 +8,7 @@ type CollegeState = {
     selectedColleges: any[];
     userScore: any;
     form: any;
+    comparisonChunks: any[];
 }
 
 type Actions = {
@@ -18,6 +19,7 @@ type Actions = {
     setForm: (form: any) => any;
     reset: () => void;
     updateUserScores: (score: any) => void;
+    setComparisonChunks: (arr: any[]) => void;
 }
 
 const persistStorage: StateStorage = localStorage;
@@ -28,7 +30,8 @@ const storageOptions = {
     partialize: (state: CollegeState & Actions) => ({
         // selectedColleges: state.selectedColleges,
         userScore: state.userScore,
-        form: state.form
+        form: state.form,
+        selectedColleges: state.selectedColleges
     })
 
 }
@@ -44,7 +47,8 @@ const initialState: CollegeState = {
         outcomes: 20,
         diversity: 20
     },
-    form: {}
+    form: {},
+    comparisonChunks: []
 }
 
 const useCollegeStore = create<CollegeState & Actions>()(
@@ -72,7 +76,8 @@ const useCollegeStore = create<CollegeState & Actions>()(
             reset: () => {
                 set(initialState);
             },
-            updateUserScores: (score: any) => set((state) => ({ userScore: { ...state.userScore, ...score } }))
+            updateUserScores: (score: any) => set((state) => ({ userScore: { ...state.userScore, ...score } })),
+            setComparisonChunks: (arr: any[]) => set((state) => ({ comparisonChunks: arr }))
         })),
         storageOptions
     )

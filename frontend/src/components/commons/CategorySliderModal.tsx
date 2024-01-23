@@ -27,8 +27,6 @@ export default function CategorySliderModal({ showDialog, handleClose }: Readonl
     const [allocationPoints, setAllocationPoints] = useState(0);
     const [scores, setScores] = useState<any>(userScores);
 
-    console.log('CategorySliderModal showDialog', showDialog);
-
     const updateSliderValue = (event: any, category: 'success' | 'value' | 'cost' | 'outcomes' | 'diversity') => {
         const oldVal = scores[category];
         if (allocationPoints === 0 && event.target.value > oldVal) {

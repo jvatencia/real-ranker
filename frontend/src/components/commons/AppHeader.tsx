@@ -1,5 +1,4 @@
 import { makeStyles } from "@mui/styles";
-import thetestguy from "../../assets/thetestguy.png";
 import ResponsiveBox from "./ResponsiveBox";
 import useAuthStore from "../../store/auth/auth.store";
 import { IconButton, Popover } from "@mui/material";
@@ -7,12 +6,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: any) => ({
+    headerShadow: {
+        boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.3)',
+    },
     header: {
         width: '100%',
         height: '80px',
-        boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.3)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -57,9 +59,28 @@ const useStyles = makeStyles((theme: any) => ({
     },
     popOverItemTitle: {
         marginLeft: '30px'
+    },
+    authLinks: {
+        fontSize: '16px',
+        cursor: 'pointer',
+        fontFamily: 'Poppins',
+        fontWeight: 700,
+        color: theme.palette.secondary.main,
+        textDecoration: 'none',
+        '&:hover': {
+            color: theme.palette.primary.main
+        }
+    },
+    headerLogo: {
+        width: '200px'
     }
 }));
-function AppHeader() {
+
+export interface AppHeaderProps {
+    unauthMode?: boolean;
+}
+
+function AppHeader({ unauthMode }: AppHeaderProps) {
     const classes = useStyles();
     const isAuthenticated = useAuthStore((state => !!state.token));
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -81,11 +102,11 @@ function AppHeader() {
     const id = open ? 'header-popover' : undefined;
 
     return (
-        <header className={classes.header}>
+        <header className={`${classes.header} ${unauthMode ? '' : classes.headerShadow}`}>
             <ResponsiveBox style={{ padding: '0 16px' }} >
                 <div className={classes.headerContent}>
                     <div>
-                        <img src={thetestguy} alt="" />
+                        <img src="/logo.png" alt="logo.png" className={classes.headerLogo} />
                     </div>
                     {
                         isAuthenticated ?

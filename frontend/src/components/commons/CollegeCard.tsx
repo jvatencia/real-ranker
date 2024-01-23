@@ -89,7 +89,7 @@ const UserGrade = styled('div')(({ theme }) => ({
 const ScoreLabel = styled('div')(({ theme }) => ({
     fontSize: 12,
     fontWeight: 'normal',
-    color: theme.palette.dark.main,
+    color: theme.palette.light.main,
     background: theme.palette.primary.main,
     padding: '5px',
     transform: 'translateY(-13px)',
@@ -217,6 +217,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
 
     useEffect(() => {
         console.log('[CollegeCard] userScores', userScores);
+
     }, [userScores]);
 
     const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
