@@ -1,6 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import Layout from "../../components/layout/Layout";
 import CompareImg from '../../assets/compare.png';
+import Testimonials from "./components/Testimonials";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -77,8 +78,8 @@ export default function WelcomePage() {
                 <div className={classes.heroSection}>
                     <div className={classes.siteMotto}>
                         <div className={classes.mottoWrapper}>
-                            <div className={classes.mottoSmall}>The Ultimate</div>
-                            <div className={classes.mottoHeader}><span className={classes.collegeRanker}>College Ranker</span> Site</div>
+                            <div className={classes.mottoSmall}>Let's go</div>
+                            <div className={classes.mottoHeader}>Take your <span className={classes.collegeRanker}>Best</span> Test!</div>
                             <div className={classes.mottoSmall}>By <span className={classes.collegeRanker}>TheTestGuy</span></div>
                         </div>
                     </div>
@@ -90,9 +91,7 @@ export default function WelcomePage() {
             <div className={classes.overviewSection}>
                 <img src="/assets/services-gif-2.gif" alt="services-gif-2.gif" className={classes.overviewImg} />
             </div>
-            <div className={classes.testimonialSection}>
-
-            </div>
+            <Testimonials />
         </Layout>
     )
 }
