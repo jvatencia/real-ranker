@@ -102,43 +102,56 @@ export default function Testimonials() {
 
     useEffect(() => {
         if (entry?.isIntersecting) {
-            videoRef?.current?.scrollIntoView();
+            if (videoRef && videoRef.current) {
+
+                const played = videoRef.current?.play();
+                if (played !== undefined) {
+                    played.then((res) => {
+                        console.log(res)
+                    }).catch((error) => console.log(error))
+                }
+            }
         }
     }, [entry])
 
     useEffect(() => {
+        console.log('inView Changed', inView);
+        console.log('videoRef', videoRef?.current);
         videoRef?.current?.load();
-    }, [isPlaying]);
+    }, [isPlaying, inView]);
 
     return (
-        <div className={classes.testimonialWrapper} ref={ref}>
+        <div>
+            <h3>What our family say</h3>
+            <div className={classes.testimonialWrapper} ref={ref}>
 
-            <video ref={videoRef} autoPlay={inView} className={classes.testimonialPlayer} muted={!inView}>
-                <source src={videos[isPlaying].url} />
-            </video>
-            <Swiper
-                ref={swiperRef}
-                spaceBetween={25}
-                slidesPerView={3.5}
-                autoplay={false}
-                onSlideChange={slideChanged}
-                watchSlidesProgress={true}
-                className={classes.testimonialSwiper}
-                centeredSlides
-                loop
-            >
-                {
-                    videos.map((video: any, index: number) => (
-                        <SwiperSlide key={`swiperTestimonialVideo${video.id}`}>
-                            <div className={classes.testimonialCard} onClick={() => onCardClick(video, index)}>
-                                <div className={`${classes.testimonialAvatarWrapper} ${isPlaying !== index ? classes.inactiveTestimonial : ''}`}>
-                                    <img src={video.thumbnail} className={classes.testimonialAvatar} alt={video.thumbnail} />
+                <video id='testimonialVideoBg' ref={videoRef} autoPlay={inView} className={classes.testimonialPlayer} muted={!inView} playsInline={inView}>
+                    <source src={videos[isPlaying].url} />
+                </video>
+                <Swiper
+                    ref={swiperRef}
+                    spaceBetween={25}
+                    slidesPerView={3.5}
+                    autoplay={false}
+                    onSlideChange={slideChanged}
+                    watchSlidesProgress={true}
+                    className={classes.testimonialSwiper}
+                    centeredSlides
+                // loop
+                >
+                    {
+                        videos.map((video: any, index: number) => (
+                            <SwiperSlide key={`swiperTestimonialVideo${video.id}`}>
+                                <div className={classes.testimonialCard} onClick={() => onCardClick(video, index)}>
+                                    <div className={`${classes.testimonialAvatarWrapper} ${isPlaying !== index ? classes.inactiveTestimonial : ''}`}>
+                                        <img src={video.thumbnail} className={classes.testimonialAvatar} alt={video.thumbnail} />
+                                    </div>
                                 </div>
-                            </div>
-                        </SwiperSlide>
-                    ))
-                }
-            </Swiper>
+                            </SwiperSlide>
+                        ))
+                    }
+                </Swiper>
+            </div>
         </div>
     );
 }

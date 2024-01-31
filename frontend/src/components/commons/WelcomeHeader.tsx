@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import ResponsiveBox from "./ResponsiveBox";
 import { makeStyles } from "@mui/styles";
+import { IconButton } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import { NavLinkItem } from "../../utils/interfaces/nav-link";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -13,10 +16,18 @@ const useStyles = makeStyles(
             flexDirection: 'column',
             transition: '0.3s ease-in-out',
             fontFamily: 'Poppins',
+            zIndex: 1045,
             backgroundColor: theme.palette.light.main,
             [theme.breakpoints.down('md')]: {
                 height: '56px',
-                boxShadow: 'none'
+                boxShadow: 'none',
+                position: 'relative'
+            }
+        },
+        authGroup: {
+            display: 'block',
+            [theme.breakpoints.down('md')]: {
+                display: 'none'
             }
         },
         authLinks: {
@@ -26,12 +37,22 @@ const useStyles = makeStyles(
             fontWeight: 700,
             color: theme.palette.primary.main,
             textDecoration: 'none',
+            marginRight: '15px',
             '&:hover': {
                 color: theme.palette.warning.dark
+            },
+        },
+        menuBtn: {
+            display: 'none',
+            [theme.breakpoints.down('md')]: {
+                display: 'block'
             }
         },
         headerLogo: {
-            width: '250px'
+            width: '250px',
+            [theme.breakpoints.down('md')]: {
+                width: '150px'
+            }
         },
         headerContent: {
             display: 'flex',
@@ -44,8 +65,18 @@ const useStyles = makeStyles(
         }
     })
 )
+
 export default function WelcomeHeader() {
     const classes = useStyles();
+    const links: NavLinkItem[] = [
+        { text: 'Services', items: [], url: '#' },
+        { text: 'Login', items: [], url: '/login' }
+    ];
+
+    const toggleMenu = () => {
+        const el = document.getElementById('sidebar');
+        el?.classList.toggle('active');
+    }
 
     return (
         <header className={classes.header}>
@@ -55,11 +86,22 @@ export default function WelcomeHeader() {
                         <img src="/logo.png" alt="logo.png" className={classes.headerLogo} />
                     </div>
                     <div>
-                        <Link to={'/login'} className={classes.authLinks}>
-                            <span >
-                                Login
-                            </span>
-                        </Link>
+                        <div className={classes.authGroup}>
+                            {
+                                links.map((link) => (
+                                    <Link to={link.url} className={classes.authLinks} key={`navLinkItem${link.url.replace(/\//, '_')}`}>
+                                        <span >
+                                            {link.text}
+                                        </span>
+                                    </Link>
+                                ))
+                            }
+                        </div>
+                        <div className={classes.menuBtn}>
+                            <IconButton aria-label="delete" size="large" onClick={toggleMenu}>
+                                <MenuIcon fontSize="inherit" />
+                            </IconButton>
+                        </div>
                     </div>
                 </div>
             </ResponsiveBox>

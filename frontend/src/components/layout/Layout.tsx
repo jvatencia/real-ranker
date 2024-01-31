@@ -1,6 +1,7 @@
 import AppHeader from "../commons/AppHeader";
 import { makeStyles } from "@mui/styles";
 import WelcomeHeader from "../commons/WelcomeHeader";
+import Sidebar from "../utilities/Sidebar";
 
 const useStyles = makeStyles(
   (theme: any) => ({
@@ -32,7 +33,7 @@ const Layout = ({ children, unauthMode }: any) => {
   return (
     <div className={classes.app}>
       <ChildHeader unauthMode={unauthMode ?? false} />
-
+      <Sidebar />
       <main className={classes.main}>
         {children}
       </main>

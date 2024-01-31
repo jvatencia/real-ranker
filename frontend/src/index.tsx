@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import App from "./App";
 import 'swiper/css';
+import './index.css';
 
 import reportWebVitals from "./reportWebVitals";
 

@@ -21,6 +21,9 @@ const useStyles = makeStyles(
                 clipPath: 'polygon(15% 8%, 100% 0, 100% 75%, 100% 100%, 75% 84%, 18% 97%, 0% 75%)',
                 width: '80%',
                 height: '80%'
+            },
+            [theme.breakpoints.down('md')]: {
+                flexDirection: 'column'
             }
         },
         siteMotto: {
@@ -79,7 +82,7 @@ export default function WelcomePage() {
                     <div className={classes.siteMotto}>
                         <div className={classes.mottoWrapper}>
                             <div className={classes.mottoSmall}>Let's go</div>
-                            <div className={classes.mottoHeader}>Take your <span className={classes.collegeRanker}>Best</span> Test!</div>
+                            <div className={classes.mottoHeader}>Take your <span className={classes.collegeRanker}>Best Test</span> Today!</div>
                             <div className={classes.mottoSmall}>By <span className={classes.collegeRanker}>TheTestGuy</span></div>
                         </div>
                     </div>
@@ -88,9 +91,9 @@ export default function WelcomePage() {
                     </div>
                 </div>
             </div>
-            <div className={classes.overviewSection}>
+            {/* <div className={classes.overviewSection}>
                 <img src="/assets/services-gif-2.gif" alt="services-gif-2.gif" className={classes.overviewImg} />
-            </div>
+            </div> */}
             <Testimonials />
         </Layout>
     )
