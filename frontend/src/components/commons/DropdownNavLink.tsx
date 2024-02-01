@@ -4,6 +4,7 @@ import { Tooltip, TooltipProps, Zoom, tooltipClasses } from "@mui/material";
 import { NavLinkItem } from '../../utils/interfaces';
 import { Link } from 'react-router-dom';
 import { styled, useTheme } from '@mui/system';
+import { useState } from 'react';
 
 const NavToolTip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -39,11 +40,21 @@ const DropdownItems = ({ item, classes }: DropdownNavLinkProps) => {
 }
 export default function DropdownNavLink({ classes, item }: Readonly<DropdownNavLinkProps>) {
     const theme = useTheme();
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     return (
         <NavToolTip
             id="mouse-over-popover"
             PopperProps={{
-                disablePortal: true,
+                disablePortal: false,
             }}
             placement={'bottom'}
             title={
@@ -53,6 +64,10 @@ export default function DropdownNavLink({ classes, item }: Readonly<DropdownNavL
             sx={{
                 backgroundColor: theme.palette.light.main
             }}
+            onMouseEnter={handleOpen}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            open={open}
         >
             <span className={classes.authLinks}>
                 {item.text}
