@@ -1,8 +1,9 @@
 import { makeStyles } from "@mui/styles"
 import { NavLinkItem } from "../../utils/interfaces/nav-link";
-import { useMediaQuery } from "@mui/material";
-import { devices } from "../../utils";
+import { ClickAwayListener, useMediaQuery } from "@mui/material";
+import { devices, sidebarItems } from "../../utils";
 import { useEffect } from "react";
+import SidebarItem from "../commons/SidebarItem";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -22,23 +23,33 @@ const useStyles = makeStyles(
 
 
 interface SidebarProps {
-    sidebarItems?: NavLinkItem[]
+    authenticated: boolean
 }
-export default function Sidebar({ sidebarItems }: Readonly<SidebarProps>) {
+export default function Sidebar({ authenticated }: Readonly<SidebarProps>) {
     const classes = useStyles();
 
     const matches = useMediaQuery(devices.laptopS);
-
+    const items = !authenticated ? sidebarItems : [];
     useEffect(() => {
+        toggleMenu();
+
+    }, [matches])
+
+    const toggleMenu = () => {
         const el = document.getElementById('sidebar');
 
         if (el?.classList.contains('active')) {
             el.classList.toggle('active');
         }
-    }, [matches])
+    }
 
     return (
         <div className={`${classes.sidebarWrapper} app-sidebar`} id='sidebar'>
+            {
+                items.map((item) => (
+                    <SidebarItem item={item} key={`sidebarItem${item.url.replace(/\//, '_')}`} />
+                ))
+            }
         </div>
     )
 }

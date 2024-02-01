@@ -6,7 +6,7 @@ import Testimonials from "./components/Testimonials";
 const useStyles = makeStyles(
     (theme: any) => ({
         heroSection: {
-            height: '80vh',
+            height: '100vh',
             width: '100%',
             display: 'flex',
             alignItems: 'center',

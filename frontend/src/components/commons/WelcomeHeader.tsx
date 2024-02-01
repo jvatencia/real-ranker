@@ -4,6 +4,8 @@ import { makeStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLinkItem } from "../../utils/interfaces/nav-link";
+import { sidebarItems } from "../../utils/sidebar";
+import NavLink from "./NavLink";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -37,7 +39,7 @@ const useStyles = makeStyles(
             fontWeight: 700,
             color: theme.palette.primary.main,
             textDecoration: 'none',
-            marginRight: '15px',
+            marginRight: '25px',
             '&:hover': {
                 color: theme.palette.warning.dark
             },
@@ -68,10 +70,7 @@ const useStyles = makeStyles(
 
 export default function WelcomeHeader() {
     const classes = useStyles();
-    const links: NavLinkItem[] = [
-        { text: 'Services', items: [], url: '#' },
-        { text: 'Login', items: [], url: '/login' }
-    ];
+    const links: NavLinkItem[] = sidebarItems;
 
     const toggleMenu = () => {
         const el = document.getElementById('sidebar');
@@ -89,11 +88,7 @@ export default function WelcomeHeader() {
                         <div className={classes.authGroup}>
                             {
                                 links.map((link) => (
-                                    <Link to={link.url} className={classes.authLinks} key={`navLinkItem${link.url.replace(/\//, '_')}`}>
-                                        <span >
-                                            {link.text}
-                                        </span>
-                                    </Link>
+                                    <NavLink item={link} key={`navLinkItem${link.url.replace(/\//, '_')}`} />
                                 ))
                             }
                         </div>

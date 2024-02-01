@@ -2,6 +2,7 @@ import AppHeader from "../commons/AppHeader";
 import { makeStyles } from "@mui/styles";
 import WelcomeHeader from "../commons/WelcomeHeader";
 import Sidebar from "../utilities/Sidebar";
+import useAuthStore from "../../store/auth/auth.store";
 
 const useStyles = makeStyles(
   (theme: any) => ({
@@ -29,11 +30,12 @@ const ChildHeader = ({ unauthMode }: any) => {
 }
 const Layout = ({ children, unauthMode }: any) => {
   const classes = useStyles();
+  const isAuthenticated = useAuthStore((state) => !!state.token);
 
   return (
     <div className={classes.app}>
       <ChildHeader unauthMode={unauthMode ?? false} />
-      <Sidebar />
+      <Sidebar authenticated={isAuthenticated} />
       <main className={classes.main}>
         {children}
       </main>
