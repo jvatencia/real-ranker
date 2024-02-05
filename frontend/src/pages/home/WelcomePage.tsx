@@ -2,11 +2,12 @@ import { makeStyles } from "@mui/styles";
 import Layout from "../../components/layout/Layout";
 import CompareImg from '../../assets/compare.png';
 import Testimonials from "./components/Testimonials";
+import Services from "./components/Services";
 
 const useStyles = makeStyles(
     (theme: any) => ({
         heroSection: {
-            height: '100vh',
+            height: '80vh',
             width: '100%',
             display: 'flex',
             alignItems: 'center',
@@ -23,7 +24,8 @@ const useStyles = makeStyles(
                 height: '80%'
             },
             [theme.breakpoints.down('md')]: {
-                flexDirection: 'column'
+                flexDirection: 'column',
+                height: 'auto'
             }
         },
         siteMotto: {
@@ -31,26 +33,47 @@ const useStyles = makeStyles(
             height: '100%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            [theme.breakpoints.down('md')]: {
+                width: '100%'
+            }
         },
         mottoWrapper: {
             lineHeight: 1,
             fontFamily: 'Arial',
             fontWeight: 'lighter',
-            color: theme.palette.warning.main
+            color: theme.palette.warning.main,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            [theme.breakpoints.down('md')]: {
+                padding: '0 16px'
+            }
+
         },
         mottoSmall: {
-            fontSize: '2rem'
+            fontSize: '2rem',
+            [theme.breakpoints.down('md')]: {
+                fontSize: '1.5rem',
+            }
         },
         mottoHeader: {
-            fontSize: '3rem'
+            fontSize: '3rem',
+            [theme.breakpoints.down('md')]: {
+                fontSize: '2rem',
+            }
         },
         collegeRanker: {
             fontFamily: 'Poppins',
             fontWeight: 700
         },
+        heroImgWrapper: {
+            [theme.breakpoints.down('md')]: {
+                display: 'none'
+            }
+        },
         heroMdImg: {
-            width: '80%',
+            width: '50%',
             objectFit: 'cover'
         },
         overviewSection: {
@@ -81,19 +104,19 @@ export default function WelcomePage() {
                 <div className={classes.heroSection}>
                     <div className={classes.siteMotto}>
                         <div className={classes.mottoWrapper}>
-                            <div className={classes.mottoSmall}>Let's go</div>
-                            <div className={classes.mottoHeader}>Take your <span className={classes.collegeRanker}>Best Test</span> Today!</div>
-                            <div className={classes.mottoSmall}>By <span className={classes.collegeRanker}>TheTestGuy</span></div>
+                            <div>
+                                <div className={classes.mottoSmall}>A Classroom of One</div>
+                                <div className={classes.mottoHeader}>Take your <span className={classes.collegeRanker}>Best Test</span> Today!</div>
+                                <div className={classes.mottoSmall}>By <span className={classes.collegeRanker}>TheTestGuy</span></div>
+                            </div>
                         </div>
                     </div>
-                    <div className={classes.siteMotto}>
+                    <div className={`${classes.siteMotto} ${classes.heroImgWrapper}`}>
                         <img src={CompareImg} alt="compare.png" className={classes.heroMdImg} />
                     </div>
                 </div>
             </div>
-            {/* <div className={classes.overviewSection}>
-                <img src="/assets/services-gif-2.gif" alt="services-gif-2.gif" className={classes.overviewImg} />
-            </div> */}
+            <Services />
             <Testimonials />
         </Layout>
     )

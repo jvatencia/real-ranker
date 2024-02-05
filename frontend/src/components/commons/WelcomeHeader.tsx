@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ResponsiveBox from "./ResponsiveBox";
+import ResponsiveBox from "../utilities/ResponsiveBox";
 import { makeStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';

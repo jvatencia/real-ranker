@@ -31,6 +31,22 @@ declare module '@mui/material/Button' {
   }
 }
 
+// Update the Button's color options to include a violet option
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    light: true;
+    dark: true;
+  }
+}
+
+// Update the Button's color options to include a violet option
+declare module '@mui/material/IconButton' {
+  interface IconButtonPropsColorOverrides {
+    light: true;
+    dark: true;
+  }
+}
+
 function App() {
 
   let theme = createTheme({

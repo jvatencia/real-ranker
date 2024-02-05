@@ -1,4 +1,4 @@
-import ResponsiveBox from "../../components/commons/ResponsiveBox";
+import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import PageBody from "../../components/commons/PageBody";
 import ButtonTabs from "../../components/commons/ButtonTabs";
 import { useEffect, useState } from "react";

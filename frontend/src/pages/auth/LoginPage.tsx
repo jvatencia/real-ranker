@@ -1,5 +1,5 @@
 import { Button, FormGroup, Paper, TextField } from "@mui/material";
-import ResponsiveBox from "../../components/commons/ResponsiveBox";
+import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import useAuthStore from "../../store/auth/auth.store";

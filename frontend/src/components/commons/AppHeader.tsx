@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles";
-import ResponsiveBox from "./ResponsiveBox";
+import ResponsiveBox from "../utilities/ResponsiveBox";
 import useAuthStore from "../../store/auth/auth.store";
 import { IconButton, Popover } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

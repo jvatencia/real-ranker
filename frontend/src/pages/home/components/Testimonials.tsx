@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player'
 import { SwiperSlide, Swiper, SwiperRef } from 'swiper/react';
 import { useInView } from 'react-intersection-observer';
+import ResponsiveBox from '../../../components/utilities/ResponsiveBox';
+import { IconButton } from '@mui/material';
+import { PauseOutlined, PlayArrowOutlined, VolumeOffOutlined, VolumeUpOutlined } from '@mui/icons-material';
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -10,7 +13,7 @@ const useStyles = makeStyles(
             width: '100%',
             height: '60vh',
             backgroundColor: theme.palette.primary.main,
-            padding: '10px 0',
+            padding: '10px 0px',
             position: 'relative',
             display: 'flex',
             alignItems: 'end',
@@ -47,6 +50,27 @@ const useStyles = makeStyles(
         },
         inactiveTestimonial: {
             opacity: '0.4'
+        },
+        testimonialSection: {
+            backgroundColor: theme.palette.primary.main,
+            padding: '16px 24px',
+            [theme.breakpoints.down('md')]: {
+                padding: '8px 12px'
+            }
+        },
+        sectionHeader: {
+            color: theme.palette.light.main,
+            margin: '20px 0',
+            fontFamily: 'Poppins',
+            fontSize: '48px',
+            [theme.breakpoints.down('md')]: {
+                fontSize: '36px'
+            }
+        },
+        videoBtns: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
         }
     })
 )
@@ -55,6 +79,8 @@ export default function Testimonials() {
     const swiperRef = useRef<SwiperRef>(null);
     const classes = useStyles();
     const [isPlaying, setIsPlaying] = useState(0);
+    const [videoPlayback, setVideoPlayback] = useState(false);
+    const [videoMuted, setVideoMuted] = useState(false);
     const { ref, inView, entry } = useInView({
         /* Optional options */
         threshold: 0,
@@ -96,6 +122,25 @@ export default function Testimonials() {
         swiperRef.current?.swiper.slideTo(video.id - 1);
     }
 
+    const handlePausePlayClick = () => {
+        if (!videoRef?.current?.paused) {
+            videoRef?.current?.pause();
+            setVideoPlayback(false);
+        } else {
+            videoRef?.current?.play();
+            setVideoPlayback(true);
+        }
+    }
+
+    const handleVideoMute = () => {
+        if (!videoRef?.current?.muted) {
+            setVideoMuted(true);
+        } else {
+            setVideoMuted(false);
+        }
+        videoRef.current!.muted = !videoRef.current!.muted;
+    }
+
     useEffect(() => {
         videoRef.current?.addEventListener("ended", onVideoEnd);
     }, []);
@@ -109,6 +154,7 @@ export default function Testimonials() {
                     played.then((res) => {
                         console.log(res)
                     }).catch((error) => console.log(error))
+                    setVideoPlayback(true);
                 }
             }
         }
@@ -121,8 +167,26 @@ export default function Testimonials() {
     }, [isPlaying, inView]);
 
     return (
-        <div>
-            <h3>What our family say</h3>
+        <div className={classes.testimonialSection}>
+            <ResponsiveBox>
+                <h3 className={classes.sectionHeader}>What our families say</h3>
+                <div className={classes.videoBtns}>
+                    <IconButton aria-label="mute" color="light" onClick={handleVideoMute}>
+                        {
+                            videoMuted ?
+                                <VolumeOffOutlined /> :
+                                <VolumeUpOutlined />
+                        }
+                    </IconButton>
+                    <IconButton aria-label="mute" color="light" onClick={handlePausePlayClick}>
+                        {
+                            videoPlayback ?
+                                <PauseOutlined /> :
+                                <PlayArrowOutlined />
+                        }
+                    </IconButton>
+                </div>
+            </ResponsiveBox>
             <div className={classes.testimonialWrapper} ref={ref}>
 
                 <video id='testimonialVideoBg' ref={videoRef} autoPlay={inView} className={classes.testimonialPlayer} muted={!inView} playsInline={inView}>
