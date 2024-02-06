@@ -34,3 +34,42 @@ export const PUBLIC_SERVICES = [
         description: "College applications are a branding exercise. Work with professional writers, editors, and branding experts to tell a story admissions counselors can't put down."
     }
 ];
+
+export const PUBLIC_TESTIMONIALS = [
+    {
+        id: 1,
+        url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Amy-60-second-version.mp4',
+        thumbnail: '/assets/testimonials/amy.png',
+        details: {
+            speaker: 'AMY',
+            content: 'We really felt that our daughter had a responsibility to Jacob and to be prepared'
+        }
+    },
+    {
+        id: 2,
+        url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Borezan-60-second-version.mp4',
+        thumbnail: '/assets/testimonials/ally.png',
+        details: {
+            speaker: 'ALLY',
+            content: 'Focus was not a strong suit for him so I was looking for someone who understood'
+        }
+    },
+    {
+        id: 3,
+        url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Gary-Pilnick-60-seconds.mp4',
+        thumbnail: '/assets/testimonials/gary.png',
+        details: {
+            speaker: 'GARY',
+            content: 'It was more than just taking exams'
+        }
+    },
+    {
+        id: 4,
+        url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Tolliver-60-second.mp4',
+        thumbnail: '/assets/testimonials/tolliver.png',
+        details: {
+            speaker: '',
+            content: 'He would be so flexible to work with... He is a kind of a tutor that cares about you as a person.'
+        }
+    },
+]

@@ -1,23 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { makeStyles } from '@mui/styles';
 import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player'
 import { SwiperSlide, Swiper, SwiperRef } from 'swiper/react';
 import { useInView } from 'react-intersection-observer';
 import ResponsiveBox from '../../../components/utilities/ResponsiveBox';
-import { IconButton } from '@mui/material';
+import { IconButton, Slide } from '@mui/material';
 import { PauseOutlined, PlayArrowOutlined, VolumeOffOutlined, VolumeUpOutlined } from '@mui/icons-material';
+import { PUBLIC_TESTIMONIALS } from '../../../utils';
 
 const useStyles = makeStyles(
     (theme: any) => ({
-        testimonialWrapper: {
-            width: '100%',
-            height: '60vh',
+        testimonialVideoWrapper: {
+            width: '60%',
+            height: '500px',
             backgroundColor: theme.palette.primary.main,
             padding: '10px 0px',
             position: 'relative',
             display: 'flex',
             alignItems: 'end',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            [theme.breakpoints.down('md')]: {
+                height: '400px',
+                width: '100%',
+            }
         },
         testimonialSwiper: {
             width: '100%',
@@ -30,15 +36,30 @@ const useStyles = makeStyles(
             userSelect: 'none'
         },
         testimonialAvatarWrapper: {
-            height: '100px',
-            width: '100px',
+            height: '80px',
+            width: '80px',
             objectFit: 'cover',
             borderRadius: '50%',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            transition: '0.3s ease-in-out',
+            transform: 'scale(1.2)',
+            [theme.breakpoints.down('md')]: {
+                height: '60px',
+                width: '60px',
+            }
         },
         testimonialAvatar: {
             height: '100%',
             width: '100%',
+        },
+        testimonialContent: {
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'center',
+            [theme.breakpoints.down('md')]: {
+                flexDirection: 'column'
+            }
         },
         testimonialPlayer: {
             width: '100%',
@@ -46,16 +67,73 @@ const useStyles = makeStyles(
             right: '0',
             bottom: '0',
             height: '100%',
-            zIndex: '0'
+            zIndex: '0',
+            [theme.breakpoints.down('md')]: {
+                objectFit: 'cover'
+            }
         },
         inactiveTestimonial: {
             opacity: '0.4'
         },
-        testimonialSection: {
-            backgroundColor: theme.palette.primary.main,
+        testimonialSliders: {
+            padding: '16px 0'
+        },
+        testimonialQuoteWrapper: {
+            width: '40%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '350px',
+            position: 'relative',
+            transform: 'translateX(20px)',
+            zIndex: 1,
+            [theme.breakpoints.down('md')]: {
+                height: '300px',
+                width: '95%',
+                transform: 'translateY(10px)',
+                margin: '0 auto'
+            }
+        },
+        testimonialQuoteCard: {
+            width: '100%',
+            height: '100%',
+            backgroundColor: theme.palette.light.main,
+            borderRadius: '5px',
+            position: 'absolute',
             padding: '16px 24px',
             [theme.breakpoints.down('md')]: {
-                padding: '8px 12px'
+                boxShadow: '0px 3px 3px rgba(0,0,0,0.3)'
+            }
+        },
+        testimonialQuoteCardTitle: {
+            fontSize: '36px',
+            fontFamily: 'Poppins',
+            color: theme.palette.primary.main,
+            height: '100px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
+        },
+        testimonialQuoteCardContent: {
+            fontSize: '20px',
+            fontFamily: 'Poppins',
+            fontStyle: 'italic',
+            color: theme.palette.primary.main,
+            height: 'calc(100% - 200px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        testimonialSection: {
+            backgroundColor: theme.palette.primary.main,
+            padding: '16px 0',
+            [theme.breakpoints.down('md')]: {
+                padding: '8px 0'
+            }
+        },
+        sectionHeaderWrapper: {
+            [theme.breakpoints.down('md')]: {
+                padding: '0 16px'
             }
         },
         sectionHeader: {
@@ -77,6 +155,7 @@ const useStyles = makeStyles(
 export default function Testimonials() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const swiperRef = useRef<SwiperRef>(null);
+    const testimonialWrapperRef = useRef<HTMLDivElement>(null);
     const classes = useStyles();
     const [isPlaying, setIsPlaying] = useState(0);
     const [videoPlayback, setVideoPlayback] = useState(false);
@@ -85,31 +164,9 @@ export default function Testimonials() {
         /* Optional options */
         threshold: 0,
     });
-    const videos = [
-        {
-            id: 1,
-            url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Amy-60-second-version.mp4',
-            thumbnail: '/assets/testimonials/amy.png'
-        },
-        {
-            id: 2,
-            url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Borezan-60-second-version.mp4',
-            thumbnail: '/assets/testimonials/ally.png'
-        },
-        {
-            id: 3,
-            url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Gary-Pilnick-60-seconds.mp4',
-            thumbnail: '/assets/testimonials/gary.png'
-        },
-        {
-            id: 4,
-            url: 'https://thetestguy.com/dev/wp-content/uploads/2023/12/Tolliver-60-second.mp4',
-            thumbnail: '/assets/testimonials/tolliver.png'
-        },
-    ];
+    const videos = PUBLIC_TESTIMONIALS;
 
     const slideChanged = (res: any) => {
-        // setIsPlaying(null);
         console.log('slideChanged!', res.realIndex)
         setIsPlaying(res.realIndex);
     };
@@ -119,7 +176,8 @@ export default function Testimonials() {
     }
 
     const onCardClick = (video: any, index: number) => {
-        swiperRef.current?.swiper.slideTo(video.id - 1);
+        console.log('card index', index);
+        swiperRef.current?.swiper.slideToLoop(index);
     }
 
     const handlePausePlayClick = () => {
@@ -141,67 +199,100 @@ export default function Testimonials() {
         videoRef.current!.muted = !videoRef.current!.muted;
     }
 
+
+    const checkIntersecting = () => {
+        if (entry?.isIntersecting) {
+            if (videoRef?.current) {
+                videoRef?.current?.load();
+                const played = videoRef.current?.play();
+                if (played !== undefined) {
+                    played.then(() => {
+                        setVideoPlayback(true);
+                    }).catch((error) => console.log(error))
+                }
+            }
+        }
+    }
+
     useEffect(() => {
         videoRef.current?.addEventListener("ended", onVideoEnd);
     }, []);
 
     useEffect(() => {
-        if (entry?.isIntersecting) {
-            if (videoRef && videoRef.current) {
+        checkIntersecting();
+    }, [isPlaying])
 
-                const played = videoRef.current?.play();
-                if (played !== undefined) {
-                    played.then((res) => {
-                        console.log(res)
-                    }).catch((error) => console.log(error))
-                    setVideoPlayback(true);
-                }
-            }
-        }
-    }, [entry])
 
     useEffect(() => {
-        console.log('inView Changed', inView);
-        console.log('videoRef', videoRef?.current);
-        videoRef?.current?.load();
-    }, [isPlaying, inView]);
+        console.log('[nowPlaying]', videos[isPlaying]?.url);
+    }, [inView]);
 
     return (
         <div className={classes.testimonialSection}>
-            <ResponsiveBox>
-                <h3 className={classes.sectionHeader}>What our families say</h3>
-                <div className={classes.videoBtns}>
-                    <IconButton aria-label="mute" color="light" onClick={handleVideoMute}>
-                        {
-                            videoMuted ?
-                                <VolumeOffOutlined /> :
-                                <VolumeUpOutlined />
-                        }
-                    </IconButton>
-                    <IconButton aria-label="mute" color="light" onClick={handlePausePlayClick}>
-                        {
-                            videoPlayback ?
-                                <PauseOutlined /> :
-                                <PlayArrowOutlined />
-                        }
-                    </IconButton>
+            <ResponsiveBox >
+                <div className={classes.sectionHeaderWrapper}>
+                    <h3 className={classes.sectionHeader}>What our families say</h3>
+                    <div className={classes.videoBtns}>
+                        <IconButton aria-label="mute" color="light" onClick={handleVideoMute}>
+                            {
+                                videoMuted ?
+                                    <VolumeOffOutlined /> :
+                                    <VolumeUpOutlined />
+                            }
+                        </IconButton>
+                        <IconButton aria-label="mute" color="light" onClick={handlePausePlayClick}>
+                            {
+                                videoPlayback ?
+                                    <PauseOutlined /> :
+                                    <PlayArrowOutlined />
+                            }
+                        </IconButton>
+                    </div>
                 </div>
             </ResponsiveBox>
-            <div className={classes.testimonialWrapper} ref={ref}>
+            <div className={classes.testimonialContent}>
+                <div className={classes.testimonialQuoteWrapper} ref={testimonialWrapperRef}>
+                    {
+                        videos.map((video, index) => (
+                            <Slide
+                                key={`swiperTestimonialQuote${video.id}${index}`}
+                                direction="right"
+                                appear={isPlaying === index}
+                                in={isPlaying === index}
+                                container={testimonialWrapperRef.current}
+                            >
 
-                <video id='testimonialVideoBg' ref={videoRef} autoPlay={inView} className={classes.testimonialPlayer} muted={!inView} playsInline={inView}>
-                    <source src={videos[isPlaying].url} />
-                </video>
+                                <div className={classes.testimonialQuoteCard}>
+                                    <div className={classes.testimonialQuoteCardTitle}>
+                                        {video.details.speaker}
+                                    </div>
+                                    <div className={classes.testimonialQuoteCardContent}>
+                                        "{video.details.content}"
+                                    </div>
+                                </div>
+                            </Slide>
+                        ))
+                    }
+
+                </div>
+                <div className={classes.testimonialVideoWrapper} ref={ref}>
+
+                    <video id='testimonialVideoBg' ref={videoRef} autoPlay={inView} className={classes.testimonialPlayer} muted={!inView} playsInline={inView}>
+                        <source src={videos[isPlaying].url} />
+                    </video>
+                </div>
+            </div>
+            <div className={classes.testimonialSliders}>
                 <Swiper
                     ref={swiperRef}
-                    spaceBetween={25}
-                    slidesPerView={3.5}
+                    spaceBetween={0}
+                    slidesPerView={3}
                     autoplay={false}
                     onSlideChange={slideChanged}
                     watchSlidesProgress={true}
                     className={classes.testimonialSwiper}
                     centeredSlides
-                // loop
+                    loop
                 >
                     {
                         videos.map((video: any, index: number) => (
