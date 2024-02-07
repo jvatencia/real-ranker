@@ -12,6 +12,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 import { useMediaQuery } from "@mui/material";
 import { devices } from "../../../utils";
 import CategorySliderModal from "../../../components/commons/CategorySliderModal";
+import FilterSlider from "../../../components/commons/FilterSlider";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -22,10 +23,10 @@ const useStyles = makeStyles(
             marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            // [theme.breakpoints.down('md')]: {
-            //     justifyContent: 'flex-end'
-            // }
+            justifyContent: 'flex-end',
+            [theme.breakpoints.down('md')]: {
+                justifyContent: 'space-between'
+            }
         },
         filterButton: {
             padding: '8px 16px',
@@ -43,7 +44,24 @@ const useStyles = makeStyles(
                 backgroundColor: theme.palette.secondary.main,
                 color: theme.palette.light.main
             }
-        }
+        },
+        resultContentWrapper: {
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center'
+        },
+        resultContentFilterSection: {
+            width: '200px',
+            padding: '10px'
+        },
+        resultContentSection: {
+            width: 'calc(100% - 180px)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            flexDirection: 'column',
+            padding: '0 10px'
+        },
     })
 );
 
@@ -65,7 +83,7 @@ const FilterButton = ({ classes, icon, title, onClick }: any) => {
 }
 export default function ResultTabContent() {
     const classes = useStyles();
-
+    const matches = useMediaQuery(devices.tablet);
     const selectedColleges = useCollegeStore((state) => state.selectedColleges);
     const buttons = [
         { key: 'list', title: 'List', icon: <SummarizeIcon /> },
@@ -93,24 +111,34 @@ export default function ResultTabContent() {
     return (
         <div className={classes.resultTabContainer}>
             <div className={classes.filterTabContainer}>
-                <FilterButton classes={classes} onClick={setSliderModalState} icon={<TuneIcon />} title="Sliders" />
+                {
+                    matches &&
+                    <FilterButton classes={classes} onClick={setSliderModalState} icon={<TuneIcon />} title="Sliders" />
+                }
                 <ButtonTabs
                     setActiveTab={setActiveTab}
                     activeTab={activeTab}
                     buttons={buttons}
                 />
             </div>
-            {
-                activeTab === 'list' ?
-                    selectedColleges.map((college, index: number) => (
-                        <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
-                    ))
-                    :
-                    <>
-                        <ResultCard colleges={selectedColleges} />
-                        <ComparisonSliders colleges={selectedColleges} />
-                    </>
-            }
+            <div className={classes.resultContentWrapper}>
+                <div className={classes.resultContentFilterSection}>
+                    <FilterSlider />
+                </div>
+                <div className={classes.resultContentSection}>
+                    {
+                        activeTab === 'list' ?
+                            selectedColleges.map((college, index: number) => (
+                                <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
+                            ))
+                            :
+                            <div style={{ width: '100%' }}>
+                                <ResultCard colleges={selectedColleges} />
+                                <ComparisonSliders colleges={selectedColleges} />
+                            </div>
+                    }
+                </div>
+            </div>
 
             <InfoModal
                 showDialog={showDialog}

@@ -12,6 +12,7 @@ const CollegeCardContainer = styled('div')(({ theme }) => ({
     background: '#fff',
     margin: '10px auto',
     borderRadius: '5px',
+    width: '100%',
     display: 'flex',
     color: theme.palette.dark.main,
     [theme.breakpoints.down('md')]: {
