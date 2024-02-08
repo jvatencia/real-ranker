@@ -65,7 +65,8 @@ const useStyles = makeStyles(
             flexDirection: 'column',
             padding: '0 10px',
             [theme.breakpoints.down('md')]: {
-                width: '100%'
+                width: '100%',
+                display: 'block'
             }
         },
     })

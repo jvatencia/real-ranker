@@ -33,7 +33,7 @@ export default function CategorySliderModal({ showDialog, handleClose }: Readonl
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Confirm
+                    Close
                 </Button>
             </DialogActions>
         </Dialog>
