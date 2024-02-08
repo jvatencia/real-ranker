@@ -10,8 +10,7 @@ import InfoModal from "../../../components/commons/InfoModal";
 import ComparisonSliders from "../../../components/commons/ComparisonSliders";
 import TuneIcon from '@mui/icons-material/Tune';
 import { useMediaQuery } from "@mui/material";
-import { devices } from "../../../utils";
-import { showToast } from "../../../utils/notification";
+import { devices, showToast } from "../../../utils";
 import CategorySliderModal from "../../../components/commons/CategorySliderModal";
 import FilterSlider from "../../../components/commons/FilterSlider";
 
@@ -117,7 +116,7 @@ export default function ResultTabContent() {
     }
 
     useEffect(() => {
-        showToast('Welcome User!');
+        showToast('Welcome back User!');
     }, []);
 
     return (
