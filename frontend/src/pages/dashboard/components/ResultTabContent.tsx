@@ -48,7 +48,10 @@ const useStyles = makeStyles(
         resultContentWrapper: {
             display: 'flex',
             alignItems: 'flex-start',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            [theme.breakpoints.down('md')]: {
+                width: '100%'
+            }
         },
         resultContentFilterSection: {
             width: '200px',
@@ -60,7 +63,10 @@ const useStyles = makeStyles(
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
             flexDirection: 'column',
-            padding: '0 10px'
+            padding: '0 10px',
+            [theme.breakpoints.down('md')]: {
+                width: '100%'
+            }
         },
     })
 );
@@ -122,9 +128,12 @@ export default function ResultTabContent() {
                 />
             </div>
             <div className={classes.resultContentWrapper}>
-                <div className={classes.resultContentFilterSection}>
-                    <FilterSlider />
-                </div>
+                {
+                    !matches &&
+                    <div className={classes.resultContentFilterSection}>
+                        <FilterSlider />
+                    </div>
+                }
                 <div className={classes.resultContentSection}>
                     {
                         activeTab === 'list' ?
