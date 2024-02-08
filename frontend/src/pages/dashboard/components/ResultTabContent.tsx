@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonTabs from "../../../components/commons/ButtonTabs";
 import CollegeCard from "../../../components/commons/CollegeCard";
 import useCollegeStore from "../../../store/college/college.store"
@@ -11,6 +11,7 @@ import ComparisonSliders from "../../../components/commons/ComparisonSliders";
 import TuneIcon from '@mui/icons-material/Tune';
 import { useMediaQuery } from "@mui/material";
 import { devices } from "../../../utils";
+import { showToast } from "../../../utils/notification";
 import CategorySliderModal from "../../../components/commons/CategorySliderModal";
 import FilterSlider from "../../../components/commons/FilterSlider";
 
@@ -114,6 +115,10 @@ export default function ResultTabContent() {
         console.log('setSliderModalState');
         setFilterModalState(!filterModalState);
     }
+
+    useEffect(() => {
+        showToast('Welcome User!');
+    }, []);
 
     return (
         <div className={classes.resultTabContainer}>
