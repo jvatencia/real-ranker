@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ComparisonCardProps {
-    index: number;
+    index?: number;
     college1: any;
     college2: any;
     openModal: (props: any) => void;
@@ -161,11 +161,12 @@ export default function ComparisonCard({
     ];
 
     useEffect(() => {
-        initData();
-    }, []);
+        initData([college1, college2]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [college1, college2]);
 
-    const initData = () => {
-        const items: any = [college1, college2].map((college) => {
+    const initData = (colleges: any[]) => {
+        const items: any = colleges.map((college) => {
             let npt43Key = college["npt43_priv"] > 0 ? "npt43_priv" : "npt43_pub";
             npt43Key =
                 college.hasOwnProperty(`${npt43Key}_absolute`) &&

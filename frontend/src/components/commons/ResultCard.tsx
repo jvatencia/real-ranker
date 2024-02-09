@@ -232,7 +232,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                             width: '100%'
                         }} key={`college${category.label.replace(/ /g, '')}Array${scoreIndex}`}>
                             <ResultCardPrimaryItemLabel
-                                style={{ color: theme.palette.dark.main }}
+                                style={{ color: theme.palette.light.main }}
                             >
                                 {item.key}
                             </ResultCardPrimaryItemLabel>
@@ -240,7 +240,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                 {
                                     colleges.map((college: any, index: number) => (
                                         <ResultCardPrimaryItem
-                                            style={{ color: theme.palette.dark.main }}
+                                            style={{ color: theme.palette.light.main }}
                                             key={`collegeSuccessScore${index}`}>
                                             {
                                                 college[category.key]?.moreInfo[scoreIndex]?.value != null &&

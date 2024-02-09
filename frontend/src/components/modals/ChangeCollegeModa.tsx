@@ -16,12 +16,16 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import CustomFormControl from "../styled/CustomFormControl";
 import type { DialogProps } from "@mui/material";
+import { sizes } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
         modalBody: {
             width: '500px',
-            padding: ' 24px 20px'
+            padding: ' 24px 20px',
+            [theme.breakpoints.down('md')]: {
+                width: sizes.mobileS
+            }
         }
     })
 )
@@ -61,7 +65,7 @@ export const ChangeCollegeModal: React.FC<ChangeCollegeCardProps> = props => {
     }
 
     const confirmCollege = () => {
-        handleClose(modalCollege, { college1, college2, index: collegeIndex, trigger });
+        handleClose(modalCollege, trigger);
     }
 
     useEffect(() => {

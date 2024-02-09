@@ -6,6 +6,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Typeahead } from "react-bootstrap-typeahead";
 import CustomFormControl from "../../../components/styled/CustomFormControl";
 import { useNavigate } from "react-router-dom";
+import { showToast } from "../../../utils";
 
 
 const useStyles = makeStyles(
@@ -42,9 +43,13 @@ const SelectUniversity = ({ activeStep, setActiveStep, outerClasses }: SelectUni
     }, [colleges]);
 
     const handleNext = () => {
-        if (selectedColleges.length > 0) {
+        if (selectedColleges.length > 1) {
             setSelectedCollege(selectedColleges);
             navigate('/dashboard');
+        } else {
+            showToast('Select atleast 2 colleges', {
+                variant: 'warning'
+            });
         }
     }
 

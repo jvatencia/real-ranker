@@ -1,4 +1,4 @@
-import { OptionsObject, SnackbarMessage, closeSnackbar, enqueueSnackbar } from "notistack";
+import { OptionsObject, SnackbarKey, SnackbarMessage, closeSnackbar, enqueueSnackbar } from "notistack";
 
 const defaultToastOptions: OptionsObject = {
     variant: 'success',
@@ -6,8 +6,8 @@ const defaultToastOptions: OptionsObject = {
         horizontal: 'right',
         vertical: 'top'
     },
-    autoHideDuration: 1000
+    autoHideDuration: 3000
 };
 
-export const showToast = (message: SnackbarMessage, options: OptionsObject = defaultToastOptions) => enqueueSnackbar(message, options);
-export const hideToast = closeSnackbar;
+export const showToast = (message: SnackbarMessage, options: OptionsObject = defaultToastOptions) => enqueueSnackbar(message, { ...defaultToastOptions, ...options });
+export const hideToast = (id: SnackbarKey) => closeSnackbar(id);
