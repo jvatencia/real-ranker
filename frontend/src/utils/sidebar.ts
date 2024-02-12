@@ -1,6 +1,7 @@
+import useAuthStore from "../store/auth/auth.store";
 import { NavLinkItem } from "./interfaces";
 
-export const sidebarItems: NavLinkItem[] = [
+export const publicItems: NavLinkItem[] = [
     { text: 'Colleges', items: [], url: '/colleges', isActive: false },
     {
         text: 'Coaching',
@@ -16,3 +17,14 @@ export const sidebarItems: NavLinkItem[] = [
     { text: 'About Us', items: [], url: '/about-us', isActive: false },
     { text: 'Login', items: [], url: '/login', isActive: false }
 ];
+
+export const authItems: NavLinkItem[] = [
+    { text: 'Colleges', items: [], url: '/colleges', isActive: false },
+    {
+        text: 'Logout', items: [], url: 'login',
+        handler: () => {
+            useAuthStore.getState().logout();
+        }, isActive: false
+    }
+
+]

@@ -5,6 +5,7 @@ import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery
 import { useEffect, useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
 import { devices } from "../../utils/breakpoints";
+import { Link } from "react-router-dom";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
@@ -164,7 +165,7 @@ const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, han
             <div
                 onClick={onLinkClick}
                 style={{
-                    color: theme.palette.secondary.main,
+                    color: theme.palette.warning.main,
                     textDecoration: 'underline',
                     cursor: 'pointer',
                     display: 'flex',
@@ -215,6 +216,7 @@ const GradeCustomToolTip = (props: ToolTipContentProps) => {
 function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
     const form = useCollegeStore((state) => state.form);
     const userScores = useCollegeStore((state) => state.userScore);
+    const theme = useTheme();
 
     useEffect(() => {
         console.log('[CollegeCard] userScores', userScores);
@@ -337,7 +339,15 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
             <CollegeInfo>
                 <CollegeInfoHeader>
                     <CollegeInfoContent>
-                        <div>{college['instnm']}</div>
+                        <div>
+                            <Link to={`/colleges/${college.id}`}
+                                style={{
+                                    textDecoration: 'none',
+                                    color: theme.palette.primary.main
+                                }}>
+                                {college['instnm']}
+                            </Link>
+                        </div>
                         <div>
 
                         </div>

@@ -1,12 +1,14 @@
 import { makeStyles } from "@mui/styles";
 import ResponsiveBox from "../utilities/ResponsiveBox";
 import useAuthStore from "../../store/auth/auth.store";
-import { IconButton, Popover } from "@mui/material";
+import { IconButton, Popover, useMediaQuery } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { devices } from "../../utils";
+import { MenuOutlined } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme: any) => ({
     headerShadow: {
@@ -73,6 +75,17 @@ const useStyles = makeStyles((theme: any) => ({
     },
     headerLogo: {
         width: '200px'
+    },
+    headerLogoText: {
+        fontFamily: 'Poppins',
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        color: theme.palette.primary.main,
+        useSelect: 'none',
+        letterSpacing: 0
+    },
+    headerLogoYellow: {
+        color: theme.palette.warning.dark
     }
 }));
 
@@ -80,9 +93,10 @@ export interface AppHeaderProps {
     unauthMode?: boolean;
 }
 
-function AppHeader({ unauthMode }: AppHeaderProps) {
+function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
     const classes = useStyles();
-    const isAuthenticated = useAuthStore((state => !!state.token));
+    const matches = useMediaQuery(devices.mobileL);
+    // const isAuthenticated = useAuthStore((state => !!state.token));
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -92,6 +106,11 @@ function AppHeader({ unauthMode }: AppHeaderProps) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const toggleMenu = () => {
+        const el = document.getElementById('sidebar');
+        el?.classList.toggle('active');
+    }
 
     const profilePopoverItems = [
         { icon: <PersonIcon />, title: 'Profile', handler: () => null },
@@ -106,10 +125,15 @@ function AppHeader({ unauthMode }: AppHeaderProps) {
             <ResponsiveBox style={{ padding: '0 16px' }} >
                 <div className={classes.headerContent}>
                     <div>
-                        <img src="/logo.png" alt="logo.png" className={classes.headerLogo} />
+                        {/* <img src="/logo.png" alt="logo.png" className={classes.headerLogo} /> */}
+                        <Link to={'/dashboard'} style={{
+                            textDecoration: 'none'
+                        }}>
+                            <div className={classes.headerLogoText}><span className={classes.headerLogoYellow}>Real</span> Ranker</div>
+                        </Link>
                     </div>
                     {
-                        isAuthenticated ?
+                        !matches ?
                             <div>
                                 <IconButton aria-label="profile" size="large"
                                     onClick={handleClick}
@@ -140,9 +164,10 @@ function AppHeader({ unauthMode }: AppHeaderProps) {
                                 </Popover>
                             </div>
                             :
-                            <div className={classes.realRankerLabel}>
-                                Real Ranker
-                            </div>
+                            <IconButton aria-label="menu" size="large"
+                                onClick={toggleMenu}>
+                                <MenuOutlined color="primary" fontSize="inherit" />
+                            </IconButton>
                     }
                 </div>
             </ResponsiveBox>

@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles";
-import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
+import { computeUserScore, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
 import { useEffect, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
         height: "100%",
         width: "30%",
         background: theme.palette.light.main,
+        [theme.breakpoints.down('md')]: {
+            fontSize: '12px'
+        }
     },
     comparisonRow: {
         display: "flex",
@@ -160,10 +163,7 @@ export default function ComparisonCard({
         },
     ];
 
-    useEffect(() => {
-        initData([college1, college2]);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [college1, college2]);
+    const userScores = useCollegeStore((state) => state.userScore);
 
     const initData = (colleges: any[]) => {
         const items: any = colleges.map((college) => {
@@ -315,12 +315,7 @@ export default function ComparisonCard({
                     score: college["adm_rate"],
                 },
                 userScore: {
-                    score:
-                        (getScore(college, "success") +
-                            getScore(college, "outcomes") +
-                            getScore(college, npt43Key) +
-                            getScore(college, "economic_inclusion_score")) /
-                        4,
+                    score: computeUserScore(college, userScores, form)
                 },
             };
         });
@@ -328,6 +323,13 @@ export default function ComparisonCard({
         setData(items);
         setMounted(true);
     };
+
+
+    useEffect(() => {
+        initData([college1, college2]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [college1, college2, userScores]);
+
 
     return (
         <div className={classes.comparisonCardContainer}>

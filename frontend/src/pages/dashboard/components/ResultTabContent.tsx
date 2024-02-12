@@ -55,7 +55,7 @@ const useStyles = makeStyles(
         },
         resultContentFilterSection: {
             width: '200px',
-            padding: '10px'
+            padding: '10px 16px'
         },
         resultContentSection: {
             width: 'calc(100% - 180px)',
@@ -139,19 +139,19 @@ export default function ResultTabContent() {
                         <FilterSlider />
                     </div>
                 }
-                <div className={classes.resultContentSection}>
-                    {
-                        activeTab === 'list' ?
+                {
+                    activeTab === 'list' ?
+                        <div className={classes.resultContentSection}>{
                             selectedColleges.map((college, index: number) => (
                                 <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
-                            ))
-                            :
-                            <div style={{ width: '100%' }}>
-                                <ResultCard colleges={selectedColleges} />
-                                <ComparisonSliders colleges={selectedColleges} />
-                            </div>
-                    }
-                </div>
+                            ))}
+                        </div>
+                        :
+                        <div style={{ width: '100%' }}>
+                            <ResultCard colleges={selectedColleges} />
+                            <ComparisonSliders colleges={selectedColleges} />
+                        </div>
+                }
             </div>
 
             <InfoModal

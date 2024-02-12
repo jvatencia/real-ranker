@@ -44,6 +44,7 @@ export const ChangeCollegeModal: React.FC<ChangeCollegeCardProps> = props => {
         college2,
         collegeIndex,
         trigger,
+        handleModalClose,
         handleClose,
         showDialog,
     } = props;
@@ -59,7 +60,7 @@ export const ChangeCollegeModal: React.FC<ChangeCollegeCardProps> = props => {
 
     };
 
-    const handleModalClose: DialogProps["onClose"] = (event, reason) => {
+    const onClose: DialogProps["onClose"] = (event, reason) => {
         if (reason && reason === "backdropClick")
             return;
     }
@@ -81,7 +82,7 @@ export const ChangeCollegeModal: React.FC<ChangeCollegeCardProps> = props => {
         <Dialog
             maxWidth={"lg"}
             open={showDialog}
-            onClose={handleModalClose}
+            onClose={onClose}
             aria-labelledby="max-width-dialog-title"
 
         >

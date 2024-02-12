@@ -2,11 +2,12 @@ import { styled, useTheme } from "@mui/system";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
-import { useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Button, IconButton, useMediaQuery } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
-import { RemoveOutlined } from "@mui/icons-material";
+import { ChevronLeftOutlined, RemoveOutlined, SortOutlined } from "@mui/icons-material";
+import SortCard from "./SortCard";
 
 // styled('div')(({ theme }) => ({}))
 const ResultCardContainer = styled('div')(({ theme }) => ({
@@ -58,7 +59,7 @@ const ResultCardCollegeToggle = styled('div')(({ theme }) => ({
     alignSelf: 'normal',
     borderColor: theme.palette.dark.main,
     borderLeftWidth: '1px',
-    color: theme.palette.light.main,
+    color: theme.palette.primary.main,
 }));
 
 const ResultCardSecondaryRow = styled('div')(({ theme }) => ({
@@ -269,8 +270,9 @@ function ResultCard({ colleges }: any) {
     const [data, setData] = useState([]);
     const [collegesDisplay, setCollegesDisplay] = useState([]);
     const [toDisplay, setToDisplay] = useState(2);
+    const [showSortCard, setShowSortCard] = useState(false);
     const form = useCollegeStore((state) => state.form);
-    // const userScores = useCollegeStore((state) => state.userScore);
+    const userScores = useCollegeStore((state) => state.userScore);
     const matches = useMediaQuery('(max-width:700px)');
     const categories = [
         {
@@ -328,62 +330,17 @@ function ResultCard({ colleges }: any) {
             ]
         }
     ];
-    useEffect(() => {
-        setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
-        initData(colleges);
-    }, []);
 
-    useEffect(() => {
-        setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [toDisplay]);
-
-
-    useEffect(() => {
-        initToDisplay();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matches]);
-
-    useEffect(() => {
-        console.log('screen matches,', matches);
-        console.log('current index:', index);
-        console.log('no of items to display: ', toDisplay);
-        console.log('no of colleges: ', data.length);
-        setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index]);
-
-    useEffect(() => {
-        initToDisplay();
-        console.log(data);
-    }, [data]);
-
-    const initToDisplay = () => {
-        if (!matches) {
-            setToDisplay(4);
-        } else {
-            setToDisplay(2);
-        }
-    }
-
-    const nextPage = () => {
-        if (index + toDisplay <= data.length) {
-            setIndex((oldValue) => (oldValue + toDisplay));
-        }
-    }
-
-    const prevPage = () => {
-        setIndex((oldValue) => (oldValue - toDisplay));
-    }
-
-    const buttonsDisplay = index > 0;
 
     const initData = (colleges: Array<any>) => {
-        const items: any = colleges.map((college) => {
+        setMounted(false);
+
+        const items: any = colleges.map((college, index) => {
             let npt43Key = college['npt43_priv'] > 0 ? 'npt43_priv' : 'npt43_pub';
             npt43Key = college.hasOwnProperty(`${npt43Key}_absolute`) && college.hasOwnProperty(`${npt43Key}_relative`) ? npt43Key : 'npt43';
 
             return {
+                order: index,
                 name: college['instnm'],
                 displayLabels: ['success', 'value', 'cost', 'outcomes', 'diversity'],
                 cost: {
@@ -449,90 +406,176 @@ function ResultCard({ colleges }: any) {
         setMounted(true);
     }
 
+    useEffect(() => {
+        initData(colleges);
+    }, []);
+
+    useMemo(() => {
+        if (mounted) {
+            initData(colleges);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userScores, mounted]);
+
+    useEffect(() => {
+        setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [toDisplay]);
+
+
+    useEffect(() => {
+        initToDisplay();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [matches]);
+
+    useEffect(() => {
+        console.log('screen matches,', matches);
+        console.log('current index:', index);
+        console.log('no of items to display: ', toDisplay);
+        console.log('no of colleges: ', data.length);
+        setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index]);
+
+    useEffect(() => {
+        initToDisplay();
+        setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
+        console.log(data);
+    }, [data]);
+
+    const initToDisplay = () => {
+        if (!matches) {
+            setToDisplay(4);
+        } else {
+            setToDisplay(2);
+        }
+    }
+
+    const nextPage = () => {
+        if (index + toDisplay <= data.length) {
+            setIndex((oldValue) => (oldValue + toDisplay));
+        }
+    }
+
+    const prevPage = () => {
+        setIndex((oldValue) => (oldValue - toDisplay));
+    }
+
+    const togggleSortCard = () => {
+        setShowSortCard(!showSortCard);
+    }
+
+    const buttonsDisplay = index > 0;
+
+
     return (
         <>
             {mounted &&
-                <ResultCardContainer>
-                    <ResultCardHeader>
-                        {
-                            index > 0 &&
-                            <div style={{ width: '20px' }}></div>
-                        }
-                        <ResultCardHeaderContent style={{
-                            width: buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)',
-                            flex: '0 0 ' + (buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)')
-                        }}>
-                            {
-                                collegesDisplay.map((college: any) => (
-                                    <ResultCardCollegeHeader key={`college${college['name'].replace(' ', '')}`}>
-                                        {college['name']}
-                                    </ResultCardCollegeHeader>
-                                ))
-                            }
-                        </ResultCardHeaderContent>
-                        <div style={{ width: '20px' }}></div>
-                    </ResultCardHeader>
-                    <ResultCardHeader style={{ borderColor: theme.palette.dark.main, backgroundColor: theme.palette.light.main }}>
-                        {
-                            index > 0 &&
-                            <ResultCardCollegeToggle onClick={prevPage}>
-                                <ChevronLeftIcon fontSize={'small'} />
-                            </ResultCardCollegeToggle>
-                        }
-                        <ResultCardHeaderContent
-                            style={{
-                                justifyContent: 'flex-start',
-                                alignItems: 'flex-start',
-                                flexDirection: 'column',
-                                width: buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)',
-                                flex: '0 0 ' + (buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)')
-                            }}>
+                <>
 
-                            <ResultCardPrimaryRow style={{ justifyContent: 'space-between', backgroundColor: theme.palette.secondary.main }}>
-                                <ResultCardPrimaryItemLabel>Your Score</ResultCardPrimaryItemLabel>
-                                <ResultCardPrimaryItemContainer>
+                    <div style={{
+                        textAlign: 'left',
+                        marginBottom: '10px'
+                    }}>
+                        <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={togggleSortCard}
+                            startIcon={!showSortCard ? <SortOutlined /> : <ChevronLeftOutlined />}
+                        >
+                            {!showSortCard ? 'Sort' : 'Summary View'}
+                        </Button>
+                    </div>
+
+                    {showSortCard ?
+                        <SortCard
+                            items={data}
+                            setItems={setData}
+                        /> :
+                        <ResultCardContainer>
+                            <ResultCardHeader>
+                                {
+                                    index > 0 &&
+                                    <div style={{ width: '20px' }}></div>
+                                }
+                                <ResultCardHeaderContent style={{
+                                    width: buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)',
+                                    flex: '0 0 ' + (buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)')
+                                }}>
                                     {
                                         collegesDisplay.map((college: any) => (
-                                            <ResultCardPrimaryItem key={`collegeUserScore${college['name'].replace(' ', '')}`}>
-                                                <div>{(college.userScore * 100).toFixed(2)}</div>
-                                            </ResultCardPrimaryItem>
+                                            <ResultCardCollegeHeader key={`college${college['name'].replace(' ', '')}`}>
+                                                {college['name']}
+                                            </ResultCardCollegeHeader>
                                         ))
                                     }
-                                </ResultCardPrimaryItemContainer>
-                            </ResultCardPrimaryRow>
+                                </ResultCardHeaderContent>
+                                <div style={{ width: '20px' }}></div>
+                            </ResultCardHeader>
+                            <ResultCardHeader style={{ borderColor: theme.palette.dark.main, backgroundColor: theme.palette.light.main }}>
+                                {
+                                    index > 0 &&
+                                    <ResultCardCollegeToggle onClick={prevPage}>
+                                        <ChevronLeftIcon fontSize={'small'} color="primary" />
+                                    </ResultCardCollegeToggle>
+                                }
+                                <ResultCardHeaderContent
+                                    style={{
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'flex-start',
+                                        flexDirection: 'column',
+                                        width: buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)',
+                                        flex: '0 0 ' + (buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)')
+                                    }}>
 
-                            <ResultCardSecondaryRow style={{ justifyContent: 'space-between' }}>
-                                <ResultCardSecondaryItemLabel>Acceptance Rate</ResultCardSecondaryItemLabel>
-                                <ResultCardSecondaryItemContainer>
+                                    <ResultCardPrimaryRow style={{ justifyContent: 'space-between', backgroundColor: theme.palette.secondary.main }}>
+                                        <ResultCardPrimaryItemLabel>Your Score</ResultCardPrimaryItemLabel>
+                                        <ResultCardPrimaryItemContainer>
+                                            {
+                                                collegesDisplay.map((college: any) => (
+                                                    <ResultCardPrimaryItem key={`collegeUserScore${college['name'].replace(' ', '')}`}>
+                                                        <div>{(college.userScore * 100).toFixed(2)}</div>
+                                                    </ResultCardPrimaryItem>
+                                                ))
+                                            }
+                                        </ResultCardPrimaryItemContainer>
+                                    </ResultCardPrimaryRow>
+
+                                    <ResultCardSecondaryRow style={{ justifyContent: 'space-between' }}>
+                                        <ResultCardSecondaryItemLabel>Acceptance Rate</ResultCardSecondaryItemLabel>
+                                        <ResultCardSecondaryItemContainer>
+                                            {
+                                                collegesDisplay.map((college: any) => (
+                                                    <ResultCardSecondaryItem
+                                                        style={{ height: 40 }}
+                                                        key={`collegeAcceptance${college['name'].replace(' ', '')}`}>
+                                                        {toPercent(college.admissionRate)}
+                                                    </ResultCardSecondaryItem>
+                                                ))
+                                            }
+                                        </ResultCardSecondaryItemContainer>
+                                    </ResultCardSecondaryRow>
                                     {
-                                        collegesDisplay.map((college: any) => (
-                                            <ResultCardSecondaryItem
-                                                style={{ height: 40 }}
-                                                key={`collegeAcceptance${college['name'].replace(' ', '')}`}>
-                                                {toPercent(college.admissionRate)}
-                                            </ResultCardSecondaryItem>
+                                        categories.map((category, index) => (
+                                            <PrimaryToggleRow
+                                                key={`primaryToggleRow${category.label.replace(/ /g, '')}${index}`}
+                                                category={category}
+                                                colleges={collegesDisplay}
+                                                theme={theme}
+                                                scoreLabels={category.scores}
+                                            />
                                         ))
                                     }
-                                </ResultCardSecondaryItemContainer>
-                            </ResultCardSecondaryRow>
-                            {
-                                categories.map((category, index) => (
-                                    <PrimaryToggleRow
-                                        key={`primaryToggleRow${category.label.replace(/ /g, '')}${index}`}
-                                        category={category}
-                                        colleges={collegesDisplay}
-                                        theme={theme}
-                                        scoreLabels={category.scores}
-                                    />
-                                ))
-                            }
 
-                        </ResultCardHeaderContent>
-                        <ResultCardCollegeToggle onClick={nextPage}>
-                            <ChevronRightIcon fontSize={'small'} />
-                        </ResultCardCollegeToggle>
-                    </ResultCardHeader>
-                </ResultCardContainer>
+                                </ResultCardHeaderContent>
+                                <ResultCardCollegeToggle onClick={nextPage}>
+                                    <ChevronRightIcon fontSize={'small'} color="primary" />
+                                </ResultCardCollegeToggle>
+                            </ResultCardHeader>
+                        </ResultCardContainer>
+                    }
+
+                </>
             }
         </>
     );

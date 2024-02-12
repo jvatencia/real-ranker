@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles"
 import { NavLinkItem } from "../../utils/interfaces/nav-link";
 import { ClickAwayListener, useMediaQuery } from "@mui/material";
-import { devices, sidebarItems } from "../../utils";
+import { authItems, devices, publicItems } from "../../utils";
 import { useEffect } from "react";
 import SidebarItem from "../commons/SidebarItem";
 
@@ -29,7 +29,7 @@ export default function Sidebar({ authenticated }: Readonly<SidebarProps>) {
     const classes = useStyles();
 
     const matches = useMediaQuery(devices.laptopS);
-    const items = !authenticated ? sidebarItems : [];
+    const items = !authenticated ? publicItems : authItems;
     useEffect(() => {
         toggleMenu();
 

@@ -64,7 +64,7 @@ export default function DashboardPage() {
     }
 
     return (
-        <ResponsiveBox hasPadding style={{ marginTop: '20px' }}>
+        <ResponsiveBox style={{ marginTop: '20px' }}>
             <PageBody>
                 <div className={classes.tabContainer}>
                     <ButtonTabs

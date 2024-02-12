@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLinkItem } from "../../utils/interfaces/nav-link";
-import { sidebarItems } from "../../utils/sidebar";
+import { publicItems } from "../../utils/sidebar";
 import NavLink from "./NavLink";
 
 const useStyles = makeStyles(
@@ -70,7 +70,7 @@ const useStyles = makeStyles(
 
 export default function WelcomeHeader() {
     const classes = useStyles();
-    const links: NavLinkItem[] = sidebarItems;
+    const links: NavLinkItem[] = publicItems;
 
     const toggleMenu = () => {
         const el = document.getElementById('sidebar');

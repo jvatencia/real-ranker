@@ -67,6 +67,7 @@ export default function ComparisonSliders({ colleges }: any) {
             </div>
 
             <ChangeCollegeModal
+                handleModalClose={handleClose}
                 handleClose={handleClose}
                 showDialog={showChangeModal}
                 {...dialogProps}

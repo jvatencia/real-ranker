@@ -35,6 +35,9 @@ const useStyles = makeStyles(
             "&:hover": {
                 backgroundColor: theme.palette.secondary.main,
                 color: theme.palette.light.main,
+            },
+            [theme.breakpoints.down('md')]: {
+                fontSize: '14px'
             }
         },
         tabButtonActive: {

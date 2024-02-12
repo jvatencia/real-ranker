@@ -6,6 +6,7 @@ import DashboardPage from "../pages/dashboard/DashboardPage";
 import GettingStartedPage from "../pages/getting-started/GettingStartedPage";
 import PrivateRoutes from "../components/utilities/PrivateRoutes";
 import WelcomePage from "../pages/home/WelcomePage";
+import CollegeProfile from "../pages/colleges/CollegeProfile";
 
 const routes: RouteObject[] = [
     {
@@ -23,7 +24,11 @@ const routes: RouteObject[] = [
             {
                 path: 'dashboard',
                 Component: DashboardPage,
-            }
+            },
+            {
+                path: 'colleges/:id',
+                Component: CollegeProfile,
+            },
         ]
     },
     {
