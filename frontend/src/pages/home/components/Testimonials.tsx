@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { makeStyles } from '@mui/styles';
 import { useEffect, useRef, useState } from 'react';
-import ReactPlayer from 'react-player'
 import { SwiperSlide, Swiper, SwiperRef } from 'swiper/react';
 import { useInView } from 'react-intersection-observer';
 import ResponsiveBox from '../../../components/utilities/ResponsiveBox';

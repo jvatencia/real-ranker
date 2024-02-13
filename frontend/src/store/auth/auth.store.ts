@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist, StateStorage, createJSONStorage } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer';
-import { authenticate } from "../../api/auth.api";
 import useHelper from "../helpers/helper.store";
 
 type AuthState = {

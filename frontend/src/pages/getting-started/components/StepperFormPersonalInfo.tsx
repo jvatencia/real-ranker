@@ -6,7 +6,9 @@ import useCollegeStore from "../../../store/college/college.store";
 
 const useStyles = makeStyles(
     (theme: any) => ({
+        personalInfoForm: {
 
+        }
     })
 );
 
@@ -50,7 +52,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
     return (
         <div className={outerClasses.formContainer}>
             <p>Real Ranker works for you, but it needs to know you.</p>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={classes.personalInfoForm}>
                 <FormGroup>
                     <CustomFormControl>
                         <TextField label="Name"

@@ -4,10 +4,7 @@ import {
     DialogContent,
     DialogActions,
     Button,
-    FormControl,
-    InputLabel,
     MenuItem,
-    Select,
     TextField,
 } from "@mui/material";
 import { CommonModalProps } from "../../utils/interfaces";
@@ -42,9 +39,7 @@ export const ChangeCollegeModal: React.FC<ChangeCollegeCardProps> = props => {
     const {
         college1,
         college2,
-        collegeIndex,
         trigger,
-        handleModalClose,
         handleClose,
         showDialog,
     } = props;

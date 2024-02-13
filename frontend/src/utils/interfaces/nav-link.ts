@@ -4,4 +4,5 @@ export interface NavLinkItem {
     url: string;
     handler?: () => any;
     isActive: boolean;
+    showWhen?: string;
 }

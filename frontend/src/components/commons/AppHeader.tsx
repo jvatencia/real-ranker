@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { devices } from "../../utils";
 import { MenuOutlined } from "@mui/icons-material";
+import Navbar from "./Navbar";
 
 const useStyles = makeStyles((theme: any) => ({
     headerShadow: {
@@ -16,10 +17,11 @@ const useStyles = makeStyles((theme: any) => ({
     },
     header: {
         width: '100%',
-        height: '80px',
+        minHeight: '80px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column',
         transition: '0.3s ease-in-out',
         backgroundColor: theme.palette.light.main,
         fontFamily: 'Poppins',
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme: any) => ({
         justifyContent: 'space-between',
         width: '100%',
         [theme.breakpoints.down('md')]: {
-            padding: '0 8px'
+            padding: '5px 8px'
         }
     },
     realRankerLabel: {
@@ -170,7 +172,12 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
                             </IconButton>
                     }
                 </div>
-            </ResponsiveBox>
+            </ResponsiveBox> {
+                !matches &&
+                <ResponsiveBox>
+                    <Navbar />
+                </ResponsiveBox>
+            }
         </header>
     );
 }

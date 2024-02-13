@@ -1,6 +1,5 @@
 import { makeStyles } from "@mui/styles"
-import { NavLinkItem } from "../../utils/interfaces/nav-link";
-import { ClickAwayListener, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { authItems, devices, publicItems } from "../../utils";
 import { useEffect } from "react";
 import SidebarItem from "../commons/SidebarItem";

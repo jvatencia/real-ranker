@@ -1,6 +1,6 @@
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Tooltip, TooltipProps, Zoom, tooltipClasses } from "@mui/material";
+import { Tooltip, TooltipProps, tooltipClasses } from "@mui/material";
 import { NavLinkItem } from '../../utils/interfaces';
 import { Link } from 'react-router-dom';
 import { styled, useTheme } from '@mui/system';

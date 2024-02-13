@@ -7,7 +7,9 @@ import useCollegeStore from "../../../store/college/college.store";
 
 const useStyles = makeStyles(
     (theme: any) => ({
+        otherInfoForm: {
 
+        }
     })
 );
 
@@ -54,7 +56,7 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
 
     return (
         <div className={outerClasses.formContainer}>
-            <form action="">
+            <form action="" className={classes.otherInfoForm}>
                 <FormGroup>
                     <CustomFormControl>
                         <TextField label="Grad Year"

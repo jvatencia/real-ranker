@@ -1,8 +1,7 @@
-import { Step, StepLabel, Stepper, useMediaQuery } from "@mui/material";
+import { Step, StepLabel, Stepper } from "@mui/material";
 import PageBody from "../../components/commons/PageBody";
 import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { useState } from "react";
-import { devices } from "../../utils/breakpoints";
 import StepperFormPersonalInfo from "./components/StepperFormPersonalInfo";
 import StepperFormOtherInfo from "./components/StepperFormOtherInfo";
 import StepperDisclaimer from "./components/StepperDisclaimer";

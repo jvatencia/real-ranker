@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
+import { forwardRef, useImperativeHandle, useLayoutEffect, useRef } from "react"
 import { CustomModalRef } from "../../utils";
 import ModalController from "../../utils/modal";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
@@ -8,7 +8,6 @@ function CustomModal() {
     const modalVisible = useHelper((state) => state.showModal);
     const setModalVisible = useHelper((state) => state.setModalVisibility);
     const modalRef = useRef<CustomModalRef>();
-    const [options, setOptions] = useState();
 
     useLayoutEffect(() => {
         ModalController.setModalRef(modalRef)
@@ -20,6 +19,7 @@ function CustomModal() {
             show: () => setModalVisible(true),
             hide: () => setModalVisible(false),
         }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
 

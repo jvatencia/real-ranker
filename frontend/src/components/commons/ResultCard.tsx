@@ -2,7 +2,7 @@ import { styled, useTheme } from "@mui/system";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, IconButton, useMediaQuery } from "@mui/material";
+import { Button, useMediaQuery } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
@@ -408,6 +408,7 @@ function ResultCard({ colleges }: any) {
 
     useEffect(() => {
         initData(colleges);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useMemo(() => {
@@ -441,6 +442,7 @@ function ResultCard({ colleges }: any) {
         initToDisplay();
         setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
         console.log(data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     const initToDisplay = () => {

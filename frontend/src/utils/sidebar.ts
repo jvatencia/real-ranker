@@ -1,5 +1,6 @@
 import useAuthStore from "../store/auth/auth.store";
 import { NavLinkItem } from "./interfaces";
+import { sizes } from "./breakpoints";
 
 export const publicItems: NavLinkItem[] = [
     { text: 'Colleges', items: [], url: '/colleges', isActive: false },
@@ -19,12 +20,20 @@ export const publicItems: NavLinkItem[] = [
 ];
 
 export const authItems: NavLinkItem[] = [
-    { text: 'Colleges', items: [], url: '/colleges', isActive: false },
     {
-        text: 'Logout', items: [], url: 'login',
+        text: 'Colleges',
+        items: [],
+        url: '/colleges',
+        isActive: false
+    },
+    {
+        text: 'Logout',
+        items: [], url: 'login',
+        showWhen: sizes.tablet,
         handler: () => {
             useAuthStore.getState().logout();
-        }, isActive: false
+        },
+        isActive: false
     }
 
 ]
