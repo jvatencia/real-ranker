@@ -3,6 +3,7 @@ import { authItems, sizes } from "../../utils";
 import { NavLinkItem } from "../../utils/interfaces";
 import NavLink from "./NavLink";
 import { useMediaQuery } from "@mui/material";
+import useAuthStore from "../../store/auth/auth.store";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -28,12 +29,17 @@ const NavbarItem = ({ link }: any) => {
 export default function Navbar() {
     const classes = useStyles();
     const links: NavLinkItem[] = authItems;
-
+    const authenticated = useAuthStore((state) => !!state.token);
     return (
-        <div className={classes.navbar}>
+        <>
             {
-                links.map((link) => <NavbarItem link={link} key={`navBarItem${link.url.replace(/\//, '_')}`} />)
+                authenticated &&
+                <div className={classes.navbar}>
+                    {
+                        links.map((link) => <NavbarItem link={link} key={`navBarItem${link.url.replace(/\//, '_')}`} />)
+                    }
+                </div>
             }
-        </div>
+        </>
     );
 }

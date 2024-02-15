@@ -22,8 +22,21 @@ export const publicItems: NavLinkItem[] = [
 export const authItems: NavLinkItem[] = [
     {
         text: 'Colleges',
-        items: [],
+        items: [
+            {
+                text: 'Search Collge',
+                items: [],
+                url: '/college-search',
+                isActive: false
+            }
+        ],
         url: '/colleges',
+        isActive: false
+    },
+    {
+        text: 'Compare Colleges',
+        items: [],
+        url: '/colleges-compare',
         isActive: false
     },
     {

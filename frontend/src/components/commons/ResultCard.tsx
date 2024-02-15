@@ -245,7 +245,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                             key={`collegeSuccessScore${index}`}>
                                             {
                                                 college[category.key]?.moreInfo[scoreIndex]?.value != null &&
-                                                <div>{toLetterGrade(college[category.key].moreInfo[scoreIndex].value)}</div>
+                                                <div>{college[category.key].moreInfo[scoreIndex].value}</div>
                                             }
                                         </ResultCardPrimaryItem>
                                     ))
