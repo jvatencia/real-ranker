@@ -1,8 +1,8 @@
 import { Button, ClassNameMap, FormGroup, MenuItem, TextField } from "@mui/material";
-import CustomFormControl from "../../../components/styled/CustomFormControl";
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";
+import { CustomFormControl } from "../../../components/styled";
 
 
 const useStyles = makeStyles(

@@ -10,7 +10,8 @@ const useStyles = makeStyles(
         },
         tabButton: {
             padding: '8px 16px',
-            border: '1px solid ' + theme.palette.dark.main,
+            border: '1px solid ' + theme.palette.primary.main,
+            color: theme.palette.primary.main,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

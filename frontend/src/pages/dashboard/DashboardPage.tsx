@@ -6,12 +6,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import useCollegeStore from "../../store/college/college.store";
 import ResultTabContent from "./components/ResultTabContent";
 import { makeStyles } from "@mui/styles";
+import GraphTabContent from "./components/GraphTabContent";
 
 const getTabContent = ({ activeTab }: any) => {
     switch (activeTab) {
         case 'result': return <ResultTabContent />;
         case 'college_profile': return null;
-        case 'graph': return null;
+        case 'graph': return <GraphTabContent />;
     }
 }
 

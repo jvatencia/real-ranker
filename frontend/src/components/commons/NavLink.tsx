@@ -19,9 +19,12 @@ const useStyles = makeStyles(
             },
         },
         dropdownNavItem: {
-            padding: '16px 36px',
+            padding: '5px 36px',
             textAlign: 'left',
             cursor: 'pointer',
+            "&:not(:first-child)": {
+                borderTop: '1px solid rgba(0,0,0,0.3)'
+            }
         },
         dropdownNavItemText: {
             color: theme.palette.primary.main,
@@ -37,9 +40,13 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.light.main
         },
         toolTipNavItem: {
+            boxShadow: '0px 0px 3px rgba(0,0,0,0.3)',
+            borderRadius: '15px',
+            borderTopLeftRadius: '0px',
+            overflow: 'hidden',
             [`& .${tooltipClasses.tooltip}`]: {
-                backgroundColor: theme.palette.light.main
-            }
+                backgroundColor: theme.palette.light.main,
+            },
         }
     })
 );

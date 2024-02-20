@@ -72,4 +72,13 @@ export const PUBLIC_TESTIMONIALS = [
             content: 'He would be so flexible to work with... He is a kind of a tutor that cares about you as a person.'
         }
     },
-]
+];
+
+export const COLOR_PALETTES = [
+    '#53359f',
+    '#84e1a9',
+    '#f8cf40',
+    '#412a7c',
+    '#f28291',
+    '#222224'
+];

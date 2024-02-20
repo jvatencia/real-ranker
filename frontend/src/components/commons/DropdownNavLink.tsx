@@ -7,7 +7,7 @@ import { styled, useTheme } from '@mui/system';
 import { useState } from 'react';
 
 const NavToolTip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
+    <Tooltip arrow {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: theme.palette.light.main,
@@ -16,6 +16,12 @@ const NavToolTip = styled(({ className, ...props }: TooltipProps) => (
         fontSize: 12,
         padding: 10,
     },
+    [`& .${tooltipClasses.arrow}`]: {
+        color: theme.palette.light.main
+    },
+    [`& .${tooltipClasses.popper}`]: {
+        border: '1px solid rgba(0,0,0,0.3)'
+    }
 }));
 
 interface DropdownNavLinkProps {

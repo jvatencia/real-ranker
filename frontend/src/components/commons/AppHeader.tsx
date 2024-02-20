@@ -13,7 +13,7 @@ import Navbar from "./Navbar";
 
 const useStyles = makeStyles((theme: any) => ({
     headerShadow: {
-        boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.3)',
+        boxShadow: '0 4px 6px -6px rgba(0,0,0,.24), 0 2px 3px -3px rgba(0,0,0,.24)',
     },
     header: {
         width: '100%',
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: any) => ({
         transition: '0.3s ease-in-out',
         backgroundColor: theme.palette.light.main,
         fontFamily: 'Poppins',
+        borderBottom: '1px solid rgba(0,0,0,0.3)',
         [theme.breakpoints.down('md')]: {
             height: '56px',
             boxShadow: 'none'

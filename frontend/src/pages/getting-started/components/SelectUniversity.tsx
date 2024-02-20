@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";
 import { useShallow } from "zustand/react/shallow";
 import { Typeahead } from "react-bootstrap-typeahead";
-import CustomFormControl from "../../../components/styled/CustomFormControl";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../../../utils";
+import { CustomFormControl } from "../../../components/styled";
 
 
 const useStyles = makeStyles(

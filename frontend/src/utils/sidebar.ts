@@ -24,11 +24,11 @@ export const authItems: NavLinkItem[] = [
         text: 'Colleges',
         items: [
             {
-                text: 'Search Collge',
+                text: 'Compare Collge',
                 items: [],
-                url: '/college-search',
+                url: '/colleges/compare',
                 isActive: false
-            }
+            },
         ],
         url: '/colleges',
         isActive: false

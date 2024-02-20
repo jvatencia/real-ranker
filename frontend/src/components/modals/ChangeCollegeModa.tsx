@@ -11,9 +11,9 @@ import { CommonModalProps } from "../../utils/interfaces";
 import useCollegeStore from "../../store/college/college.store";
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
-import CustomFormControl from "../styled/CustomFormControl";
 import type { DialogProps } from "@mui/material";
 import { sizes } from "../../utils";
+import { CustomFormControl } from "../styled";
 
 const useStyles = makeStyles(
     (theme: any) => ({

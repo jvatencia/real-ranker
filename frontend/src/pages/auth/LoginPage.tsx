@@ -3,9 +3,9 @@ import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import useAuthStore from "../../store/auth/auth.store";
-import CustomFormControl from "../../components/styled/CustomFormControl";
 import Layout from "../../components/layout/Layout";
 import { useNavigate } from "react-router-dom";
+import { CustomFormControl } from "../../components/styled";
 
 const useStyles = makeStyles(
     (theme: any) => ({

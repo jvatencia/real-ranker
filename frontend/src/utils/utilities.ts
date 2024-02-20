@@ -1,3 +1,5 @@
+import { COLOR_PALETTES } from "./constants";
+
 function toPercent(val: number) {
   return Math.round(val * 100) + '%';
 }
@@ -80,4 +82,13 @@ const computeUserScore = (college: any, userScores: any, form: any) => {
   }, 0);
 }
 
-export { toPercent, toLetterGrade, getScore, validateEmail, computeUserScore };
+const randomColor = () => {
+  const rand = Math.floor(Math.random() * COLOR_PALETTES.length);
+  console.log('[randomColor]', {
+    index: rand,
+    item: COLOR_PALETTES[rand]
+  });
+  return COLOR_PALETTES[rand];
+}
+
+export { toPercent, toLetterGrade, getScore, validateEmail, computeUserScore, randomColor };

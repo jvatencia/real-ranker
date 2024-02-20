@@ -8,7 +8,8 @@ import { devices } from "../../utils/breakpoints";
 import { Link } from "react-router-dom";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
-    boxShadow: '0px 4px 5px rgba(0,0,0,0.3)',
+    boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
+    border: '1px solid ' + theme.palette.primary.main,
     padding: '20px',
     background: '#fff',
     margin: '10px auto',
@@ -218,11 +219,6 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
     const userScores = useCollegeStore((state) => state.userScore);
     const theme = useTheme();
 
-    useEffect(() => {
-        console.log('[CollegeCard] userScores', userScores);
-
-    }, [userScores]);
-
     const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
         return weights.reduce((a: number, b: number, index: number) => {
             return a + (b * nums[index]);
@@ -340,7 +336,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                 <CollegeInfoHeader>
                     <CollegeInfoContent>
                         <div>
-                            <Link to={`/colleges/${college.id}`}
+                            <Link to={`/college/${college.id}`}
                                 style={{
                                     textDecoration: 'none',
                                     color: theme.palette.primary.main
