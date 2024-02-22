@@ -40,8 +40,15 @@ export const authItems: NavLinkItem[] = [
         isActive: false
     },
     {
+        text: 'Profile',
+        items: [],
+        showWhen: sizes.tablet,
+        url: '/profile',
+        isActive: false
+    },
+    {
         text: 'Logout',
-        items: [], url: 'login',
+        items: [], url: '/login',
         showWhen: sizes.tablet,
         handler: () => {
             useAuthStore.getState().logout();

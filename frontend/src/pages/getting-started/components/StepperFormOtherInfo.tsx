@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";
 import { CustomFormControl } from "../../../components/styled";
+import { FAMILY_INCOME_RANGE } from "../../../utils";
 
 
 const useStyles = makeStyles(
@@ -31,7 +32,8 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
         firstGen: '',
         academicDisruption: '',
         upwardTrajectory: '',
-        familyIncome: 3
+        familyIncome: 3,
+        activity: ''
     });
 
     const handleNext = () => {
@@ -119,11 +121,13 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                             onChange={(e) => handleInputChange(e, 'familyIncome')}
                             value={form.familyIncome}
                         >
-                            <MenuItem value={1}>$0 - $30k</MenuItem>
-                            <MenuItem value={2}>$30k - $48k</MenuItem>
-                            <MenuItem value={3}>$48k - $75k</MenuItem>
-                            <MenuItem value={4}>$75k - $110k</MenuItem>
-                            <MenuItem value={5}>$110k +</MenuItem>
+                            {
+                                FAMILY_INCOME_RANGE.map((item, index) => (
+                                    <MenuItem value={item.value} key={`familyIncomeRangeMenuItem${index}${item.value}`}>
+                                        {item.text}
+                                    </MenuItem>
+                                ))
+                            }
                         </TextField>
                     </CustomFormControl>
                 </FormGroup>

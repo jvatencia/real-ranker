@@ -82,3 +82,11 @@ export const COLOR_PALETTES = [
     '#f28291',
     '#222224'
 ];
+
+export const FAMILY_INCOME_RANGE = [
+    { text: '$0 - $30k', value: 1 },
+    { text: '$30k - $48k', value: 2 },
+    { text: '$48k - $75k', value: 3 },
+    { text: '$75k - $110k', value: 4 },
+    { text: '$110k +', value: 5 },
+]

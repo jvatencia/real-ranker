@@ -6,7 +6,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { devices } from "../../utils";
 import { MenuOutlined } from "@mui/icons-material";
 import Navbar from "./Navbar";
@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: any) => ({
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         [theme.breakpoints.down('md')]: {
             height: '56px',
+            minHeight: 'unset',
             boxShadow: 'none'
         }
     },
@@ -85,7 +86,10 @@ const useStyles = makeStyles((theme: any) => ({
         fontSize: '2rem',
         color: theme.palette.primary.main,
         useSelect: 'none',
-        letterSpacing: 0
+        letterSpacing: 0,
+        [theme.breakpoints.down('md')]: {
+            fontSize: '1.5rem'
+        }
     },
     headerLogoYellow: {
         color: theme.palette.warning.dark
@@ -101,6 +105,8 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
     const matches = useMediaQuery(devices.mobileL);
     // const isAuthenticated = useAuthStore((state => !!state.token));
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const navigate = useNavigate();
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -116,7 +122,12 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
     }
 
     const profilePopoverItems = [
-        { icon: <PersonIcon />, title: 'Profile', handler: () => null },
+        {
+            icon: <PersonIcon />, title: 'Profile', handler: () => {
+                navigate('/profile');
+                handleClose();
+            }
+        },
         { icon: <LogoutIcon />, title: 'Log Out', handler: logout },
     ];
 
