@@ -1,3 +1,4 @@
+import { Slide } from "@mui/material";
 import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles(
@@ -22,8 +23,10 @@ export default function PageBody({ children }: any) {
     const classes = useStyles();
 
     return (
-        <div className={classes.pageBody}>
-            {children}
-        </div>
+        <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+            <div className={classes.pageBody}>
+                {children}
+            </div>
+        </Slide>
     )
 }

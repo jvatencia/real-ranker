@@ -33,7 +33,7 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
         academicDisruption: '',
         upwardTrajectory: '',
         familyIncome: 3,
-        activity: ''
+        activity: []
     });
 
     const handleNext = () => {

@@ -89,4 +89,15 @@ export const FAMILY_INCOME_RANGE = [
     { text: '$48k - $75k', value: 3 },
     { text: '$75k - $110k', value: 4 },
     { text: '$110k +', value: 5 },
+];
+
+export const ACTIVITY_TYPE_LIST = [
+    { text: 'Sports', value: 'sports' },
+    { text: 'Customer Service', value: 'cs' },
+    { text: 'Education', value: 'education' },
+    { text: 'Others', value: 'others' },
 ]
+
+export const ROUTING = {
+    REDIRECT_AFTER_LOGIN: '/colleges/compare'
+}

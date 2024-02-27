@@ -35,7 +35,7 @@ export default function LoginPage() {
     }
 
     useEffect(() => {
-        if (auth != null) navigate('/dashboard');
+        if (auth != null) navigate('/colleges/compare');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth])
 

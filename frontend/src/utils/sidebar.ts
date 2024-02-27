@@ -21,6 +21,12 @@ export const publicItems: NavLinkItem[] = [
 
 export const authItems: NavLinkItem[] = [
     {
+        text: 'Home',
+        items: [],
+        url: '/home',
+        isActive: false
+    },
+    {
         text: 'Colleges',
         items: [
             {
@@ -34,9 +40,9 @@ export const authItems: NavLinkItem[] = [
         isActive: false
     },
     {
-        text: 'Compare Colleges',
+        text: 'My Timeline',
         items: [],
-        url: '/colleges-compare',
+        url: '/timeline',
         isActive: false
     },
     {

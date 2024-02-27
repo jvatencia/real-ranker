@@ -15,7 +15,8 @@ const useStyles = makeStyles(
             top: '0',
             zIndex: 1042,
             transition: '0.3s ease-in-out',
-            paddingTop: '56px'
+            paddingTop: '55px',
+            boxShadow: '3px 0px 5px rgba(0,0,0,0.3)'
         }
     })
 );

@@ -1,10 +1,11 @@
 import { makeStyles } from "@mui/styles";
 import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import PageBody from "../../components/commons/PageBody";
-import { EditOutlined } from "@mui/icons-material";
+import { Check, Close, EditOutlined } from "@mui/icons-material";
 import useCollegeStore from "../../store/college/college.store";
 import { useState } from "react";
 import FormDetails from "./components/FormDetails";
+import { Button } from "@mui/material";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -70,6 +71,9 @@ const useStyles = makeStyles(
             position: 'absolute',
             right: '5px',
             top: '5px'
+        },
+        profileForm: {
+            width: '100%'
         }
     })
 );
@@ -88,6 +92,7 @@ export default function ProfilePage() {
     const classes = useStyles();
     const [canEdit, setCanEdit] = useState(false);
     const form = useCollegeStore((state) => state.form);
+    const [formDetail, setFormDetail] = useState(form);
 
     const onEditButtonClick = () => {
         if (!canEdit) {
@@ -106,13 +111,25 @@ export default function ProfilePage() {
                     </div>
                     <div className={classes.profileNameWrapper}>
                         <div className={classes.bannerEditBtn}>
-                            <EditIconButton onClick={onEditButtonClick} />
+                            {
+                                canEdit ?
+                                    <>
+                                        <Button variant="contained" size="small" endIcon={<Check />} style={{ marginRight: '5px' }}>
+                                            Save
+                                        </Button>
+                                        <Button variant="outlined" size="small" endIcon={<Close />} onClick={onEditButtonClick}>
+                                            Cancel
+                                        </Button>
+                                    </>
+                                    :
+                                    <EditIconButton onClick={onEditButtonClick} />
+                            }
                         </div>
                         <div className={classes.profileName}>{form.name}</div>
                     </div>
                 </div>
-                <div>
-                    <FormDetails canEdit={canEdit} />
+                <div className={classes.profileForm}>
+                    <FormDetails canEdit={canEdit} formDetail={formDetail} setFormDetail={setFormDetail} />
                 </div>
             </PageBody>
         </ResponsiveBox>

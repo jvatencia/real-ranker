@@ -6,10 +6,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { devices } from "../../utils";
 import { MenuOutlined } from "@mui/icons-material";
 import Navbar from "./Navbar";
+import AppLogo from "./AppLogo";
 
 const useStyles = makeStyles((theme: any) => ({
     headerShadow: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme: any) => ({
     },
     header: {
         width: '100%',
-        minHeight: '80px',
+        height: '56px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -26,10 +27,10 @@ const useStyles = makeStyles((theme: any) => ({
         backgroundColor: theme.palette.light.main,
         fontFamily: 'Poppins',
         borderBottom: '1px solid rgba(0,0,0,0.3)',
-        [theme.breakpoints.down('md')]: {
-            height: '56px',
-            minHeight: 'unset',
-            boxShadow: 'none'
+        boxShadow: 'none',
+        [theme.breakpoints.up('sm')]: {
+            height: 'unset',
+            minHeight: '80px',
         }
     },
     headerContent: {
@@ -80,20 +81,7 @@ const useStyles = makeStyles((theme: any) => ({
     headerLogo: {
         width: '200px'
     },
-    headerLogoText: {
-        fontFamily: 'Poppins',
-        fontWeight: 'bold',
-        fontSize: '2rem',
-        color: theme.palette.primary.main,
-        useSelect: 'none',
-        letterSpacing: 0,
-        [theme.breakpoints.down('md')]: {
-            fontSize: '1.5rem'
-        }
-    },
-    headerLogoYellow: {
-        color: theme.palette.warning.dark
-    }
+
 }));
 
 export interface AppHeaderProps {
@@ -103,7 +91,7 @@ export interface AppHeaderProps {
 function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
     const classes = useStyles();
     const matches = useMediaQuery(devices.mobileL);
-    // const isAuthenticated = useAuthStore((state => !!state.token));
+
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const navigate = useNavigate();
 
@@ -139,12 +127,7 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
             <ResponsiveBox style={{ padding: '0 16px' }} >
                 <div className={classes.headerContent}>
                     <div>
-                        {/* <img src="/logo.png" alt="logo.png" className={classes.headerLogo} /> */}
-                        <Link to={'/dashboard'} style={{
-                            textDecoration: 'none'
-                        }}>
-                            <div className={classes.headerLogoText}><span className={classes.headerLogoYellow}>Real</span> Ranker</div>
-                        </Link>
+                        <AppLogo />
                     </div>
                     {
                         !matches ?

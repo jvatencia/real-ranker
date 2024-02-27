@@ -27,6 +27,10 @@ const routes: RouteObject[] = [
                 Component: DashboardPage,
             },
             {
+                path: 'colleges/compare',
+                Component: DashboardPage,
+            },
+            {
                 path: 'profile',
                 Component: ProfilePage,
             },

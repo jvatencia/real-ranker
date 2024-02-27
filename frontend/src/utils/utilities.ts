@@ -91,4 +91,14 @@ const randomColor = () => {
   return COLOR_PALETTES[rand];
 }
 
-export { toPercent, toLetterGrade, getScore, validateEmail, computeUserScore, randomColor };
+const dec2hex = (dec: number) => {
+  return dec.toString(16).padStart(2, "0")
+}
+
+const generateId = (len: number) => {
+  var arr = new Uint8Array((len || 40) / 2)
+  window.crypto.getRandomValues(arr)
+  return Array.from(arr, dec2hex).join('')
+}
+
+export { toPercent, toLetterGrade, getScore, validateEmail, computeUserScore, randomColor, generateId };

@@ -84,7 +84,7 @@ function App() {
       },
       light: {
         main: '#f4f5f8',
-        dark: '#d7d8da',
+        dark: '#898a8c',
         light: '#f5f6f9',
         contrastText: '#000000'
       },
