@@ -1,10 +1,11 @@
 import { makeStyles } from "@mui/styles";
 import { CustomFormControl } from "../../../components/styled";
 import useCollegeStore from "../../../store/college/college.store";
-import { Button, Checkbox, Chip, FormControlLabel, FormLabel, IconButton, InputAdornment, MenuItem, OutlinedInput, TextField } from "@mui/material";
+import { Button, Chip, IconButton, MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ACTIVITY_TYPE_LIST, FAMILY_INCOME_RANGE, generateId } from "../../../utils";
-import { AddCircle, Delete } from "@mui/icons-material";
+import { ACTIVITY_TYPE_LIST, FAMILY_INCOME_RANGE, showToast } from "../../../utils";
+import { AccessTime, Add, Delete } from "@mui/icons-material";
+import ActivityForm from "./ActivityForm";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -39,8 +40,8 @@ const useStyles = makeStyles(
             fontSize: '14px',
             color: theme.palette.primary.main,
         },
-        formDetailFormDesc: {
-            color: theme.palette.light.dark,
+        activityTitleDesc: {
+            color: theme.palette.secondary.light,
             fontSize: '12px'
         },
         activityItem: {
@@ -49,26 +50,26 @@ const useStyles = makeStyles(
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '8px 16px',
-            '&:not(:first-child)': {
-                borderTop: '1px solid rgba(0,0,0,0.1)'
-            }
-        },
-        activityForm: {
-            padding: '10px 16px',
             border: '1px solid ' + theme.palette.primary.main,
             boxShadow: '0px 3px 3px ' + theme.palette.primary.main,
-            marginTop: '20px'
-        },
-        activityFormTitle: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            color: theme.palette.primary.main,
+            borderRadius: '5px',
             marginBottom: '10px'
         },
-        activityFormActions: {
+        activityTitle: {
+            fontSize: '16px',
+            fontWweight: 'bold',
+        },
+        activityChips: {
+            padding: '0 5px',
+            "& *": {
+                marginRight: '5px'
+            }
+        },
+        newActivityBtnWrapper: {
             display: 'flex',
-            width: '100%',
-            justifyContent: 'flex-end'
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            marginTop: '15px'
         },
         formDetailsGroup: {
             width: '100%',
@@ -105,41 +106,44 @@ interface DisplayInputProps extends FormDetailsProps {
     type?: string
 }
 
+const ActivityItem = ({ activity, showDelete, deleteItem }: any) => {
+    const classes = useStyles();
+    return (
+        <div className={classes.activityItem}>
+            <div>
+                <div className={classes.activityTitle}>{activity.name}</div>
+                <div className={classes.activityTitleDesc}>
+                    {activity.description}
+                </div>
+                <div className={classes.activityChips}>
+                    <Chip size="small" label={ACTIVITY_TYPE_LIST.find((x) => x.value === activity.type)?.text} />
+                    {
+                        activity.isLeader &&
+                        <Chip size="small" color="warning" label={'Leader'} />
+                    }
+                    <Chip onDelete={() => null} deleteIcon={<AccessTime fontSize="small" />} size="small" color="primary" label={`${activity.hours} hrs`} />
+                </div>
+            </div>
+            {
+                showDelete &&
+                <div>
+                    <IconButton aria-label="delete"
+                        onClick={() => deleteItem(activity.id)}
+                        size="small">
+                        <Delete color="error" fontSize="inherit" />
+                    </IconButton>
+                </div>
+            }
+        </div>
+    );
+};
+
 const DisplayListInput = ({ canEdit, label, formValue, formKey, setValue, type }: DisplayInputProps) => {
     const classes = useStyles();
-    const [activityInput, setActivityInput] = useState<any>({
-        name: '',
-        hours: '',
-        type: 'sports',
-        description: '',
-        isLeader: false
-    });
-
-    const updateInput = (value: any, field: 'name' | 'hours' | 'type' | 'description' | 'isLeader') => {
-        console.log('[updateInput] value', value);
-        setActivityInput((oldValue: any) => ({ ...oldValue, [field]: value }));
-    }
-
-    useEffect(() => {
-        console.log('[DisplayListInput] formValue', formValue);
-    }, [formValue])
-
-    const addItem = () => {
-        if (formValue.length < 5) {
-            const newItem = { ...activityInput, id: generateId(10) };
-            setValue('activity', [...formValue, newItem]);
-            setActivityInput({
-                name: '',
-                hours: '',
-                type: 'sports',
-                description: '',
-                isLeader: false
-            });
-        }
-    };
-
+    const [showModal, setShowModal] = useState(false);
     const deleteItem = (id: string) => {
         setValue('activity', formValue.filter((item: any) => item.id !== id));
+        showToast('Activity deleted!');
     }
 
     return (
@@ -149,113 +153,45 @@ const DisplayListInput = ({ canEdit, label, formValue, formKey, setValue, type }
                     <CustomFormControl>
                         {
                             label.map((item: any, index: number) => (
-                                <div key={`displayListInputItem${index}`} className={classes.activityItem}>
-                                    <div>
-                                        <div>{item.name} | {item.hours} hrs</div>
-                                        <div>
-                                            <Chip size="small" label={ACTIVITY_TYPE_LIST.find((x) => x.value === item.type)?.text} />
-                                            {
-                                                item.isLeader &&
-                                                <Chip size="small" color="warning" label={'Leader'} />
-                                            }
-                                        </div>
-                                        <div className={classes.formDetailFormDesc}>
-                                            {item.description}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <IconButton aria-label="delete"
-                                            onClick={() => deleteItem(item.id)}
-                                            size="small">
-                                            <Delete color="error" fontSize="inherit" />
-                                        </IconButton>
-                                    </div>
-                                </div>
+                                <ActivityItem
+                                    activity={item}
+                                    showDelete={true}
+                                    deleteItem={deleteItem}
+                                    key={`displayListInputItem${index}`}
+                                />
                             ))
                         }
-                        <div className={classes.activityForm}>
-                            <div className={classes.activityFormTitle}>New Activity</div>
-                            <CustomFormControl>
-                                <FormLabel>Name</FormLabel>
-                                <OutlinedInput
-                                    size="small"
-                                    placeholder="Enter activity name"
-                                    type="text"
-                                    onChange={(e) => updateInput(e.target.value, 'name')}
-                                    value={activityInput.name}
-                                />
-                            </CustomFormControl>
-                            <CustomFormControl>
-                                <FormLabel>Hours</FormLabel>
-                                <OutlinedInput
-                                    size="small"
-                                    placeholder="Enter activity hours"
-                                    type="number"
-                                    onChange={(e) => updateInput(e.target.value, 'hours')}
-                                    value={activityInput.hours}
-                                />
-                            </CustomFormControl>
-                            <CustomFormControl>
-                                <FormLabel>Type</FormLabel>
-                                <TextField select
-                                    size="small"
-                                    value={activityInput.type}
-                                    onChange={(e) => updateInput(e.target.value, 'type')}>
-                                    {
-                                        ACTIVITY_TYPE_LIST.map((item, index) => (
-                                            <MenuItem value={item.value} key={`activityListMenuItem${index}${item.value}`}>
-                                                {item.text}
-                                            </MenuItem>
-                                        ))
-                                    }
-                                </TextField>
-                            </CustomFormControl>
-                            <CustomFormControl>
-                                <FormLabel>Description</FormLabel>
-                                <OutlinedInput
-                                    size="small"
-                                    placeholder="Enter activity description"
-                                    type="text"
-                                    multiline
-                                    rows={4}
-                                    onChange={(e) => updateInput(e.target.value, 'description')}
-                                    value={activityInput.description}
-                                />
-                            </CustomFormControl>
-                            <CustomFormControl>
-                                <FormControlLabel
-                                    control={<Checkbox onChange={(e) => updateInput(e.target.checked, 'isLeader')} />}
-                                    label="Leader" />
-                            </CustomFormControl>
-                            <div className={classes.activityFormActions}>
-                                <Button variant="contained" size="small" onClick={addItem} endIcon={<AddCircle />}>
-                                    Save
+                        <div className={classes.newActivityBtnWrapper}>
+                            {
+                                formValue.length < 5 &&
+                                <Button variant="outlined" startIcon={<Add />} onClick={() => setShowModal(true)}>
+                                    New Activity
                                 </Button>
-                            </div>
+                            }
                         </div>
                     </CustomFormControl> :
                     <div className={classes.formDetailFormValue}>
                         {
-                            label.map((item: any, index: number) => (
-                                <div
-                                    className={classes.formDetailFormListValue}
-                                    key={`displayListInputLabel${index}`}>
-                                    <div>{item.name} | {item.hours} hrs</div>
-                                    <div>
-                                        <Chip size="small" label={ACTIVITY_TYPE_LIST.find((x) => x.value === item.type)?.text} />
-                                        {
-                                            item.isLeader &&
-                                            <Chip size="small" color="warning" label={'Leader'} />
-                                        }
-                                    </div>
-                                    <div className={classes.formDetailFormDesc}>
-                                        {item.description}
-                                    </div>
-                                </div>
-                            ))
+                            label.length === 0 ?
+                                <div>
+                                    (Empty)
+                                </div> :
+                                label.map((item: any, index: number) => (
+                                    <ActivityItem
+                                        activity={item}
+                                        showDelete={false}
+                                        key={`displayListInputItem${index}`}
+                                    />
+                                ))
                         }
                     </div>
             }
+            <ActivityForm
+                isOpen={showModal}
+                setModal={setShowModal}
+                activities={formValue}
+                setActivities={setValue}
+            />
         </>
     )
 }
@@ -437,7 +373,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         label={FAMILY_INCOME_RANGE[formDetail.familyIncome - 1].text}
                     />
 
-                    <div className={classes.formDetailFormTitle}>Activity</div>
+                    <div className={classes.formDetailFormTitle}>Activities</div>
                     <DisplayListInput
                         canEdit={canEdit}
                         formKey={'activity'}

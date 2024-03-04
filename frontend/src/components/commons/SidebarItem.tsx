@@ -2,7 +2,7 @@ import { makeStyles } from "@mui/styles";
 import { NavLinkItem } from "../../utils/interfaces";
 import { Accordion, AccordionSummary, Typography, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -36,18 +36,25 @@ const useStyles = makeStyles(
 
 interface SidebarItemProps {
     item: NavLinkItem;
+    closeSidebar: any;
 }
-export default function SidebarItem({ item }: SidebarItemProps) {
+export default function SidebarItem({ item, closeSidebar }: SidebarItemProps) {
     const classes = useStyles();
+    const navigate = useNavigate();
+
+    const navigateTo = (url: string) => {
+        navigate(url);
+        closeSidebar()
+    };
 
     return (
         <>
             {
                 item.items.length === 0 ?
                     <div className={classes.sidebarItem}>
-                        <Link to={item.url} className={classes.sidebarItemText}>
+                        <div onClick={() => navigateTo(item.url)} className={classes.sidebarItemText}>
                             {item.text}
-                        </Link>
+                        </div>
                     </div>
                     :
                     <Accordion>
@@ -60,11 +67,11 @@ export default function SidebarItem({ item }: SidebarItemProps) {
                         </AccordionSummary>
                         <AccordionDetails>
                             {
-                                item.items.map((link) => (
+                                item.items.map((link: NavLinkItem) => (
                                     <div className={classes.sidebarAccordionItem} key={`navLinkItemAccordionSubItem${link.url.replace(/\//, '_')}`}>
-                                        <Link to={link.url} className={classes.sidebarItemText}>
+                                        <div onClick={() => navigateTo(link.url)} className={classes.sidebarItemText}>
                                             {link.text}
-                                        </Link>
+                                        </div>
                                     </div>
                                 ))
                             }

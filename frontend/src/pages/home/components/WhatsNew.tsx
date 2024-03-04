@@ -5,7 +5,8 @@ import { devices } from "../../../utils";
 import { MOCK_WHATS_NEW_VIDEOS } from "../../../utils/mocks";
 import { makeStyles } from "@mui/styles";
 import Calendar from "./Calendar";
-import WhatsNewViolinGraph from "./WhatsNewViolinGraph";
+import ChanceGraph from "../../../components/charts/ChanceGraph";
+import useCollegeStore from "../../../store/college/college.store";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -22,6 +23,11 @@ const useStyles = makeStyles(
             [theme.breakpoints.up('md')]: {
                 height: '250px'
             }
+        },
+        sectionTitle: {
+            fontFamily: 'Poppins',
+            fontWeight: 'bold',
+            color: theme.palette.primary.main
         }
     })
 )
@@ -31,7 +37,7 @@ export default function WhatsNew() {
     const swiperRef = useRef<SwiperRef>(null);
     const matches = useMediaQuery(devices.mobileL);
     const videoItems = MOCK_WHATS_NEW_VIDEOS;
-
+    const selectedColleges = useCollegeStore((state) => state.selectedColleges);
     const slideChanged = (event: any) => {
         console.log(event);
     };
@@ -57,7 +63,8 @@ export default function WhatsNew() {
                 }
             </Swiper>
             <hr />
-            <WhatsNewViolinGraph />
+            <div className={classes.sectionTitle}>Graph</div>
+            <ChanceGraph data={selectedColleges} />
             <hr />
             <Calendar />
         </div>

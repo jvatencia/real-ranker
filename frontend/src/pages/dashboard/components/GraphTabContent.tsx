@@ -3,10 +3,10 @@ import useCollegeStore from "../../../store/college/college.store";
 import CollegeGraphCard from "../../../components/commons/CollegeGraphCard";
 import { AppCustomCard } from "../../../components/styled";
 import { useEffect, useState } from "react";
-import { COLOR_PALETTES, computeUserScore, getScore, randomColor } from "../../../utils";
+import { COLOR_PALETTES, computeUserScore, devices, getScore, randomColor } from "../../../utils";
 import CommonRadarChart from "../../../components/charts/CommonRadarChart";
 import { useTheme } from "@mui/system";
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { FormControlLabel, Checkbox, useMediaQuery } from "@mui/material";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -62,6 +62,7 @@ export default function GraphTabContent() {
     const selectedColleges = useCollegeStore((state) => state.selectedColleges);
     const form = useCollegeStore((state) => state.form);
     const userScores = useCollegeStore((state) => state.userScore);
+    const matches = useMediaQuery(devices.tablet);
 
     const [mounted, setMounted] = useState(false);
     const [data, setData] = useState<any[]>([]);
@@ -165,18 +166,21 @@ export default function GraphTabContent() {
 
     return (
         <div className={classes.graphTabContainer}>
-            <div className={classes.filterTabContainer}>
-                <div>
-                    {
-                        collegeKeys.map((college) => (
-                            <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
-                                <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} />} label={college.title} />
-                                <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
-                            </div>
-                        ))
-                    }
+            {
+                matches &&
+                <div className={classes.filterTabContainer}>
+                    <div>
+                        {
+                            collegeKeys.map((college) => (
+                                <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
+                                    <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} />} label={college.title} />
+                                    <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
-            </div>
+            }
             <div className={classes.resultContentWrapper}>
                 <AppCustomCard className={classes.graphCard}>
                     {

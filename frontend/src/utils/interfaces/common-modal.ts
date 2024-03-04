@@ -1,8 +1,8 @@
 import { ButtonOwnProps } from "@mui/material";
 
-interface ModalButtonProps extends ButtonOwnProps {
+export interface ModalButtonProps extends ButtonOwnProps {
     title: string;
-    handler: () => any;
+    handler: any;
 }
 
 export interface CommonModalProps {

@@ -92,6 +92,7 @@ export default function ProfilePage() {
     const classes = useStyles();
     const [canEdit, setCanEdit] = useState(false);
     const form = useCollegeStore((state) => state.form);
+    const setForm = useCollegeStore((state) => state.setForm);
     const [formDetail, setFormDetail] = useState(form);
 
     const onEditButtonClick = () => {
@@ -100,6 +101,11 @@ export default function ProfilePage() {
         } else {
             setCanEdit(false);
         }
+    }
+
+    const saveChanges = () => {
+        setForm(formDetail);
+        setCanEdit(false);
     }
 
     return (
@@ -114,7 +120,7 @@ export default function ProfilePage() {
                             {
                                 canEdit ?
                                     <>
-                                        <Button variant="contained" size="small" endIcon={<Check />} style={{ marginRight: '5px' }}>
+                                        <Button onClick={saveChanges} variant="contained" size="small" endIcon={<Check />} style={{ marginRight: '5px' }}>
                                             Save
                                         </Button>
                                         <Button variant="outlined" size="small" endIcon={<Close />} onClick={onEditButtonClick}>

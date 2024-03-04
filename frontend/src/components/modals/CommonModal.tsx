@@ -11,6 +11,10 @@ const useStyles = makeStyles(
             [theme.breakpoints.down('md')]: {
                 width: sizes.mobileS
             }
+        },
+        modalActions: {
+            flexDirection: 'row-reverse',
+            justifyContent: 'flex-start'
         }
     })
 );
@@ -32,10 +36,10 @@ export default function CommonModal({ title, children, showDialog, handleModalCl
             <DialogContent className={classes.modalBody}>
                 {children ?? <></>}
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={classes.modalActions}>
                 {
                     actions?.map((button, index) => (
-                        <Button onClick={button.handler} color={button.color || 'primary'} key={`commonModalActionBtn${index}`}>
+                        <Button variant={button.variant ?? 'text'} onClick={button.handler} color={button.color ?? 'primary'} key={`commonModalActionBtn${index}`}>
                             {button.title}
                         </Button>
                     ))

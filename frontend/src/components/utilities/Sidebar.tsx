@@ -43,11 +43,19 @@ export default function Sidebar({ authenticated }: Readonly<SidebarProps>) {
         }
     }
 
+    const closeSidebar = () => {
+        const el = document.getElementById('sidebar');
+        if (el?.classList.contains('active')) {
+            el.classList.remove('active');
+        }
+    }
+
     return (
         <div className={`${classes.sidebarWrapper} app-sidebar`} id='sidebar'>
+            <div></div>
             {
                 items.map((item) => (
-                    <SidebarItem item={item} key={`sidebarItem${item.url.replace(/\//, '_')}`} />
+                    <SidebarItem closeSidebar={closeSidebar} item={item} key={`sidebarItem${item.url.replace(/\//, '_')}`} />
                 ))
             }
         </div>
