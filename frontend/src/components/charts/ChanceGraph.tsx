@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
-import { COLOR_PALETTES, devices, getScore, randomColor } from "../../utils";
-import { ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses, useMediaQuery } from "@mui/material";
+import { COLOR_PALETTES, getScore, randomColor } from "../../utils";
+import { ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses } from "@mui/material";
 import { styled } from "@mui/system";
 
 const useStyles = makeStyles(
@@ -24,7 +24,7 @@ const useStyles = makeStyles(
             height: '40px',
         },
         graphLabelWrapper: {
-            width: '60px',
+            width: (props: any) => props.width_multiplier + 'px',
             borderTop: '2px solid ' + theme.palette.dark.main,
             padding: '5px 5px'
         },
@@ -80,8 +80,6 @@ const GraphPoint = ({ item, classes }: any) => {
         setOpen(!open);
     };
 
-    const matches = useMediaQuery(devices.mobileL);
-
     return (
         <ClickAwayListener onClickAway={handleTooltipClose}>
             <div >
@@ -134,8 +132,9 @@ interface ChanceGraphProps {
     data: any[];
 }
 
-export default function ChanceGraph({ data }: ChanceGraphProps) {
-    const classes = useStyles();
+export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
+    const WIDTH_MULTIPLIER = 40;
+    const classes = useStyles({ width_multiplier: WIDTH_MULTIPLIER });
     const [chartData, setChartData] = useState<any[]>([])
     const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -178,14 +177,17 @@ export default function ChanceGraph({ data }: ChanceGraphProps) {
     }
 
     const getPosition = (score: number, index: number) => {
-        const xPos = score * 60;
+        const xPos = score * WIDTH_MULTIPLIER;
         const yPos = ((index + 1) * 25);
 
         return `translate(${xPos}px, -${yPos}px)`;
     }
     return (
         <div className={classes.chanceGraphWrapper}
-            style={{ height: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px' }}>
+            style={{
+                height: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px',
+                width: ((labels.length + 1) * WIDTH_MULTIPLIER) + 'px'
+            }}>
             {
                 chartData.length > 0 &&
                 chartData.map((item, index) => (

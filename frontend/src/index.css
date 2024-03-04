@@ -23,6 +23,25 @@ code {
 .app-sidebar {
   z-index: 1044;
   transform: translateX(-300px);
+  position: fixed;
+  top: 0;
+  transition: 0.3s ease-in;
+}
+
+#sidebar-backdrop {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1043;
+  transform: translateX(100vw);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.app-sidebar.active+#sidebar-backdrop {
+  width: 100vw;
+  transform: translateX(0);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .app-sidebar.active {

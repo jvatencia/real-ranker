@@ -1,9 +1,15 @@
 import useAuthStore from "../store/auth/auth.store";
 import { NavLinkItem } from "./interfaces";
 import { sizes } from "./breakpoints";
+import { AccountBox, CompareArrows, HomeOutlined, LogoutOutlined, SchoolOutlined, TimelineOutlined } from "@mui/icons-material";
 
 export const publicItems: NavLinkItem[] = [
-    { text: 'Colleges', items: [], url: '/colleges', isActive: false },
+    {
+        text: 'Colleges',
+        items: [],
+        url: '/colleges',
+        isActive: false,
+    },
     {
         text: 'Coaching',
         isActive: false,
@@ -24,7 +30,8 @@ export const authItems: NavLinkItem[] = [
         text: 'Home',
         items: [],
         url: '/home',
-        isActive: false
+        isActive: false,
+        icon: HomeOutlined
     },
     {
         text: 'Colleges',
@@ -33,24 +40,29 @@ export const authItems: NavLinkItem[] = [
                 text: 'Compare Collge',
                 items: [],
                 url: '/colleges/compare',
-                isActive: false
+                isActive: false,
+                icon: CompareArrows
             },
         ],
         url: '/colleges',
-        isActive: false
+        isActive: false,
+        icon: SchoolOutlined
     },
     {
         text: 'My Timeline',
         items: [],
         url: '/timeline',
-        isActive: false
+        isActive: false,
+        icon: TimelineOutlined
     },
     {
         text: 'Profile',
         items: [],
         showWhen: sizes.tablet,
         url: '/profile',
-        isActive: false
+        isActive: false,
+        icon: AccountBox
+
     },
     {
         text: 'Logout',
@@ -59,7 +71,8 @@ export const authItems: NavLinkItem[] = [
         handler: () => {
             useAuthStore.getState().logout();
         },
-        isActive: false
+        isActive: false,
+        icon: LogoutOutlined
     }
 
 ]

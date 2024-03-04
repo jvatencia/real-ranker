@@ -28,6 +28,12 @@ const useStyles = makeStyles(
             fontFamily: 'Poppins',
             fontWeight: 'bold',
             color: theme.palette.primary.main
+        },
+        sectionCenteredContent: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%'
         }
     })
 )
@@ -63,8 +69,10 @@ export default function WhatsNew() {
                 }
             </Swiper>
             <hr />
-            <div className={classes.sectionTitle}>Graph</div>
-            <ChanceGraph data={selectedColleges} />
+            <div className={classes.sectionTitle}>Chance Graph</div>
+            <div className={classes.sectionCenteredContent}>
+                <ChanceGraph data={selectedColleges} />
+            </div>
             <hr />
             <Calendar />
         </div>

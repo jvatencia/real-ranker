@@ -75,9 +75,9 @@ export const PUBLIC_TESTIMONIALS = [
 ];
 
 export const COLOR_PALETTES = [
-    '#53359f',
-    '#84e1a9',
-    '#f8cf40',
+    '#3c7c28',
+    '#433ba8',
+    '#f2c117',
     '#412a7c',
     '#f28291',
     '#222224'

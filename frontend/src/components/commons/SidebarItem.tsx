@@ -1,8 +1,9 @@
 import { makeStyles } from "@mui/styles";
 import { NavLinkItem } from "../../utils/interfaces";
-import { Accordion, AccordionSummary, Typography, AccordionDetails } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, accordionSummaryClasses } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from "react-router-dom";
+import { OverridableComponent } from "@mui/types";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -17,7 +18,21 @@ const useStyles = makeStyles(
                 borderTop: '1px solid rgba(0,0,0,0.2)'
             }
         },
+        sidebarAccordion: {
+            display: 'flex',
+            alignItems: 'center'
+        },
         sidebarItemText: {
+            width: 'calc(100% - 50px)'
+        },
+        sidebarItemIcon: {
+            width: '50px',
+            height: '50px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        sidebarItemTitle: {
             color: theme.palette.primary.main,
             fontFamily: 'Poppins',
             fontWeight: 700,
@@ -29,7 +44,6 @@ const useStyles = makeStyles(
         },
         sidebarAccordionItem: {
             padding: '0 16px',
-            marginBottom: '15px'
         }
     })
 );
@@ -38,7 +52,7 @@ interface SidebarItemProps {
     item: NavLinkItem;
     closeSidebar: any;
 }
-export default function SidebarItem({ item, closeSidebar }: SidebarItemProps) {
+export default function SidebarItem({ item, closeSidebar }: Readonly<SidebarItemProps>) {
     const classes = useStyles();
     const navigate = useNavigate();
 
@@ -47,29 +61,56 @@ export default function SidebarItem({ item, closeSidebar }: SidebarItemProps) {
         closeSidebar()
     };
 
+    const renderIcon = (icon: OverridableComponent<any> | undefined) => {
+        if (!icon) return null;
+
+        const SidebarIcon = icon;
+
+        return <SidebarIcon color='secondary' />
+    }
+
+
     return (
         <>
             {
                 item.items.length === 0 ?
                     <div className={classes.sidebarItem}>
+
+                        <div className={classes.sidebarItemIcon}>
+                            {renderIcon(item.icon)}
+                        </div>
                         <div onClick={() => navigateTo(item.url)} className={classes.sidebarItemText}>
-                            {item.text}
+                            <div className={classes.sidebarItemTitle}>{item.text}</div>
                         </div>
                     </div>
                     :
                     <Accordion>
                         <AccordionSummary
+                            sx={{
+                                [`& .${accordionSummaryClasses.content}`]: {
+                                    margin: 0
+                                }
+                            }}
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <Typography className={classes.sidebarItemText}>{item.text}</Typography>
+                            <div className={classes.sidebarAccordion}>
+
+                                <div className={classes.sidebarItemIcon}>
+                                    {renderIcon(item.icon)}
+                                </div>
+                                <div className={classes.sidebarItemTitle}>{item.text}</div>
+                            </div>
                         </AccordionSummary>
                         <AccordionDetails>
                             {
                                 item.items.map((link: NavLinkItem) => (
-                                    <div className={classes.sidebarAccordionItem} key={`navLinkItemAccordionSubItem${link.url.replace(/\//, '_')}`}>
-                                        <div onClick={() => navigateTo(link.url)} className={classes.sidebarItemText}>
+                                    <div className={`${classes.sidebarAccordion} ${classes.sidebarAccordionItem}`} key={`navLinkItemAccordionSubItem${link.url.replace(/\//, '_')}`}>
+                                        <div className={classes.sidebarItemIcon}>
+                                            {renderIcon(link.icon)}
+                                        </div>
+                                        <div onClick={() => navigateTo(link.url)} className={classes.sidebarItemTitle}>
                                             {link.text}
                                         </div>
                                     </div>
