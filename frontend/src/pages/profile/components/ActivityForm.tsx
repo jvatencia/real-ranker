@@ -1,4 +1,3 @@
-import { makeStyles } from "@mui/styles";
 import CommonModal from "../../../components/modals/CommonModal";
 import { FormLabel, OutlinedInput, TextField, FormControlLabel, Checkbox, MenuItem } from "@mui/material";
 import { CustomFormControl } from "../../../components/styled";
@@ -6,22 +5,6 @@ import { ACTIVITY_TYPE_LIST, generateId, showToast } from "../../../utils";
 import { useState } from "react";
 import { ModalButtonProps } from "../../../utils/interfaces";
 
-const useStyles = makeStyles(
-    (theme) => ({
-        activityForm: {
-            padding: '10px 16px',
-            border: '1px solid ' + theme.palette.primary.main,
-            boxShadow: '0px 3px 3px ' + theme.palette.primary.main,
-            marginTop: '20px'
-        },
-        activityFormTitle: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            color: theme.palette.primary.main,
-            marginBottom: '10px'
-        },
-    })
-);
 interface ActivityFormProps {
     isOpen: boolean;
     setModal: any;
@@ -29,7 +12,6 @@ interface ActivityFormProps {
     setActivities: any;
 }
 export default function ActivityForm({ isOpen, setModal, activities, setActivities }: Readonly<ActivityFormProps>) {
-    const classes = useStyles();
 
     const resetForm = () => {
         setActivityInput({

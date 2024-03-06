@@ -43,7 +43,7 @@ const useStyles = makeStyles(
         },
         tabButtonActive: {
             backgroundColor: theme.palette.primary.main,
-            color: theme.palette.warning.main
+            color: theme.palette.warning.main + ' !important',
         }
     })
 );
@@ -70,6 +70,7 @@ export default function ButtonTabs({ buttons, activeTab, setActiveTab }: Readonl
 
         return button.title;
     }
+
     return (
         <div className={classes.tabContainer}>
             {

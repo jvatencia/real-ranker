@@ -3,7 +3,6 @@ import { RouterProvider } from 'react-router-dom';
 import router from './router/router';
 import OverlayLoader from './components/utilities/OverlayLoader';
 import { SnackbarProvider } from 'notistack';
-import CustomModal from './components/utilities/CustomModal';
 import { ModuleDeclarations } from './utils';
 
 
@@ -87,7 +86,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <SnackbarProvider maxSnack={5}>
           <OverlayLoader />
-          <CustomModal />
           <RouterProvider router={router} />
         </SnackbarProvider>
       </ThemeProvider>

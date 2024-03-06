@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
-import { COLOR_PALETTES, getScore, randomColor } from "../../utils";
-import { ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses } from "@mui/material";
+import { COLOR_PALETTES, devices, getScore, randomColor } from "../../utils";
+import { ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 
 const useStyles = makeStyles(
@@ -70,6 +70,7 @@ const GraphPointToolTipContent = ({ handleTooltipClose, item, classes }: any) =>
 }
 
 const GraphPoint = ({ item, classes }: any) => {
+    const matches = useMediaQuery(devices.mobileL);
     const [open, setOpen] = useState(false);
 
     const handleTooltipClose = () => {
@@ -96,7 +97,7 @@ const GraphPoint = ({ item, classes }: any) => {
                                 {
                                     name: 'offset',
                                     options: {
-                                        offset: [0, -15]
+                                        offset: [0, matches ? -15 : -5]
                                     }
                                 }
                             ]

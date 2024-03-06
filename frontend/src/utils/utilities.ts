@@ -50,7 +50,6 @@ function getScore(college: any, prefix: string) {
 }
 
 function validateEmail(email: string) {
-  //https://mailtrap.io/blog/validate-emails-in-react/ from this
   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
     return true;
   } else {
@@ -96,7 +95,7 @@ const dec2hex = (dec: number) => {
 }
 
 const generateId = (len: number) => {
-  var arr = new Uint8Array((len || 40) / 2)
+  const arr = new Uint8Array((len || 40) / 2)
   window.crypto.getRandomValues(arr)
   return Array.from(arr, dec2hex).join('')
 }

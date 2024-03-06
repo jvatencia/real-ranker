@@ -21,7 +21,7 @@ code {
 }
 
 .app-sidebar {
-  z-index: 1044;
+  z-index: 1046;
   transform: translateX(-300px);
   position: fixed;
   top: 0;
@@ -33,7 +33,7 @@ code {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1043;
+  z-index: 1045;
   transform: translateX(100vw);
   background-color: rgba(0, 0, 0, 0.1);
 }

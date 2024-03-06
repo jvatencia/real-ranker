@@ -1,18 +1,20 @@
 import { makeStyles } from "@mui/styles";
 import useCollegeStore from "../../../store/college/college.store";
-import CollegeGraphCard from "../../../components/commons/CollegeGraphCard";
 import { AppCustomCard } from "../../../components/styled";
 import { useEffect, useState } from "react";
-import { COLOR_PALETTES, computeUserScore, devices, getScore, randomColor } from "../../../utils";
+import { COLOR_PALETTES, computeUserScore, getScore, randomColor } from "../../../utils";
 import CommonRadarChart from "../../../components/charts/CommonRadarChart";
-import { useTheme } from "@mui/system";
-import { FormControlLabel, Checkbox, useMediaQuery } from "@mui/material";
+import { FormControlLabel, Checkbox } from "@mui/material";
 
 const useStyles = makeStyles(
     (theme) => ({
         graphTabContainer: {
             marginTop: '10px',
             display: 'flex',
+            flexDirection: 'column',
+            [theme.breakpoints.up('md')]: {
+                flexDirection: 'row'
+            }
         },
         filterTabContainer: {
             marginBottom: '10px',
@@ -58,12 +60,9 @@ const useStyles = makeStyles(
 
 export default function GraphTabContent() {
     const classes = useStyles();
-    const theme = useTheme();
     const selectedColleges = useCollegeStore((state) => state.selectedColleges);
     const form = useCollegeStore((state) => state.form);
     const userScores = useCollegeStore((state) => state.userScore);
-    const matches = useMediaQuery(devices.tablet);
-
     const [mounted, setMounted] = useState(false);
     const [data, setData] = useState<any[]>([]);
     const [collegeKeys, setCollegeKeys] = useState<any[]>([]);
@@ -166,21 +165,18 @@ export default function GraphTabContent() {
 
     return (
         <div className={classes.graphTabContainer}>
-            {
-                matches &&
-                <div className={classes.filterTabContainer}>
-                    <div>
-                        {
-                            collegeKeys.map((college) => (
-                                <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
-                                    <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} />} label={college.title} />
-                                    <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
-                                </div>
-                            ))
-                        }
-                    </div>
+            <div className={classes.filterTabContainer}>
+                <div>
+                    {
+                        collegeKeys.map((college) => (
+                            <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
+                                <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} />} label={college.title} />
+                                <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
+                            </div>
+                        ))
+                    }
                 </div>
-            }
+            </div>
             <div className={classes.resultContentWrapper}>
                 <AppCustomCard className={classes.graphCard}>
                     {

@@ -13,10 +13,7 @@ const useStyles = makeStyles(
             minHeight: 48,
             padding: '0 16px',
             backgroundColor: '#fff',
-            borderBottom: '1px solid rgba(0,0,0,0.2)',
-            "&:first-child": {
-                borderTop: '1px solid rgba(0,0,0,0.2)'
-            }
+            borderBottom: '1px solid rgba(0,0,0,0.4)',
         },
         sidebarAccordion: {
             display: 'flex',
@@ -91,7 +88,7 @@ export default function SidebarItem({ item, closeSidebar }: Readonly<SidebarItem
                                     margin: 0
                                 }
                             }}
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon color="primary" />}
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >

@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme: any) => ({
         fontFamily: 'Poppins',
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         boxShadow: 'none',
+        zIndex: 1045,
+        position: 'relative',
         [theme.breakpoints.up('sm')]: {
             height: 'unset',
             minHeight: '80px',

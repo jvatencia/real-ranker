@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { NavLinkItem } from "../../utils/interfaces"
 import { makeStyles } from "@mui/styles";
 import DropdownNavLink from "./DropdownNavLink";
-import { tooltipClasses } from "@mui/material";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -19,12 +18,19 @@ const useStyles = makeStyles(
             },
         },
         dropdownNavItem: {
-            padding: '5px 36px',
-            textAlign: 'left',
+            padding: '15px 25px',
+            display: 'flex',
+            alignItems: 'center',
             cursor: 'pointer',
             "&:not(:first-child)": {
                 borderTop: '1px solid rgba(0,0,0,0.3)'
-            }
+            },
+            '&:hover *': {
+                color: theme.palette.warning.dark
+            },
+        },
+        dropdownNavItemIcon: {
+            marginRight: '10px'
         },
         dropdownNavItemText: {
             color: theme.palette.primary.main,
@@ -32,21 +38,12 @@ const useStyles = makeStyles(
             fontWeight: 700,
             textDecoration: 'none',
             fontSize: 14,
-            '&:hover': {
-                color: theme.palette.warning.dark
-            },
         },
         dropdownWrapper: {
             backgroundColor: theme.palette.light.main
         },
         toolTipNavItem: {
-            boxShadow: '0px 0px 3px rgba(0,0,0,0.3)',
-            borderRadius: '15px',
-            borderTopLeftRadius: '0px',
-            overflow: 'hidden',
-            [`& .${tooltipClasses.tooltip}`]: {
-                backgroundColor: theme.palette.light.main,
-            },
+            borderRadius: '5px',
         }
     })
 );
