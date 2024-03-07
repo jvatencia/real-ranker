@@ -30,10 +30,7 @@ const useStyles = makeStyles(
             color: theme.palette.primary.main
         },
         sectionCenteredContent: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%'
+            width: '100%',
         }
     })
 )

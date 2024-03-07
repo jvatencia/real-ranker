@@ -3,7 +3,7 @@ import { CustomFormControl } from "../../../components/styled";
 import useCollegeStore from "../../../store/college/college.store";
 import { Button, Chip, IconButton, MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ACTIVITY_TYPE_LIST, FAMILY_INCOME_RANGE, showToast } from "../../../utils";
+import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast } from "../../../utils";
 import { AccessTime, Add, Delete } from "@mui/icons-material";
 import ActivityForm from "./ActivityForm";
 
@@ -104,6 +104,7 @@ interface DisplayInputProps extends FormDetailsProps {
     formKey: string;
     setValue: any;
     type?: string
+    options?: any[] | undefined;
 }
 
 const ActivityItem = ({ activity, showDelete, deleteItem }: any) => {
@@ -197,7 +198,7 @@ const DisplayListInput = ({ canEdit, label, formValue, formKey, setValue, type }
 }
 
 
-const DisplayLabelInput = ({ canEdit, label, formValue, formKey, setValue, type }: DisplayInputProps) => {
+const DisplayLabelInput = ({ canEdit, label, formValue, formKey, setValue, type, options }: DisplayInputProps) => {
     const classes = useStyles();
 
     return (
@@ -210,8 +211,8 @@ const DisplayLabelInput = ({ canEdit, label, formValue, formKey, setValue, type 
                                 size="small"
                                 onChange={(e) => setValue(formKey, e.target.value)}>
                                 {
-                                    FAMILY_INCOME_RANGE.map((item, index) => (
-                                        <MenuItem value={item.value} key={`familyIncomeRangeMenuItem${index}${item.value}`}>
+                                    options?.map((item, index) => (
+                                        <MenuItem value={item.value} key={`${formKey}MenuItem${index}${item.value}`}>
                                             {item.text}
                                         </MenuItem>
                                     ))
@@ -309,7 +310,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formKey={'gradYear'}
                         formValue={formDetail.gradYear}
                         setValue={setForm}
-                        type={'text'}
+                        type={'number'}
                         label={formDetail.gradYear}
                     />
 
@@ -319,7 +320,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formKey={'gpa'}
                         formValue={formDetail.gpa}
                         setValue={setForm}
-                        type={'text'}
+                        type={'number'}
                         label={formDetail.gpa}
                     />
 
@@ -329,7 +330,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formKey={'actSatScore'}
                         formValue={formDetail.actSatScore}
                         setValue={setForm}
-                        type={'text'}
+                        type={'number'}
                         label={formDetail.actSatScore}
                     />
 
@@ -339,8 +340,9 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formKey={'firstGen'}
                         formValue={formDetail.firstGen}
                         setValue={setForm}
-                        type={'text'}
-                        label={formDetail.firstGen}
+                        type={'select'}
+                        options={DEFAULT_YES_NO_LIST}
+                        label={DEFAULT_YES_NO_LIST[formDetail.firstGen].text}
                     />
 
                     <div className={classes.formDetailFormTitle}>Academic Disruption</div>
@@ -349,8 +351,9 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formKey={'academicDisruption'}
                         formValue={formDetail.academicDisruption}
                         setValue={setForm}
-                        type={'text'}
-                        label={formDetail.academicDisruption}
+                        type={'select'}
+                        options={DEFAULT_YES_NO_LIST}
+                        label={DEFAULT_YES_NO_LIST[formDetail.academicDisruption].text}
                     />
 
                     <div className={classes.formDetailFormTitle}>Upward Trajectory</div>
@@ -359,8 +362,31 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formKey={'upwardTrajectory'}
                         formValue={formDetail.upwardTrajectory}
                         setValue={setForm}
-                        type={'text'}
-                        label={formDetail.upwardTrajectory}
+                        type={'select'}
+                        options={DEFAULT_YES_NO_LIST}
+                        label={DEFAULT_YES_NO_LIST[formDetail.upwardTrajectory].text}
+                    />
+
+                    <div className={classes.formDetailFormTitle}>Family Obligations</div>
+                    <DisplayLabelInput
+                        canEdit={canEdit}
+                        formKey={'familyObligation'}
+                        formValue={formDetail.familyObligation}
+                        setValue={setForm}
+                        type={'select'}
+                        options={DEFAULT_YES_NO_LIST}
+                        label={DEFAULT_YES_NO_LIST[formDetail.familyObligation].text}
+                    />
+
+                    <div className={classes.formDetailFormTitle}>Evaluation</div>
+                    <DisplayLabelInput
+                        canEdit={canEdit}
+                        formKey={'selfEvaluation'}
+                        formValue={formDetail.selfEvaluation}
+                        setValue={setForm}
+                        type={'select'}
+                        options={SELF_EVALUATION}
+                        label={SELF_EVALUATION[formDetail.selfEvaluation].text}
                     />
 
                     <div className={classes.formDetailFormTitle}>Family Income Range</div>
@@ -370,6 +396,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         formValue={formDetail.familyIncome}
                         setValue={setForm}
                         type={'select'}
+                        options={FAMILY_INCOME_RANGE}
                         label={FAMILY_INCOME_RANGE[formDetail.familyIncome - 1].text}
                     />
 

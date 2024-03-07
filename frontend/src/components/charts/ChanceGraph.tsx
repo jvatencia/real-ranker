@@ -1,11 +1,31 @@
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
-import { COLOR_PALETTES, devices, getScore, randomColor } from "../../utils";
-import { ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses, useMediaQuery } from "@mui/material";
+import { COLOR_PALETTES, devices, getAcceptanceRate, getScore, randomColor } from "../../utils";
+import { Chip, ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
+import useCollegeStore from "../../store/college/college.store";
 
 const useStyles = makeStyles(
     (theme) => ({
+        sectionTitle: {
+            fontSize: '18px',
+            marginLeft: '10px',
+            color: theme.palette.primary.main,
+            fontWeight: 'bold'
+        },
+        sectionSummary: {
+            padding: '10px',
+        },
+        sectionSummaryScore: {
+            fontSize: '12px !important',
+            color: theme.palette.light.main + ' !important',
+            fontWeight: 'bold'
+        },
+        sectionSummaryChip: {
+            color: theme.palette.light.main + ' !important',
+            marginRight: '5px',
+            padding: '0px 5px'
+        },
         chanceGraphWrapper: {
             width: '100%',
             padding: '10px',
@@ -134,10 +154,11 @@ interface ChanceGraphProps {
 }
 
 export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
-    const WIDTH_MULTIPLIER = 40;
+    const WIDTH_MULTIPLIER = 60;
     const classes = useStyles({ width_multiplier: WIDTH_MULTIPLIER });
     const [chartData, setChartData] = useState<any[]>([])
     const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const form = useCollegeStore((state) => state.form);
 
     useEffect(() => {
         initData();
@@ -164,15 +185,13 @@ export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
         }
 
         setChartData(data.map((college: any) => {
-            let npt43Key = college['npt43_priv'] > 0 ? 'npt43_priv' : 'npt43_pub';
-            npt43Key = college.hasOwnProperty(`${npt43Key}_absolute`) && college.hasOwnProperty(`${npt43Key}_relative`) ? npt43Key : 'npt43';
             const color = checkColor(randomColor());
             colors.push(color);
 
             return {
                 college,
                 color,
-                userScore: (((getScore(college, 'success') + getScore(college, 'outcomes') + getScore(college, npt43Key) + getScore(college, 'economic_inclusion_score')) / 4) * 10)
+                userScore: getAcceptanceRate(college, form)
             };
         }));
     }
@@ -184,31 +203,47 @@ export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
         return `translate(${xPos}px, -${yPos}px)`;
     }
     return (
-        <div className={classes.chanceGraphWrapper}
-            style={{
-                height: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px',
-                width: ((labels.length + 1) * WIDTH_MULTIPLIER) + 'px'
-            }}>
-            {
-                chartData.length > 0 &&
-                chartData.map((item, index) => (
-                    <div className={classes.graphPoint} key={`graphPoint${index}`}
-                        style={{ transform: getPosition(item.userScore, index) }}>
-                        <GraphPoint classes={classes} item={item} />
-                    </div>
-                ))
-            }
-            <div className={classes.graphLabels}>
+        <>
+            <div className={classes.sectionTitle}>Your GPA: {form.gpa}</div>
+            <div className={classes.sectionSummary}>
                 {
-                    labels.map((label, index) => (
-                        <div className={classes.graphLabelWrapper} key={`graphLabelWrapper${index}`}>
-                            <div>
-                                {label}
-                            </div>
-                        </div>
+                    chartData.map((item, index) => (
+                        <Chip
+                            size="small"
+                            icon={<div className={classes.sectionSummaryScore}>{item.userScore}</div>}
+                            label={`${item.college.instnm}(${(item.college.adm_rate * 100).toFixed(2)})`}
+                            key={`sectionSummary${index}`}
+                            className={classes.sectionSummaryChip}
+                            style={{ backgroundColor: item.color }} />
                     ))
                 }
             </div>
-        </div>
+            <div className={classes.chanceGraphWrapper}
+                style={{
+                    height: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px',
+                    width: ((labels.length + 1) * WIDTH_MULTIPLIER) + 'px'
+                }}>
+                {
+                    chartData.length > 0 &&
+                    chartData.map((item, index) => (
+                        <div className={classes.graphPoint} key={`graphPoint${index}`}
+                            style={{ transform: getPosition(item.userScore, index) }}>
+                            <GraphPoint classes={classes} item={item} />
+                        </div>
+                    ))
+                }
+                <div className={classes.graphLabels}>
+                    {
+                        labels.map((label, index) => (
+                            <div className={classes.graphLabelWrapper} key={`graphLabelWrapper${index}`}>
+                                <div>
+                                    {label}
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </>
     );
 }

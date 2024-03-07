@@ -5,3 +5,4 @@ export * from './sidebar';
 export * from './notification';
 export * from './module-declarations';
 export * from './logger';
+export * from './chancer';

@@ -91,6 +91,20 @@ export const FAMILY_INCOME_RANGE = [
     { text: '$110k +', value: 5 },
 ];
 
+export const DEFAULT_YES_NO_LIST = [
+    { text: 'No', value: 0 },
+    { text: 'Yes', value: 1 },
+];
+
+export const SELF_EVALUATION = [
+    { text: 'Not Rigorous', value: 0 },
+    { text: 'Below Average', value: 1 },
+    { text: 'Average', value: 2 },
+    { text: 'Above Average', value: 3 },
+    { text: 'Hard', value: 4 },
+    { text: 'Very Hard', value: 5 },
+];
+
 export const ACTIVITY_TYPE_LIST = [
     { text: 'Sports', value: 'sports' },
     { text: 'Customer Service', value: 'cs' },
