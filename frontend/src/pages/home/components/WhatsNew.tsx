@@ -31,7 +31,7 @@ const useStyles = makeStyles(
         },
         sectionCenteredContent: {
             width: '100%',
-        }
+        },
     })
 )
 

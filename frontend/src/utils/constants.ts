@@ -77,10 +77,16 @@ export const PUBLIC_TESTIMONIALS = [
 export const COLOR_PALETTES = [
     '#3c7c28',
     '#433ba8',
-    '#f2c117',
+    '#d9a900',
     '#412a7c',
     '#f28291',
-    '#222224'
+    '#222224',
+    '#c75700',
+    '#0514ca',
+    '#d70000',
+    '#009ade',
+    '#613838',
+    '#ce00ce'
 ];
 
 export const FAMILY_INCOME_RANGE = [

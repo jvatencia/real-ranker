@@ -184,16 +184,18 @@ export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
             return color;
         }
 
-        setChartData(data.map((college: any) => {
-            const color = checkColor(randomColor());
-            colors.push(color);
+        setChartData(
+            data.map((college: any) => {
+                const color = checkColor(randomColor());
+                colors.push(color);
 
-            return {
-                college,
-                color,
-                userScore: getAcceptanceRate(college, form)
-            };
-        }));
+                return {
+                    college,
+                    color,
+                    userScore: getAcceptanceRate(college, form)
+                };
+            })
+        );
     }
 
     const getPosition = (score: number, index: number) => {

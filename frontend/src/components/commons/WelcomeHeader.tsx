@@ -26,7 +26,7 @@ const useStyles = makeStyles(
             }
         },
         authGroup: {
-            display: 'block',
+            display: 'flex',
             [theme.breakpoints.down('md')]: {
                 display: 'none'
             }
