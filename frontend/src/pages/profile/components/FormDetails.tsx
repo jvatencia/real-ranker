@@ -296,9 +296,9 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         type={'tel'}
                         label={formDetail.phone}
                     />
-
-
-
+                </div>
+                <div className={classes.formDetailTitle}>Selected Colleges</div>
+                <div className={classes.formDetail}>
                 </div>
             </div>
             <div className={classes.formDetailsGroup}>

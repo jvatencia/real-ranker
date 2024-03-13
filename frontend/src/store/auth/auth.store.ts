@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, StateStorage, createJSONStorage } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer';
 import useHelper from "../helpers/helper.store";
+import useCollegeStore from "../college/college.store";
 
 type AuthState = {
     auth: any;
@@ -42,6 +43,8 @@ const useAuthStore = create<AuthState & Actions>()(
             },
             logout: () => {
                 set(initialState);
+                const resetState = useCollegeStore.getState().reset;
+                resetState();
             },
             reset: () => {
                 set(initialState);
