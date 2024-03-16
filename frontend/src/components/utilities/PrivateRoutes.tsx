@@ -19,7 +19,7 @@ const PrivateRoutes = () => {
 
 
     return isAuthenticated ?
-        <RedirectApp location={location} /> : <Navigate to="/welcome" state={{ from: location }} />;
+        <RedirectApp location={location} /> : <Navigate to="/login" state={{ from: location }} />;
 }
 
 export default PrivateRoutes;
