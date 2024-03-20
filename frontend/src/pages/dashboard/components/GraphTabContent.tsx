@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import useCollegeStore from "../../../store/college/college.store";
 import { AppCustomCard } from "../../../components/styled";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { COLOR_PALETTES, computeUserScore, getScore, randomColor } from "../../../utils";
 import CommonRadarChart from "../../../components/charts/CommonRadarChart";
 import { FormControlLabel, Checkbox } from "@mui/material";
@@ -19,9 +19,11 @@ const useStyles = makeStyles(
         filterTabContainer: {
             marginBottom: '10px',
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'flex-end',
+            width: '40%',
             [theme.breakpoints.down('md')]: {
+                width: '100%',
                 justifyContent: 'space-between'
             }
         },
@@ -30,6 +32,7 @@ const useStyles = makeStyles(
             alignItems: 'flex-start',
             justifyContent: 'center',
             padding: '0 16px',
+            width: '60%',
             [theme.breakpoints.down('md')]: {
                 width: '100%'
             }
@@ -37,9 +40,10 @@ const useStyles = makeStyles(
         graphCard: {
             display: 'flex',
             alignItems: 'center',
+            width: '100%',
             justifyContent: 'center',
             [theme.breakpoints.up('md')]: {
-                width: '500px',
+                width: '100%',
                 margin: '0 auto'
             }
         },
@@ -65,43 +69,41 @@ export default function GraphTabContent() {
     const userScores = useCollegeStore((state) => state.userScore);
     const [mounted, setMounted] = useState(false);
     const [data, setData] = useState<any[]>([]);
-    const [collegeKeys, setCollegeKeys] = useState<any[]>([]);
-    const categories = ['cost', 'value', 'success', 'outcomes', 'diversity'];
 
-    const initData = () => {
 
-        let colors: string[] = [];
+    let colors: string[] = [];
 
-        const checkColor = (color: string): string => {
-            if (colors.length === COLOR_PALETTES.length) {
-                colors = [];
-            }
-
-            if (colors.includes(color)) {
-                return checkColor(randomColor());
-            }
-
-            return color;
+    const checkColor = (color: string): string => {
+        if (colors.length === COLOR_PALETTES.length) {
+            colors = [];
         }
 
-        setCollegeKeys(selectedColleges.map((college: any) => {
-            const color = checkColor(randomColor());
-            colors.push(color);
+        if (colors.includes(color)) {
+            return checkColor(randomColor());
+        }
 
-            return {
-                key: college.instnm.replace(/ /g, '_').toLowerCase(),
-                title: college.instnm,
-                active: true,
-                theme: {
-                    fill: color,
-                    fillOpacity: 0.6,
-                    stroke: color
-                }
+        return color;
+    }
+
+    const [collegeKeys, setCollegeKeys] = useState<any[]>(selectedColleges.map((college: any) => {
+        const color = checkColor(randomColor());
+        colors.push(color);
+
+        return {
+            key: college.instnm.replace(/ /g, '_').toLowerCase(),
+            title: college.instnm,
+            active: true,
+            theme: {
+                fill: color,
+                fillOpacity: 0.6,
+                stroke: color
             }
-        }));
+        }
+    }));
+    const categories = ['cost', 'value', 'success', 'outcomes', 'diversity'];
 
-
-        const collegeData = selectedColleges.map((college) => {
+    const collegeData = useMemo(
+        () => selectedColleges.map((college) => {
             const cost = parseFloat(getScore(college, `npt4${form['familyIncome']}`).toFixed(2));
             const value = parseFloat(getScore(college, `value_${form['familyIncome']}`).toFixed(2));
             const success = parseFloat(
@@ -129,10 +131,13 @@ export default function GraphTabContent() {
                 outcomes: (outcomes * 100),
                 diversity: (diversity * 100)
             };
-        });
+        })
+        , [userScores]);
 
-        console.log('collegeData', collegeData);
+    const initData = () => {
 
+
+        const keys = collegeKeys.filter((item) => item.active).map((item) => item.key);
         setData(categories.map((category) => {
             const newObj: any = {
                 category: category.charAt(0).toUpperCase() + category.slice(1),
@@ -140,11 +145,13 @@ export default function GraphTabContent() {
             };
 
             collegeData.forEach((item: any) => {
-                newObj[item.code] = item[category];
-                newObj[`${item.code}_theme`] = {
-                    fill: item.color,
-                    fillOpacity: 0.1,
-                    stroke: item.color
+                if (keys.includes(item.code)) {
+                    newObj[item.code] = item[category];
+                    newObj[`${item.code}_theme`] = {
+                        fill: item.color,
+                        fillOpacity: 0.1,
+                        stroke: item.color
+                    }
                 }
             })
 
@@ -154,14 +161,25 @@ export default function GraphTabContent() {
         }));
     }
 
+    const toggleCollege = (college: any) => {
+        setCollegeKeys(collegeKeys.map((item) => {
+            if (college.key === item.key) {
+                return { ...item, active: !college.active };
+            }
+            return item;
+        }));
+        setData([]);
+    }
+
     useEffect(() => {
+        console.log(collegeKeys);
         if (data.length > 0) {
             setMounted(true);
         } else {
             initData();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data])
+    }, [data, collegeKeys])
 
     return (
         <div className={classes.graphTabContainer}>
@@ -170,7 +188,7 @@ export default function GraphTabContent() {
                     {
                         collegeKeys.map((college) => (
                             <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
-                                <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} />} label={college.title} />
+                                <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} onClick={(e: any) => toggleCollege(college)} />} label={college.title} />
                                 <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
                             </div>
                         ))
@@ -180,8 +198,10 @@ export default function GraphTabContent() {
             <div className={classes.resultContentWrapper}>
                 <AppCustomCard className={classes.graphCard}>
                     {
-                        mounted &&
+                        mounted && data.length > 0 &&
                         <CommonRadarChart data={data}
+                            width={500}
+                            height={500}
                             radarKeys={collegeKeys}
                             dataKey="category"
                         />

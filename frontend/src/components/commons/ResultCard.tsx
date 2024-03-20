@@ -148,7 +148,7 @@ const ResultCardPrimaryItem = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
-    fontSize: '20px',
+    fontSize: '18px',
     fontFamily: 'Poppins',
 }));
 
@@ -218,7 +218,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                 <ResultCardPrimaryItem
                                     style={{ color: theme.palette.light.main }}
                                     key={`collegeSuccessScore${college['name'].replace(' ', '')}`}>
-                                    <div>{toLetterGrade(college.success.score)}</div>
+                                    <div>{(college[category.key].score * 100).toFixed(1)}%</div>
                                 </ResultCardPrimaryItem>
                             ))
                         }

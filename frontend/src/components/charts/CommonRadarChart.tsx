@@ -5,8 +5,10 @@ interface CommonRadarChartProps {
     dataKey: string;
     data: any[],
     radarKeys: any[],
+    width?: number,
+    height?: number,
 }
-export default function CommonRadarChart({ dataKey, data, radarKeys }: CommonRadarChartProps) {
+export default function CommonRadarChart({ dataKey, data, radarKeys, width, height }: CommonRadarChartProps) {
 
     useEffect(() => {
         console.log('CommonRadarChart data', data);
@@ -14,7 +16,7 @@ export default function CommonRadarChart({ dataKey, data, radarKeys }: CommonRad
 
     return (
         <RadarChart
-            outerRadius="80%" data={data} width={250} height={200}>
+            outerRadius="80%" data={data} width={width || 250} height={height || 200}>
             <PolarGrid />
             <PolarAngleAxis tickLine={false} dataKey={dataKey} style={{
                 fontSize: '11px'
