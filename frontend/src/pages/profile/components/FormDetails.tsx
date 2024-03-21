@@ -269,11 +269,9 @@ const DisplaySchoolCard = ({ canEdit, college, removeCollege }: any) => {
             <div className={classes.collegeCardActions}>
                 {
                     canEdit &&
-                    <>
-                        <IconButton onClick={(e) => removeCollege(college)}>
-                            <DeleteOutline />
-                        </IconButton>
-                    </>
+                    <IconButton onClick={(e) => removeCollege(college)}>
+                        <DeleteOutline />
+                    </IconButton>
                 }
             </div>
         </div>
@@ -346,7 +344,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail, colleg
                 <div className={classes.formDetailTitle}>Selected Colleges</div>
                 <div className={classes.formDetail}>
                     {
-                        colleges?.map((college, index) => (
+                        colleges!.map((college, index) => (
                             <DisplaySchoolCard
                                 key={`displaySchoolCard${index}${college.id}`}
                                 removeCollege={removeCollege}
@@ -354,6 +352,17 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail, colleg
                                 canEdit={canEdit}
                             />
                         ))
+                    }
+                    {
+                        canEdit &&
+                        <div className={classes.newActivityBtnWrapper}>
+                            {
+                                colleges!.length < 5 &&
+                                <Button variant="outlined" startIcon={<Add />} onClick={() => null}>
+                                    Add College
+                                </Button>
+                            }
+                        </div>
                     }
                 </div>
             </div>
