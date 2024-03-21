@@ -93,18 +93,24 @@ export default function ProfilePage() {
     const [canEdit, setCanEdit] = useState(false);
     const form = useCollegeStore((state) => state.form);
     const setForm = useCollegeStore((state) => state.setForm);
-    const [formDetail, setFormDetail] = useState(form);
+    const selectedColleges = useCollegeStore((state) => state.selectedColleges);
+    const setSelectedCollege = useCollegeStore((state) => state.setSelectedCollege);
+    const [formDetail, setFormDetail] = useState({ ...form });
+    const [colleges, setColleges] = useState([...selectedColleges]);
 
     const onEditButtonClick = () => {
         if (!canEdit) {
             setCanEdit(true);
         } else {
+            setFormDetail(form);
+            setColleges(selectedColleges);
             setCanEdit(false);
         }
     }
 
     const saveChanges = () => {
         setForm(formDetail);
+        setSelectedCollege(colleges);
         setCanEdit(false);
     }
 
@@ -135,7 +141,13 @@ export default function ProfilePage() {
                     </div>
                 </div>
                 <div className={classes.profileForm}>
-                    <FormDetails canEdit={canEdit} formDetail={formDetail} setFormDetail={setFormDetail} />
+                    <FormDetails
+                        canEdit={canEdit}
+                        formDetail={formDetail}
+                        setFormDetail={setFormDetail}
+                        colleges={colleges}
+                        setColleges={setColleges}
+                    />
                 </div>
             </PageBody>
         </ResponsiveBox>

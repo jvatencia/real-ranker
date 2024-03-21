@@ -4,7 +4,7 @@ import useCollegeStore from "../../../store/college/college.store";
 import { Button, Chip, IconButton, MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast } from "../../../utils";
-import { AccessTime, Add, Delete } from "@mui/icons-material";
+import { AccessTime, Add, Delete, DeleteOutline } from "@mui/icons-material";
 import ActivityForm from "./ActivityForm";
 
 const useStyles = makeStyles(
@@ -87,6 +87,24 @@ const useStyles = makeStyles(
                 width: '400px',
                 marginLeft: '20px'
             }
+        },
+        collegeCardItem: {
+            width: '100%',
+            padding: '10px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            border: '1px solid ' + theme.palette.primary.main,
+            boxShadow: '0px 3px 0px ' + theme.palette.primary.main,
+            marginBottom: '10px',
+            borderRadius: '5px',
+            fontSize: '14px'
+        },
+        collegeCardContent: {
+            fontFamily: 'Poppins'
+        },
+        collegeCardActions: {
+
         }
     })
 )
@@ -95,6 +113,8 @@ interface FormDetailsProps {
     canEdit: boolean;
     formDetail?: any;
     setFormDetail?: any;
+    colleges?: any[];
+    setColleges?: any;
 }
 
 
@@ -104,7 +124,7 @@ interface DisplayInputProps extends FormDetailsProps {
     formKey: string;
     setValue: any;
     type?: string
-    options?: any[] | undefined;
+    options?: any[];
 }
 
 const ActivityItem = ({ activity, showDelete, deleteItem }: any) => {
@@ -238,7 +258,29 @@ const DisplayLabelInput = ({ canEdit, label, formValue, formKey, setValue, type,
     );
 }
 
-export default function FormDetails({ canEdit, formDetail, setFormDetail }: Readonly<FormDetailsProps>) {
+const DisplaySchoolCard = ({ canEdit, college, removeCollege }: any) => {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.collegeCardItem}>
+            <div className={classes.collegeCardContent}>
+                {college.instnm}
+            </div>
+            <div className={classes.collegeCardActions}>
+                {
+                    canEdit &&
+                    <>
+                        <IconButton onClick={(e) => removeCollege(college)}>
+                            <DeleteOutline />
+                        </IconButton>
+                    </>
+                }
+            </div>
+        </div>
+    );
+}
+
+export default function FormDetails({ canEdit, formDetail, setFormDetail, colleges, setColleges }: Readonly<FormDetailsProps>) {
     const classes = useStyles();
     const form = useCollegeStore((state) => state.form);
 
@@ -255,6 +297,10 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
 
     const setForm = (key: string, value: any) => {
         setFormDetail((oldValue: any) => ({ ...oldValue, [key]: value }));
+    }
+
+    const removeCollege = (college: any) => {
+        setColleges(colleges?.filter((item) => item.id !== college.id))
     }
 
     return (
@@ -299,6 +345,16 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                 </div>
                 <div className={classes.formDetailTitle}>Selected Colleges</div>
                 <div className={classes.formDetail}>
+                    {
+                        colleges?.map((college, index) => (
+                            <DisplaySchoolCard
+                                key={`displaySchoolCard${index}${college.id}`}
+                                removeCollege={removeCollege}
+                                college={college}
+                                canEdit={canEdit}
+                            />
+                        ))
+                    }
                 </div>
             </div>
             <div className={classes.formDetailsGroup}>
