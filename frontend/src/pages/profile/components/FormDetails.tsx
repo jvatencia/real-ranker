@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast } from "../../../utils";
 import { AccessTime, Add, Delete, DeleteOutline } from "@mui/icons-material";
 import ActivityForm from "./ActivityForm";
+import SearchCollegeModal from "../../../components/modals/SearchCollege";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -113,8 +114,6 @@ interface FormDetailsProps {
     canEdit: boolean;
     formDetail?: any;
     setFormDetail?: any;
-    colleges?: any[];
-    setColleges?: any;
 }
 
 
@@ -267,21 +266,21 @@ const DisplaySchoolCard = ({ canEdit, college, removeCollege }: any) => {
                 {college.instnm}
             </div>
             <div className={classes.collegeCardActions}>
-                {
-                    canEdit &&
-                    <IconButton onClick={(e) => removeCollege(college)}>
-                        <DeleteOutline />
-                    </IconButton>
-                }
+                <IconButton onClick={(e) => removeCollege(college)}>
+                    <DeleteOutline />
+                </IconButton>
             </div>
         </div>
     );
 }
 
-export default function FormDetails({ canEdit, formDetail, setFormDetail, colleges, setColleges }: Readonly<FormDetailsProps>) {
+export default function FormDetails({ canEdit, formDetail, setFormDetail }: Readonly<FormDetailsProps>) {
     const classes = useStyles();
     const form = useCollegeStore((state) => state.form);
-
+    const selectedColleges = useCollegeStore((state) => state.selectedColleges);
+    const addCollege = useCollegeStore((state) => state.addCollege);
+    const removeCollege = useCollegeStore((state) => state.removeCollege);
+    const [showCollegeSearchModal, setShowCollegeSearchModal] = useState(false);
     useEffect(() => {
         if (!canEdit && form !== formDetail) {
             setFormDetail(form);
@@ -297,8 +296,14 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail, colleg
         setFormDetail((oldValue: any) => ({ ...oldValue, [key]: value }));
     }
 
-    const removeCollege = (college: any) => {
-        setColleges(colleges?.filter((item) => item.id !== college.id))
+    const selectCollege = (college: any) => {
+        const isExisting: boolean = !!selectedColleges.find((item: any) => item.id === college.id);
+        if (!isExisting) {
+            addCollege(college);
+            showToast(`${college.instnm} was added!`, { variant: 'success' });
+        } else {
+            showToast('College already exists. Please select a new one', { variant: 'error' });
+        }
     }
 
     return (
@@ -344,7 +349,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail, colleg
                 <div className={classes.formDetailTitle}>Selected Colleges</div>
                 <div className={classes.formDetail}>
                     {
-                        colleges!.map((college, index) => (
+                        selectedColleges.map((college, index) => (
                             <DisplaySchoolCard
                                 key={`displaySchoolCard${index}${college.id}`}
                                 removeCollege={removeCollege}
@@ -353,17 +358,14 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail, colleg
                             />
                         ))
                     }
-                    {
-                        canEdit &&
-                        <div className={classes.newActivityBtnWrapper}>
-                            {
-                                colleges!.length < 5 &&
-                                <Button variant="outlined" startIcon={<Add />} onClick={() => null}>
-                                    Add College
-                                </Button>
-                            }
-                        </div>
-                    }
+                    <div className={classes.newActivityBtnWrapper}>
+                        {
+                            selectedColleges.length < 10 &&
+                            <Button variant="outlined" startIcon={<Add />} onClick={() => setShowCollegeSearchModal(true)}>
+                                Add College
+                            </Button>
+                        }
+                    </div>
                 </div>
             </div>
             <div className={classes.formDetailsGroup}>
@@ -476,7 +478,11 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail, colleg
                     />
                 </div>
             </div>
-
+            <SearchCollegeModal
+                showDialog={showCollegeSearchModal}
+                setDialog={setShowCollegeSearchModal}
+                setCollege={selectCollege}
+            />
         </div>
     );
 }

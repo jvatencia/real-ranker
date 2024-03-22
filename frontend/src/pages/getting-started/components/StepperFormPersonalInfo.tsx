@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";
 import { CustomFormControl } from "../../../components/styled";
+import useAuthStore from "../../../store/auth/auth.store";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -22,10 +23,10 @@ interface StepperFormPersonalInfoProps {
 const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, collegeForm }: StepperFormPersonalInfoProps) => {
     const classes: any = useStyles(outerClasses);
     const setCollegeForm = useCollegeStore((state) => state.setForm);
-
+    const auth = useAuthStore((state) => state.auth)
     const [form, setForm] = useState({
         name: '',
-        email: '',
+        email: auth?.email,
         phone: ''
     });
 
@@ -68,6 +69,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                             type="email"
                             name="email"
                             value={form.email}
+                            disabled={!!auth?.email}
                             onChange={(e) => handleInputChange(e, 'email')}
                         />
                     </CustomFormControl>

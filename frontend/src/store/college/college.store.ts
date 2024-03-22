@@ -67,7 +67,7 @@ const useCollegeStore = create<CollegeState & Actions>()(
                 return set((state) => ({ selectedColleges: [...state.selectedColleges, college] }));
             },
             removeCollege: (college: any) => {
-                return set((state) => ({ selectedColleges: [...state.colleges.map((col) => col.instnm !== college.instnm)] }));
+                return set((state) => ({ selectedColleges: state.selectedColleges.filter((col) => col.instnm !== college.instnm) }));
             },
             setSelectedCollege: (colleges: any[]) => {
                 return set((state) => ({ selectedColleges: colleges }));

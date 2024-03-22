@@ -3,9 +3,10 @@ import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import PageBody from "../../components/commons/PageBody";
 import { Check, Close, EditOutlined } from "@mui/icons-material";
 import useCollegeStore from "../../store/college/college.store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormDetails from "./components/FormDetails";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -82,7 +83,7 @@ const EditIconButton = ({ onClick }: any) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.editBtn} onClick={onClick} role="button">
+        <div className={classes.editBtn} onClick={onClick}>
             <EditOutlined fontSize="small" />
         </div>
     )
@@ -93,62 +94,68 @@ export default function ProfilePage() {
     const [canEdit, setCanEdit] = useState(false);
     const form = useCollegeStore((state) => state.form);
     const setForm = useCollegeStore((state) => state.setForm);
-    const selectedColleges = useCollegeStore((state) => state.selectedColleges);
-    const setSelectedCollege = useCollegeStore((state) => state.setSelectedCollege);
     const [formDetail, setFormDetail] = useState({ ...form });
-    const [colleges, setColleges] = useState([...selectedColleges]);
+    const navigate = useNavigate();
+    const isInvalidForm = Object.keys(form).length === 0;
+
+    useEffect(() => {
+        if (isInvalidForm) {
+            navigate('/getting-started');
+        }
+    }, []);
 
     const onEditButtonClick = () => {
         if (!canEdit) {
             setCanEdit(true);
         } else {
             setFormDetail(form);
-            setColleges(selectedColleges);
             setCanEdit(false);
         }
     }
 
     const saveChanges = () => {
         setForm(formDetail);
-        setSelectedCollege(colleges);
         setCanEdit(false);
     }
 
     return (
         <ResponsiveBox>
             <PageBody>
-                <div className={classes.profileBanner}>
-                    <div className={classes.profileImgWrapper}>
-                        <div className={classes.profileImg}></div>
-                    </div>
-                    <div className={classes.profileNameWrapper}>
-                        <div className={classes.bannerEditBtn}>
-                            {
-                                canEdit ?
-                                    <>
-                                        <Button onClick={saveChanges} variant="contained" size="small" endIcon={<Check />} style={{ marginRight: '5px' }}>
-                                            Save
-                                        </Button>
-                                        <Button variant="outlined" size="small" endIcon={<Close />} onClick={onEditButtonClick}>
-                                            Cancel
-                                        </Button>
-                                    </>
-                                    :
-                                    <EditIconButton onClick={onEditButtonClick} />
-                            }
+                {
+                    !isInvalidForm &&
+                    <>
+                        <div className={classes.profileBanner}>
+                            <div className={classes.profileImgWrapper}>
+                                <div className={classes.profileImg}></div>
+                            </div>
+                            <div className={classes.profileNameWrapper}>
+                                <div className={classes.bannerEditBtn}>
+                                    {
+                                        canEdit ?
+                                            <>
+                                                <Button onClick={saveChanges} variant="contained" size="small" endIcon={<Check />} style={{ marginRight: '5px' }}>
+                                                    Save
+                                                </Button>
+                                                <Button variant="outlined" size="small" endIcon={<Close />} onClick={onEditButtonClick}>
+                                                    Cancel
+                                                </Button>
+                                            </>
+                                            :
+                                            <EditIconButton onClick={onEditButtonClick} />
+                                    }
+                                </div>
+                                <div className={classes.profileName}>{form.name}</div>
+                            </div>
                         </div>
-                        <div className={classes.profileName}>{form.name}</div>
-                    </div>
-                </div>
-                <div className={classes.profileForm}>
-                    <FormDetails
-                        canEdit={canEdit}
-                        formDetail={formDetail}
-                        setFormDetail={setFormDetail}
-                        colleges={colleges}
-                        setColleges={setColleges}
-                    />
-                </div>
+                        <div className={classes.profileForm}>
+                            <FormDetails
+                                canEdit={canEdit}
+                                formDetail={formDetail}
+                                setFormDetail={setFormDetail}
+                            />
+                        </div>
+                    </>
+                }
             </PageBody>
         </ResponsiveBox>
     );

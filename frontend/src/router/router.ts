@@ -8,6 +8,7 @@ import PrivateRoutes from "../components/utilities/PrivateRoutes";
 import WelcomePage from "../pages/home/WelcomePage";
 import CollegeProfile from "../pages/colleges/CollegeProfile";
 import ProfilePage from "../pages/profile/ProfilePage";
+import SignUpPage from "../pages/auth/SignUpPage";
 
 const routes: RouteObject[] = [
     {
@@ -47,6 +48,10 @@ const routes: RouteObject[] = [
     {
         path: '/login',
         Component: LoginPage,
+    },
+    {
+        path: '/sign-up',
+        Component: SignUpPage,
     },
     {
         path: '*',

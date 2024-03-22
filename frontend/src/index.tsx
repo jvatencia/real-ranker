@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import App from "./App";
 import 'swiper/css';
 import './index.css';
+import 'sweetalert2/src/sweetalert2.scss'
 
 import reportWebVitals from "./reportWebVitals";
 

@@ -113,12 +113,18 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
 
     const profilePopoverItems = [
         {
-            icon: <PersonIcon />, title: 'Profile', handler: () => {
+            icon: <PersonIcon />, title: 'Profile', handler: (setAnchorEl: any) => {
+                setAnchorEl(null)
                 navigate('/profile');
                 handleClose();
             }
         },
-        { icon: <LogoutIcon />, title: 'Log Out', handler: logout },
+        {
+            icon: <LogoutIcon />, title: 'Log Out', handler: (setAnchorEl: any) => {
+                setAnchorEl(null)
+                logout()
+            }
+        },
     ];
 
     const open = Boolean(anchorEl);
@@ -153,7 +159,7 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
                                     <div className={classes.popOverContent}>
                                         {
                                             profilePopoverItems.map((item, index) => (
-                                                <div className={classes.popOverItem} onClick={item.handler} key={`profilePopoverItem${index}`}>
+                                                <div className={classes.popOverItem} onClick={(e) => item.handler(setAnchorEl)} key={`profilePopoverItem${index}`}>
                                                     {item.icon}
                                                     <span className={classes.popOverItemTitle}>{item.title}</span>
                                                 </div>

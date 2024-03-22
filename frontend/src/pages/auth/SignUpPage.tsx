@@ -9,29 +9,34 @@ import { CustomFormControl } from "../../components/styled";
 
 const useStyles = makeStyles(
     (theme: any) => ({
-        loginForm: {
+        signUpForm: {
             width: '400px',
             height: '500px',
             padding: '50px 40px',
         },
-        loginInput: {
+        signUpInput: {
             backgroundColor: '#fff !important'
         }
     })
 )
 
-export default function LoginPage() {
+export default function SignUpPage() {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const auth = useAuthStore((state) => state.auth);
-    const login = useAuthStore((state) => state.login);
+    const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
 
-    const loginUser = async (e: any) => {
+    const auth = useAuthStore((state) => state.auth);
+    const signUp = useAuthStore((state) => state.registerUser);
+
+    const registerUser = async (e: any) => {
         e.preventDefault();
-        login({ email, password });
+        console.log(`[registerUser]`, { email, password, confirmPassword })
+        signUp({
+            email,
+            password
+        });
     }
 
     useEffect(() => {
@@ -39,11 +44,13 @@ export default function LoginPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth])
 
-    const onInputChange = (event: any, input: 'email' | 'password') => {
+    const onInputChange = (event: any, input: 'email' | 'password' | 'confirmPassword') => {
         if (input === 'email') {
             setEmail(event.target.value);
         } else if (input === 'password') {
             setPassword(event.target.value);
+        } else if (input === 'confirmPassword') {
+            setConfirmPassword(event.target.value);
         }
     }
 
@@ -56,38 +63,47 @@ export default function LoginPage() {
                     width: '100%',
                     marginTop: '80px'
                 }}>
-                    <Paper square={false} className={classes.loginForm} elevation={3}>
-                        <h3>Sign in to continue</h3>
+                    <Paper square={false} className={classes.signUpForm} elevation={3}>
+                        <h3>Sign Up</h3>
                         <hr />
-                        <form onSubmit={loginUser} >
+                        <form onSubmit={registerUser} >
                             <FormGroup>
                                 <CustomFormControl>
                                     <TextField
-                                        className={classes.loginInput}
+                                        className={classes.signUpInput}
                                         label="Email"
                                         type="email"
                                         variant="filled"
-                                        name="email"
                                         value={email}
                                         onChange={(e) => onInputChange(e, 'email')}
                                     ></TextField>
                                 </CustomFormControl>
                                 <CustomFormControl>
                                     <TextField
-                                        className={classes.loginInput}
+                                        className={classes.signUpInput}
                                         label="Password"
                                         type="password"
-                                        name="password"
                                         variant="filled"
                                         value={password}
                                         onChange={(e) => onInputChange(e, 'password')}
                                     ></TextField>
                                 </CustomFormControl>
-                                <Button variant="contained" type="submit" size="large">Sign In</Button>
+                                <CustomFormControl>
+                                    <TextField
+                                        className={classes.signUpInput}
+                                        label="Confirm Password"
+                                        type="password"
+                                        variant="filled"
+                                        value={confirmPassword}
+                                        onChange={(e) => onInputChange(e, 'confirmPassword')}
+                                    ></TextField>
+                                </CustomFormControl>
+                                <Button variant="contained" type="submit" size="large">Sign Up</Button>
                             </FormGroup>
                         </form>
                         <hr />
-                        <p>Don't have an account? <Link to='/sign-up' color="primary">Sign up here.</Link></p>
+                        <p>Already have an account? <Link to='/login' color="primary">Sign in here.</Link></p>
+
                     </Paper>
                 </div>
             </ResponsiveBox>
