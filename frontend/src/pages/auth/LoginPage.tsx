@@ -1,4 +1,4 @@
-import { Button, FormGroup, Paper, TextField } from "@mui/material";
+import { Alert, Button, FormGroup, Paper, TextField } from "@mui/material";
 import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ const useStyles = makeStyles(
 
 export default function LoginPage() {
     const classes = useStyles();
+    const hasError = useAuthStore((state) => state.authResponse);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -59,6 +60,10 @@ export default function LoginPage() {
                     <Paper square={false} className={classes.loginForm} elevation={3}>
                         <h3>Sign in to continue</h3>
                         <hr />
+                        {
+                            hasError &&
+                            <Alert severity="error" style={{ marginBottom: '10px' }}>Invalid credentials. Please try again.</Alert>
+                        }
                         <form onSubmit={loginUser} >
                             <FormGroup>
                                 <CustomFormControl>

@@ -1,9 +1,10 @@
+import { FieldErrors } from "react-hook-form";
 import { COLOR_PALETTES } from "./constants";
 
-function toPercent(val: number) {
+export const toPercent = (val: number) => {
   return Math.round(val * 100) + '%';
 }
-function toLetterGrade(val: number) {
+export const toLetterGrade = (val: number) => {
   if (val > .9333) {
     return 'A+';
   }
@@ -45,11 +46,11 @@ function toLetterGrade(val: number) {
   }
 }
 
-function getScore(college: any, prefix: string) {
+export function getScore(college: any, prefix: string) {
   return .4 * college[`${prefix}_relative`] + .6 * college[`${prefix}_absolute`]
 }
 
-function validateEmail(email: string) {
+export function validateEmail(email: string) {
   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
     return true;
   } else {
@@ -58,7 +59,7 @@ function validateEmail(email: string) {
 }
 
 
-const computeUserScore = (college: any, userScores: any, form: any) => {
+export const computeUserScore = (college: any, userScores: any, form: any) => {
 
 
   const cost = getScore(college, `npt4${form['familyIncome']}`);
@@ -81,7 +82,7 @@ const computeUserScore = (college: any, userScores: any, form: any) => {
   }, 0);
 }
 
-const randomColor = () => {
+export const randomColor = () => {
   const rand = Math.floor(Math.random() * COLOR_PALETTES.length);
   console.log('[randomColor]', {
     index: rand,
@@ -94,10 +95,12 @@ const dec2hex = (dec: number) => {
   return dec.toString(16).padStart(2, "0")
 }
 
-const generateId = (len: number) => {
+export const generateId = (len: number) => {
   const arr = new Uint8Array((len || 40) / 2)
   window.crypto.getRandomValues(arr)
   return Array.from(arr, dec2hex).join('')
 }
 
-export { toPercent, toLetterGrade, getScore, validateEmail, computeUserScore, randomColor, generateId };
+export const getErrorMessage = (errors: FieldErrors<any>, fieldName: string, errorMessage: string, errorType: 'required' = 'required') => {
+  return !!errors[fieldName] && errors[fieldName]?.type === errorType && errorMessage;
+}

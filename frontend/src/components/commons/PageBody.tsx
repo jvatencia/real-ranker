@@ -1,5 +1,6 @@
 import { Slide } from "@mui/material";
 import { makeStyles } from "@mui/styles"
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -9,7 +10,7 @@ const useStyles = makeStyles(
             backgroundColor: theme.palette.light.main,
             padding: '20px 16px',
             borderRadius: '5px',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             [theme.breakpoints.down('md')]: {
                 padding: '10px 8px',
                 marginTop: '25px',

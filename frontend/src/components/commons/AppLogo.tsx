@@ -1,10 +1,11 @@
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme) => ({
         headerLogoText: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.POPPINS_BOLD,
             fontWeight: 'bold',
             fontSize: '2rem',
             color: theme.palette.primary.main,

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import FormDetails from "./components/FormDetails";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -53,7 +54,7 @@ const useStyles = makeStyles(
             }
         },
         profileName: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontSize: '16px',
             fontWeight: 'bold',
             marginTop: '5px'
@@ -102,6 +103,7 @@ export default function ProfilePage() {
         if (isInvalidForm) {
             navigate('/getting-started');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onEditButtonClick = () => {

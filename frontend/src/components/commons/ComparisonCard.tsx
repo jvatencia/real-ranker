@@ -3,6 +3,7 @@ import { computeUserScore, getScore, toLetterGrade, toPercent } from "../../util
 import useCollegeStore from "../../store/college/college.store";
 import { useEffect, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
     comparisonCardContainer: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "Poppins",
+        fontFamily: FONT_FAMILY.DEFAULT,
         overflow: "hidden",
         userSelect: "none",
     },
@@ -167,13 +168,6 @@ export default function ComparisonCard({
 
     const initData = (colleges: any[]) => {
         const items: any = colleges.map((college) => {
-            let npt43Key = college["npt43_priv"] > 0 ? "npt43_priv" : "npt43_pub";
-            npt43Key =
-                college.hasOwnProperty(`${npt43Key}_absolute`) &&
-                    college.hasOwnProperty(`${npt43Key}_relative`)
-                    ? npt43Key
-                    : "npt43";
-
             return {
                 name: college["instnm"],
                 displayLabels: ["success", "value", "cost", "outcomes", "diversity"],

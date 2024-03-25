@@ -8,7 +8,8 @@ const Alert = {
             showConfirmButton: true,
             showDenyButton: true,
             confirmButtonText: 'Confirm',
-            denyButtonText: 'Cancel'
+            denyButtonText: 'Cancel',
+            customClass: 'testguy-custom-swal-alert',
         });
     }
 }

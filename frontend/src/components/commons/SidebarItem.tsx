@@ -4,6 +4,7 @@ import { Accordion, AccordionSummary, AccordionDetails, accordionSummaryClasses 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from "react-router-dom";
 import { OverridableComponent } from "@mui/types";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -31,7 +32,7 @@ const useStyles = makeStyles(
         },
         sidebarItemTitle: {
             color: theme.palette.primary.main,
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700,
             textDecoration: 'none',
             fontSize: 14,

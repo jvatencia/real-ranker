@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import ResponsiveBox from '../../../components/utilities/ResponsiveBox';
 import { IconButton, Slide } from '@mui/material';
 import { PauseOutlined, PlayArrowOutlined, VolumeOffOutlined, VolumeUpOutlined } from '@mui/icons-material';
-import { PUBLIC_TESTIMONIALS } from '../../../utils';
+import { PUBLIC_TESTIMONIALS, FONT_FAMILY } from '../../../utils';
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -106,7 +106,7 @@ const useStyles = makeStyles(
         },
         testimonialQuoteCardTitle: {
             fontSize: '36px',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             color: theme.palette.primary.main,
             height: '100px',
             display: 'flex',
@@ -115,7 +115,7 @@ const useStyles = makeStyles(
         },
         testimonialQuoteCardContent: {
             fontSize: '20px',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontStyle: 'italic',
             color: theme.palette.primary.main,
             height: 'calc(100% - 200px)',
@@ -138,7 +138,7 @@ const useStyles = makeStyles(
         sectionHeader: {
             color: theme.palette.light.main,
             margin: '20px 0',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontSize: '48px',
             [theme.breakpoints.down('md')]: {
                 fontSize: '36px'

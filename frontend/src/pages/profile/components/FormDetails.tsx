@@ -3,7 +3,7 @@ import { CustomFormControl } from "../../../components/styled";
 import useCollegeStore from "../../../store/college/college.store";
 import { Button, Chip, IconButton, MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast } from "../../../utils";
+import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast, FONT_FAMILY } from "../../../utils";
 import { AccessTime, Add, Delete, DeleteOutline } from "@mui/icons-material";
 import ActivityForm from "./ActivityForm";
 import SearchCollegeModal from "../../../components/modals/SearchCollege";
@@ -19,7 +19,7 @@ const useStyles = makeStyles(
         },
         formDetailTitle: {
             fontWeight: 'bold',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontSize: '18px',
             margin: '24px 0 5px 0',
             [theme.breakpoints.up('md')]: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(
         },
         formDetailFormTitle: {
             fontSize: '16px',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             color: theme.palette.dark.light,
         },
         formDetailFormValue: {
@@ -102,7 +102,7 @@ const useStyles = makeStyles(
             fontSize: '14px'
         },
         collegeCardContent: {
-            fontFamily: 'Poppins'
+            fontFamily: FONT_FAMILY.DEFAULT
         },
         collegeCardActions: {
 

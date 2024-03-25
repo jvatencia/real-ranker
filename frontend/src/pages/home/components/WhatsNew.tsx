@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@mui/material";
 import { useRef } from "react";
 import { SwiperSlide, Swiper, SwiperRef } from 'swiper/react';
-import { devices } from "../../../utils";
+import { devices, FONT_FAMILY } from "../../../utils";
 import { MOCK_WHATS_NEW_VIDEOS } from "../../../utils/mocks";
 import { makeStyles } from "@mui/styles";
 import Calendar from "./Calendar";
@@ -25,7 +25,7 @@ const useStyles = makeStyles(
             }
         },
         sectionTitle: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 'bold',
             color: theme.palette.primary.main
         },

@@ -25,6 +25,8 @@ type AuthState = {
 }
 
 type Actions = {
+    authResponse: any;
+    setAuth: (auth: any) => any;
     login: (credentials: any) => any,
     logout: () => any,
     reset: () => any,
@@ -41,6 +43,7 @@ const storageOptions = {
 const initialState = {
     auth: null,
     token: '',
+    authResponse: null,
 }
 
 const useAuthStore = create<AuthState & Actions>()(
@@ -48,6 +51,8 @@ const useAuthStore = create<AuthState & Actions>()(
         immer((set) => ({
             ...initialState,
             login: async ({ email, password }: any) => {
+                set((state) => ({ authResponse: null }));
+
                 const setLoader = useHelper.getState().setLoader;
                 setLoader(true);
 
@@ -56,10 +61,17 @@ const useAuthStore = create<AuthState & Actions>()(
                     console.log(`[login] credentials`, user);
                     set((state) => ({ auth: user, token: user.accessToken }));
                     setLoader(false);
-                }).catch((error: any) => { console.error(error) });
+                }).catch((error: any) => {
+                    console.error(error)
+                    setLoader(false);
+                    set((state) => ({ authResponse: error }));
+                });
 
                 setLoader(false);
 
+            },
+            setAuth: (auth: Auth) => {
+                set((state) => ({ auth }));
             },
             registerUser: async ({ email, password }: any) => {
                 const setLoader = useHelper.getState().setLoader;
@@ -70,7 +82,11 @@ const useAuthStore = create<AuthState & Actions>()(
                     const user = credentials.user;
                     set((state) => ({ auth: user, token: user.accessToken }));
                     setLoader(false);
-                }).catch((error: any) => { console.error(error) });
+                }).catch((error: any) => {
+                    console.error(error)
+                    setLoader(false);
+                    set((state) => ({ authResponse: error }));
+                });
 
             },
             logout: async () => {

@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { devices } from "../../utils";
+import { FONT_FAMILY, devices } from "../../utils";
 import { MenuOutlined } from "@mui/icons-material";
 import Navbar from "./Navbar";
 import AppLogo from "./AppLogo";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: any) => ({
         flexDirection: 'column',
         transition: '0.3s ease-in-out',
         backgroundColor: theme.palette.light.main,
-        fontFamily: 'Poppins',
+        fontFamily: FONT_FAMILY.DEFAULT,
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         boxShadow: 'none',
         zIndex: 1045,
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: any) => ({
         }
     },
     realRankerLabel: {
-        fontFamily: 'Poppins',
+        fontFamily: FONT_FAMILY.DEFAULT,
         color: '#222224',
         fontSize: '20px',
         fontStyle: 'normal',
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: any) => ({
     authLinks: {
         fontSize: '16px',
         cursor: 'pointer',
-        fontFamily: 'Poppins',
+        fontFamily: FONT_FAMILY.DEFAULT,
         fontWeight: 700,
         color: theme.palette.secondary.main,
         textDecoration: 'none',

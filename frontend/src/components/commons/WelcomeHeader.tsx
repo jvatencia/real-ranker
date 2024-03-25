@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { NavLinkItem } from "../../utils/interfaces/nav-link";
 import { publicItems } from "../../utils/sidebar";
 import NavLink from "./NavLink";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -16,7 +17,7 @@ const useStyles = makeStyles(
             justifyContent: 'center',
             flexDirection: 'column',
             transition: '0.3s ease-in-out',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             zIndex: 1045,
             backgroundColor: theme.palette.light.main,
             [theme.breakpoints.down('md')]: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(
         authLinks: {
             fontSize: '16px',
             cursor: 'pointer',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700,
             color: theme.palette.primary.main,
             textDecoration: 'none',

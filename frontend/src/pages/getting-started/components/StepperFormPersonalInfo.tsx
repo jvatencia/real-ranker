@@ -1,9 +1,9 @@
 import { Button, ClassNameMap, FormGroup, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useEffect, useState } from "react";
-import useCollegeStore from "../../../store/college/college.store";
+import { useEffect } from "react";
 import { CustomFormControl } from "../../../components/styled";
 import useAuthStore from "../../../store/auth/auth.store";
+import { useForm, SubmitHandler } from "react-hook-form"
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -12,6 +12,12 @@ const useStyles = makeStyles(
         }
     })
 );
+
+type PersonalInfoForm = {
+    displayName: string;
+    email: string;
+    phoneNumber: string;
+}
 
 interface StepperFormPersonalInfoProps {
     activeStep: number;
@@ -22,44 +28,45 @@ interface StepperFormPersonalInfoProps {
 
 const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, collegeForm }: StepperFormPersonalInfoProps) => {
     const classes: any = useStyles(outerClasses);
-    const setCollegeForm = useCollegeStore((state) => state.setForm);
     const auth = useAuthStore((state) => state.auth)
-    const [form, setForm] = useState({
-        name: '',
-        email: auth?.email,
-        phone: ''
+    const setAuth = useAuthStore((state) => state.setAuth);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<PersonalInfoForm>({
+        defaultValues: {
+            ...auth
+        }
     });
 
     useEffect(() => {
-        console.log(collegeForm);
-        if (Object.keys(collegeForm).length > 0)
-            setForm((oldState) => ({ ...oldState, ...collegeForm }));
-    }, [collegeForm])
+        console.log('[personal-info-form] auth', auth);
+        console.log('[personal-info-form] errors', errors);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [errors]);
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     }
 
-    const handleInputChange = (event: any, input: 'name' | 'email' | 'phone') => {
-        setForm((oldState) => ({ ...oldState, [input]: event.target.value }));
-    }
-
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
-        setCollegeForm(form);
+    const handleFormSubmit: SubmitHandler<PersonalInfoForm> = (data: any) => {
+        console.log('[personal-info-form] handleFormSubmit', data);
+        setAuth(data);
         handleNext();
     }
 
     return (
         <div className={outerClasses.formContainer}>
             <p>Real Ranker works for you, but it needs to know you.</p>
-            <form onSubmit={handleSubmit} className={classes.personalInfoForm}>
+            <form onSubmit={handleSubmit(handleFormSubmit)} className={classes.personalInfoForm}>
                 <FormGroup>
                     <CustomFormControl>
                         <TextField label="Name"
-                            name="name"
-                            value={form.name}
-                            onChange={(e) => handleInputChange(e, 'name')}
+                            error={!!errors.displayName}
+                            defaultValue={auth?.displayName}
+                            helperText={!!errors.displayName && errors.displayName.type === 'required' && 'Name is required'}
+                            {...register('displayName', { required: true })}
                         />
                     </CustomFormControl>
                 </FormGroup>
@@ -67,10 +74,10 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                     <CustomFormControl>
                         <TextField label="Email"
                             type="email"
-                            name="email"
-                            value={form.email}
+                            defaultValue={auth?.email}
                             disabled={!!auth?.email}
-                            onChange={(e) => handleInputChange(e, 'email')}
+                            {...register('email', { required: true })}
+
                         />
                     </CustomFormControl>
                 </FormGroup>
@@ -78,9 +85,10 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                     <CustomFormControl>
                         <TextField label="Phone Number"
                             type="tel"
-                            name="phone"
-                            value={form.phone}
-                            onChange={(e) => handleInputChange(e, 'phone')}
+                            error={!!errors.phoneNumber}
+                            defaultValue={auth?.phoneNumber}
+                            helperText={!!errors.phoneNumber && errors.phoneNumber.type === 'required' && 'Phone Number is required'}
+                            {...register('phoneNumber', { required: true })}
                         />
                     </CustomFormControl>
                 </FormGroup>

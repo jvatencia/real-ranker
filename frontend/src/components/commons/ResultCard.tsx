@@ -4,10 +4,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, useMediaQuery } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
+import { getScore, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
 import { ChevronLeftOutlined, RemoveOutlined, SortOutlined } from "@mui/icons-material";
 import SortCard from "./SortCard";
+import { FONT_FAMILY } from "../../utils";
 
 // styled('div')(({ theme }) => ({}))
 const ResultCardContainer = styled('div')(({ theme }) => ({
@@ -149,7 +150,7 @@ const ResultCardPrimaryItem = styled('div')(({ theme }) => ({
     justifyContent: 'center',
     fontWeight: 'bold',
     fontSize: '18px',
-    fontFamily: 'Poppins',
+    fontFamily: FONT_FAMILY.DEFAULT,
 }));
 
 

@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { NavLinkItem } from "../../utils/interfaces"
 import { makeStyles } from "@mui/styles";
 import DropdownNavLink from "./DropdownNavLink";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
         authLinks: {
             fontSize: '16px',
             cursor: 'pointer',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700,
             color: theme.palette.primary.main,
             textDecoration: 'none',
@@ -34,7 +35,7 @@ const useStyles = makeStyles(
         },
         dropdownNavItemText: {
             color: theme.palette.primary.main,
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700,
             textDecoration: 'none',
             fontSize: 14,

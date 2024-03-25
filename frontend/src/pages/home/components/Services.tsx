@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles"
-import { PUBLIC_SERVICES } from "../../../utils";
+import { PUBLIC_SERVICES, FONT_FAMILY } from "../../../utils";
 import ResponsiveBox from "../../../components/utilities/ResponsiveBox";
 import { Button } from "@mui/material";
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles(
             }
         },
         sectionHeader: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 'bold',
             fontSize: '48px',
             [theme.breakpoints.down('md')]: {
@@ -54,13 +54,13 @@ const useStyles = makeStyles(
             width: '128px'
         },
         serviceCardTitle: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontSize: '24px',
             fontWeight: 'bold',
             marginBottom: '15px'
         },
         serviceCardDesc: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontSize: '16px',
             color: theme.palette.dark.light,
             marginBottom: '15px'

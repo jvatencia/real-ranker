@@ -2,13 +2,13 @@ import { useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useRef } from "react";
 import { SwiperRef, SwiperSlide, Swiper, } from "swiper/react";
-import { devices } from "../../../utils";
+import { devices, FONT_FAMILY } from "../../../utils";
 import { MOCK_TIMELINE } from "../../../utils/mocks";
 
 const useStyles = makeStyles(
     (theme) => ({
         calendarTitle: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 'bold',
             color: theme.palette.primary.main
         },
@@ -28,7 +28,7 @@ const useStyles = makeStyles(
         },
         timelineLabel: {
             position: 'absolute',
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontSize: '16px',
             bottom: '25px',
             left: '40px',

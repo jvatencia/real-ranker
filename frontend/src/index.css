@@ -1,5 +1,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Montserrat/static/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Montserrat/static/Montserrat-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-Thin";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Montserrat/static/Montserrat-Thin.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Thin";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Poppins/Poppins-Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Caveat/CaveatBrush-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Averia";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Averia/AveriaSerifLibre-Regular.ttf") format("truetype");
+}
+
+:root {
+  --app-primary: #412a7c;
+  --app-primary-dark: #39256d;
+  --app-primary-light: #543f89;
+  --app-primary-contrast-text: #ffffff;
+
+  --app-secondary: #53359f;
+  --app-secondary-dark: #492f8c;
+  --app-secondary-light: #6449a9;
+  --app-secondary-contrast-text: #ffffff;
+
+  --app-success: #84e1a9;
+  --app-success-dark: #74c695;
+  --app-success-light: #90e4b2;
+  --app-success-contrast-text: #000000;
+
+  --app-warning: #f8cf40;
+  --app-warning-dark: #dab638;
+  --app-warning-light: #f9d453;
+  --app-warning-contrast-text: #000000;
+
+  --app-error: #f28291;
+  --app-error-dark: #d57280;
+  --app-error-light: #f38f9c;
+  --app-error-contrast-text: #000000;
+
+  --app-light: #f4f5f8;
+  --app-light-dark: #898a8c;
+  --app-light-light: #f5f6f9;
+  --app-light-contrast-text: #000000;
+
+  --app-dark: #222224;
+  --app-dark-dark: #1e1e20;
+  --app-dark-light: #38383a;
+  --app-dark-contrast-text: #ffffff;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   font-size: 18px;
@@ -46,4 +140,27 @@ code {
 
 .app-sidebar.active {
   transform: translateX(0);
+}
+
+div:where(.swal2-container).swal2-backdrop-show,
+div:where(.swal2-container).swal2-noanimation {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.testguy-custom-swal-alert {
+  box-shadow: 0px 5px 0px var(--app-primary) !important;
+  border: 1px solid var(--app-primary);
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+}
+
+div:where(.testguy-custom-swal-alert) button:where(.swal2-styled).swal2-confirm {
+  background-color: var(--app-primary) !important;
+}
+
+div:where(.testguy-custom-swal-alert) button:where(.swal2-styled).swal2-deny {
+  background-color: var(--app-error) !important;
+}
+
+div:where(.testguy-custom-swal-alert) h2:where(.swal2-title) {
+  font-size: 24px !important;
 }

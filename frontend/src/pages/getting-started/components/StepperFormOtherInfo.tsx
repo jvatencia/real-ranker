@@ -1,9 +1,9 @@
 import { Button, ClassNameMap, FormGroup, MenuItem, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";
 import { CustomFormControl } from "../../../components/styled";
-import { FAMILY_INCOME_RANGE, SELF_EVALUATION } from "../../../utils";
+import { FAMILY_INCOME_RANGE, SELF_EVALUATION, getErrorMessage } from "../../../utils";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 
 const useStyles = makeStyles(
@@ -13,6 +13,19 @@ const useStyles = makeStyles(
         }
     })
 );
+
+type OtherInfoForm = {
+    gradYear: string | null,
+    gpa: number | null,
+    actSatScore: number | null,
+    firstGen: number,
+    selfEvaluation: number,
+    academicDisruption: number,
+    upwardTrajectory: number,
+    familyObligation: number,
+    familyIncome: number,
+    activity: any[]
+}
 
 
 interface StepperOtherInfoProps {
@@ -25,10 +38,10 @@ interface StepperOtherInfoProps {
 const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, collegeForm }: StepperOtherInfoProps) => {
     const classes: any = useStyles(outerClasses);
     const setCollegeForm = useCollegeStore((state) => state.setForm);
-    const [form, setForm] = useState({
-        gradYear: '',
-        gpa: '',
-        actSatScore: '',
+    const defaultForm = {
+        gradYear: null,
+        gpa: null,
+        actSatScore: null,
         firstGen: 0,
         selfEvaluation: 0,
         academicDisruption: 0,
@@ -36,6 +49,14 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
         familyObligation: 0,
         familyIncome: 3,
         activity: []
+    };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<OtherInfoForm>({
+        defaultValues: defaultForm
     });
 
     const handleNext = () => {
@@ -46,29 +67,24 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
         setActiveStep(activeStep - 1);
     }
 
-    const handleInputChange = (event: any, input:
-        'gradYear' | 'gpa' | 'actSatScore' | 'firstGen' | 'academicDisruption'
-        | 'upwardTrajectory' | 'familyIncome' | 'familyObligation' | 'selfEvaluation') => {
-        setForm((oldState) => ({ ...oldState, [input]: event.target.value }));
-    }
 
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
-        console.log(form);
-        setCollegeForm(form);
+    const handleFormSubmit: SubmitHandler<OtherInfoForm> = (data: any) => {
+        console.log('[other-info-form] handleFormSubmit', data);
+        setCollegeForm(data);
         handleNext();
     }
 
     return (
         <div className={outerClasses.formContainer}>
-            <form action="" className={classes.otherInfoForm}>
+            <form action="" onSubmit={handleSubmit(handleFormSubmit)} className={classes.otherInfoForm}>
                 <FormGroup>
                     <CustomFormControl>
                         <TextField label="Grad Year"
                             type="number"
-                            name="gradYear"
-                            onChange={(e) => handleInputChange(e, 'gradYear')}
-                            value={form.gradYear}
+                            error={!!errors.gradYear}
+                            defaultValue={defaultForm.gradYear}
+                            helperText={getErrorMessage(errors, 'gradYear', 'Graduation Year is required')}
+                            {...register('gradYear', { required: true })}
                         />
                     </CustomFormControl>
                 </FormGroup>
@@ -76,9 +92,10 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                     <CustomFormControl>
                         <TextField label="GPA"
                             type="number"
-                            name="gpa"
-                            onChange={(e) => handleInputChange(e, 'gpa')}
-                            value={form.gpa}
+                            error={!!errors.gpa}
+                            defaultValue={defaultForm.gpa}
+                            helperText={getErrorMessage(errors, 'gpa', 'GPA is required')}
+                            {...register('gpa', { required: true })}
                         />
                     </CustomFormControl>
                 </FormGroup>
@@ -86,18 +103,20 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                     <CustomFormControl>
                         <TextField label="ACT/SAT Score"
                             type="number"
-                            name="actSatScore"
-                            onChange={(e) => handleInputChange(e, 'actSatScore')}
-                            value={form.actSatScore}
+                            error={!!errors.actSatScore}
+                            defaultValue={defaultForm.actSatScore}
+                            helperText={getErrorMessage(errors, 'actSatScore', 'ACT/SAT Score is required')}
+                            {...register('actSatScore', { required: true })}
                         />
                     </CustomFormControl>
                 </FormGroup>
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="First Generation"
-                            name="firstGen"
-                            onChange={(e) => handleInputChange(e, 'firstGen')}
-                            value={form.firstGen}
+                            error={!!errors.firstGen}
+                            defaultValue={defaultForm.firstGen}
+                            helperText={getErrorMessage(errors, 'firstGen', 'First Generation is required')}
+                            {...register('firstGen', { required: true })}
                         >
                             <MenuItem value={0}>
                                 No
@@ -111,9 +130,10 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="Academic Disruption"
-                            name="academicDisruption"
-                            onChange={(e) => handleInputChange(e, 'academicDisruption')}
-                            value={form.academicDisruption}
+                            error={!!errors.academicDisruption}
+                            defaultValue={defaultForm.academicDisruption}
+                            helperText={getErrorMessage(errors, 'academicDisruption', 'Academic Disruption is required')}
+                            {...register('academicDisruption', { required: true })}
                         >
                             <MenuItem value={0}>
                                 No
@@ -127,9 +147,10 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="Upward Trajectory"
-                            name="upwardTrajectory"
-                            onChange={(e) => handleInputChange(e, 'upwardTrajectory')}
-                            value={form.upwardTrajectory}
+                            error={!!errors.upwardTrajectory}
+                            defaultValue={defaultForm.upwardTrajectory}
+                            helperText={getErrorMessage(errors, 'upwardTrajectory', 'Upward Trajectory is required')}
+                            {...register('upwardTrajectory', { required: true })}
                         >
                             <MenuItem value={0}>
                                 No
@@ -143,9 +164,10 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="Family Obligations"
-                            name="familyObligation"
-                            onChange={(e) => handleInputChange(e, 'familyObligation')}
-                            value={form.familyObligation}
+                            error={!!errors.familyObligation}
+                            defaultValue={defaultForm.familyObligation}
+                            helperText={getErrorMessage(errors, 'familyObligation', 'Family Obligations is required')}
+                            {...register('familyObligation', { required: true })}
                         >
                             <MenuItem value={0}>
                                 No
@@ -159,9 +181,10 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="Evaluation"
-                            name="selfEvaluation"
-                            onChange={(e) => handleInputChange(e, 'selfEvaluation')}
-                            value={form.selfEvaluation}
+                            error={!!errors.selfEvaluation}
+                            defaultValue={defaultForm.selfEvaluation}
+                            helperText={getErrorMessage(errors, 'selfEvaluation', 'Evaluation is required')}
+                            {...register('selfEvaluation', { required: true })}
                         >
                             {
                                 SELF_EVALUATION.map((item, index) => (
@@ -176,9 +199,10 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="Family Income Range"
-                            name="familyIncome"
-                            onChange={(e) => handleInputChange(e, 'familyIncome')}
-                            value={form.familyIncome}
+                            error={!!errors.familyIncome}
+                            defaultValue={defaultForm.familyIncome}
+                            helperText={getErrorMessage(errors, 'familyIncome', 'Family Income Range is required')}
+                            {...register('familyIncome', { required: true })}
                         >
                             {
                                 FAMILY_INCOME_RANGE.map((item, index) => (
@@ -193,7 +217,7 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
 
                 <div className={outerClasses.actionBtns}>
                     <Button variant="text" size="large" onClick={handleBack}>Back</Button>
-                    <Button variant="contained" size="large" onClick={handleSubmit}>Next</Button>
+                    <Button variant="contained" size="large" type="submit">Next</Button>
                 </div>
             </form>
         </div>

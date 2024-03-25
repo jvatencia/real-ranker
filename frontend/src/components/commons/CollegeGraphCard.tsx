@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart } from "recharts";
 import useCollegeStore from "../../store/college/college.store";
-import { getScore } from "../../utils";
+import { FONT_FAMILY, getScore } from "../../utils";
 import { useEffect, useState } from "react";
 import { useTheme } from "@mui/system";
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles(
             borderRadius: '5px'
         },
         graphCardTitle: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             color: theme.palette.primary.main,
             lineHeight: 1,
             fontSize: '20px',

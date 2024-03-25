@@ -3,6 +3,7 @@ import Layout from "../../components/layout/Layout";
 import CompareImg from '../../assets/compare.png';
 import Testimonials from "./components/Testimonials";
 import Services from "./components/Services";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -64,7 +65,7 @@ const useStyles = makeStyles(
             }
         },
         collegeRanker: {
-            fontFamily: 'Poppins',
+            fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700
         },
         heroImgWrapper: {

@@ -121,3 +121,15 @@ export const ACTIVITY_TYPE_LIST = [
 export const ROUTING = {
     REDIRECT_AFTER_LOGIN: '/colleges/compare'
 }
+
+export const FONT_FAMILY = {
+    DEFAULT: 'Montserrat',
+    POPPINS: 'Poppins',
+    POPPINS_BOLD: 'Poppins-Bold',
+    POPPINS_THIN: 'Poppins-Thin',
+    MONTSERRAT: 'Montserrat',
+    MONTSERRAT_BOLD: 'Montserrat-Bold',
+    MONTSERRAT_THIN: 'Montserrat-Thin',
+    CAVEAT: 'Caveat',
+    AVERIA: 'Averia',
+}
