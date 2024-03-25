@@ -27,13 +27,20 @@ const useStyles = makeStyles(
             padding: '0px 5px'
         },
         chanceGraphWrapper: {
-            width: '100%',
-            padding: '10px',
             position: 'relative',
-            overflowX: 'auto',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
+        },
+        chanceGraphSection: {
+            width: '100%',
+            overflowX: 'auto',
+            padding: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            [theme.breakpoints.up('md')]: {
+                justifyContent: 'center'
+            }
         },
         graphLabels: {
             display: 'flex',
@@ -46,7 +53,16 @@ const useStyles = makeStyles(
         graphLabelWrapper: {
             width: (props: any) => props.width_multiplier + 'px',
             borderTop: '2px solid ' + theme.palette.dark.main,
-            padding: '5px 5px'
+            padding: '5px 5px',
+            position: 'relative',
+        },
+        graphPointIndicator: {
+            position: 'absolute',
+            top: '-7px',
+            left: '39px',
+            height: '12px',
+            width: '1px',
+            border: '1px solid ' + theme.palette.dark.main
         },
         graphPoint: {
             position: 'absolute',
@@ -220,30 +236,33 @@ export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
                     ))
                 }
             </div>
-            <div className={classes.chanceGraphWrapper}
-                style={{
-                    height: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px',
-                    width: ((labels.length + 1) * WIDTH_MULTIPLIER) + 'px'
-                }}>
-                {
-                    chartData.length > 0 &&
-                    chartData.map((item, index) => (
-                        <div className={classes.graphPoint} key={`graphPoint${index}`}
-                            style={{ transform: getPosition(item.userScore, index) }}>
-                            <GraphPoint classes={classes} item={item} />
-                        </div>
-                    ))
-                }
-                <div className={classes.graphLabels}>
+            <div className={classes.chanceGraphSection}>
+                <div className={classes.chanceGraphWrapper}
+                    style={{
+                        height: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px',
+                        width: ((labels.length + 1) * WIDTH_MULTIPLIER) + 'px'
+                    }}>
                     {
-                        labels.map((label, index) => (
-                            <div className={classes.graphLabelWrapper} key={`graphLabelWrapper${index}`}>
-                                <div>
-                                    {label}
-                                </div>
+                        chartData.length > 0 &&
+                        chartData.map((item, index) => (
+                            <div className={classes.graphPoint} key={`graphPoint${index}`}
+                                style={{ transform: getPosition(item.userScore, index) }}>
+                                <GraphPoint classes={classes} item={item} />
                             </div>
                         ))
                     }
+                    <div className={classes.graphLabels}>
+                        {
+                            labels.map((label, index) => (
+                                <div className={classes.graphLabelWrapper} key={`graphLabelWrapper${index}`}>
+                                    <div className={classes.graphPointIndicator}></div>
+                                    <div>
+                                        {label}
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
         </>

@@ -54,8 +54,12 @@ export default function SidebarItem({ item, closeSidebar }: Readonly<SidebarItem
     const classes = useStyles();
     const navigate = useNavigate();
 
-    const navigateTo = (url: string) => {
-        navigate(url);
+    const navigateTo = (item: NavLinkItem) => {
+        if (!!item.handler) {
+            item.handler();
+        } else {
+            navigate(item.url);
+        }
         closeSidebar()
     };
 
@@ -77,7 +81,7 @@ export default function SidebarItem({ item, closeSidebar }: Readonly<SidebarItem
                         <div className={classes.sidebarItemIcon}>
                             {renderIcon(item.icon)}
                         </div>
-                        <div onClick={() => navigateTo(item.url)} className={classes.sidebarItemText}>
+                        <div onClick={() => navigateTo(item)} className={classes.sidebarItemText}>
                             <div className={classes.sidebarItemTitle}>{item.text}</div>
                         </div>
                     </div>
@@ -108,7 +112,7 @@ export default function SidebarItem({ item, closeSidebar }: Readonly<SidebarItem
                                         <div className={classes.sidebarItemIcon}>
                                             {renderIcon(link.icon)}
                                         </div>
-                                        <div onClick={() => navigateTo(link.url)} className={classes.sidebarItemTitle}>
+                                        <div onClick={() => navigateTo(link)} className={classes.sidebarItemTitle}>
                                             {link.text}
                                         </div>
                                     </div>
