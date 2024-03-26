@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { CustomFormControl } from "../../../components/styled";
 import useAuthStore from "../../../store/auth/auth.store";
 import { useForm, SubmitHandler } from "react-hook-form"
+import { getErrorMessage } from "../../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -65,7 +66,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                         <TextField label="Name"
                             error={!!errors.displayName}
                             defaultValue={auth?.displayName}
-                            helperText={!!errors.displayName && errors.displayName.type === 'required' && 'Name is required'}
+                            helperText={getErrorMessage(errors, 'displayName', 'Name is required')}
                             {...register('displayName', { required: true })}
                         />
                     </CustomFormControl>
@@ -76,6 +77,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                             type="email"
                             defaultValue={auth?.email}
                             disabled={!!auth?.email}
+                            helperText={getErrorMessage(errors, 'email', 'Email is required')}
                             {...register('email', { required: true })}
 
                         />
@@ -87,7 +89,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                             type="tel"
                             error={!!errors.phoneNumber}
                             defaultValue={auth?.phoneNumber}
-                            helperText={!!errors.phoneNumber && errors.phoneNumber.type === 'required' && 'Phone Number is required'}
+                            helperText={getErrorMessage(errors, 'phoneNumber', 'Phone Number is required')}
                             {...register('phoneNumber', { required: true })}
                         />
                     </CustomFormControl>

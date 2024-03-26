@@ -1,6 +1,6 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, InputBase, Skeleton, debounce, TextField, useMediaQuery } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Skeleton, debounce, TextField, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { devices, sizes } from "../../utils";
+import { devices } from "../../utils";
 import { useEffect, useState } from "react";
 import { SearchOutlined } from "@mui/icons-material";
 import { useShallow } from "zustand/react/shallow";

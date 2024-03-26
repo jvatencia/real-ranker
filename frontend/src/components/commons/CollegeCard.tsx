@@ -1,11 +1,12 @@
 import { styled, useTheme } from "@mui/system";
-import { getScore, toLetterGrade, toPercent } from "../../utils/utilities";
+import { computeUserScore, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined } from "@mui/icons-material";
-import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom } from "@mui/material";
+import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom, Chip, Alert } from "@mui/material";
 import { useEffect, useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
 import { devices } from "../../utils/breakpoints";
 import { Link } from "react-router-dom";
+import { getAcceptanceRate } from "../../utils";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
     boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
@@ -218,6 +219,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
     const form = useCollegeStore((state) => state.form);
     const userScores = useCollegeStore((state) => state.userScore);
     const theme = useTheme();
+    const userScore = getAcceptanceRate(college, form);
 
     const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
         return weights.reduce((a: number, b: number, index: number) => {
@@ -345,6 +347,14 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                             </Link>
                         </div>
                         <div>
+                            <Alert
+                                variant="filled"
+                                severity="info"
+                                style={{ fontSize: '13px' }}
+                                color={userScore > 2 ? (userScore > 5 ? 'success' : 'warning') : 'error'}
+                            >
+                                {(userScore * 10).toFixed(0)}% chance of getting in
+                            </Alert>
 
                         </div>
                     </CollegeInfoContent>

@@ -7,8 +7,9 @@ import GettingStartedPage from "../pages/getting-started/GettingStartedPage";
 import PrivateRoutes from "../components/utilities/PrivateRoutes";
 import WelcomePage from "../pages/home/WelcomePage";
 import CollegeProfile from "../pages/colleges/CollegeProfile";
-import ProfilePage from "../pages/profile/ProfilePage";
 import SignUpPage from "../pages/auth/SignUpPage";
+import ProfileMenuPage from "../pages/profile/ProfileMenuPage";
+import ProfilePage from "../pages/profile/ProfilePage";
 
 const routes: RouteObject[] = [
     {
@@ -33,6 +34,7 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'profile',
+                // Component: ProfileMenuPage,
                 Component: ProfilePage,
             },
             {

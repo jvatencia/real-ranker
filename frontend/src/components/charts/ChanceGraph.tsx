@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
-import { COLOR_PALETTES, devices, getAcceptanceRate, getScore, randomColor } from "../../utils";
+import { COLOR_PALETTES, devices, getAcceptanceRate, randomColor } from "../../utils";
 import { Chip, ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import useCollegeStore from "../../store/college/college.store";
@@ -100,7 +100,7 @@ const PointToolTip = styled(({ className, ...props }: TooltipProps) => (
 const GraphPointToolTipContent = ({ handleTooltipClose, item, classes }: any) => {
     return (
         <div className={classes.graphPointContent}>
-            {item.college.instnm} {item.userScore.toFixed(1)}
+            {item.college.instnm} {item.userScore.toFixed(2)}
         </div>
     );
 }

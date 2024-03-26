@@ -25,7 +25,7 @@ interface RateConditionOptions {
 const SCORE_OPTIONS: RateConditionOptions[] = [
     {
         min: 0,
-        max: 14,
+        max: 14.9,
         startingScore: 2.5,
         avgGPA: 3.93,
         gpaModifier: [
@@ -52,7 +52,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 15,
-        max: 29,
+        max: 29.9,
         startingScore: 3,
         avgGPA: 3.76,
         gpaModifier: [
@@ -79,7 +79,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 30,
-        max: 44,
+        max: 44.9,
         startingScore: 3.25,
         avgGPA: 3.68,
         gpaModifier: [
@@ -106,7 +106,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 45,
-        max: 64,
+        max: 64.9,
         startingScore: 4.5,
         avgGPA: 3.63,
         gpaModifier: [
@@ -133,7 +133,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 65,
-        max: 85,
+        max: 85.9,
         startingScore: 6,
         avgGPA: 3.52,
         gpaModifier: [
@@ -187,15 +187,22 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     }
 ];
 
-export const getAcceptanceRate = ({ adm_rate }: any, form: any) => {
+export const getAcceptanceRate = ({ adm_rate, instnm }: any, form: any) => {
+    if (instnm) console.log('[getAcceptanceRate] college', instnm);
     const scoreOption = getStartingScore(adm_rate * 100);
     if (scoreOption) {
         const score: number = scoreOption.startingScore;
+        console.log('[pointsModifier] starting score', scoreOption.startingScore);
+        console.log('[pointsModifier] GPA', parseFloat(form.gpa));
         const pointModifiers: number[] = [];
         scoreOption.gpaModifier.forEach((item: ScoreModifierOptions) => pointModifiers.push(checkGPA(item, parseFloat(form.gpa), score, scoreOption)));
+        console.log('[pointsModifier] gpa modifier', pointModifiers);
         scoreOption.gpaModifier.forEach((item: ScoreModifierOptions) => pointModifiers.push(checkEvaluation(item, form.selfEvaluation, score, scoreOption)));
         checkForm(scoreOption, form).forEach((item: number) => pointModifiers.push(item));
-        console.log('[pointsModifier]', pointModifiers);
+        console.log('[pointsModifier] checkForm', checkForm(scoreOption, form));
+        console.log('[pointsModifier] evaluation', pointModifiers);
+        console.log('[pointsModifier] total addition', pointModifiers.reduce((a: number, b: number) => a + b, 0));
+        console.log('[pointsModifier] final score', score + pointModifiers.reduce((a: number, b: number) => a + b, 0));
         return score + pointModifiers.reduce((a: number, b: number) => a + b, 0);
     }
 
@@ -205,16 +212,30 @@ export const getAcceptanceRate = ({ adm_rate }: any, form: any) => {
 const checkGPA = (item: ScoreModifierOptions, gpa: number, score: number, scoreOption: RateConditionOptions) => {
     const avgGPA = scoreOption.avgGPA
     if (item.condition === 'above') {
+        console.log(`[checkGPA] ${gpa} > ${(avgGPA + item.min!)}`, item.scoreModifier, gpa > avgGPA + item.min!);
         if (gpa > avgGPA + item.min!) {
             return item.scoreModifier;
         }
-    } else if (item.condition === 'par') {
+    }
+
+    if (item.condition === 'par') {
+        console.log(`[checkGPA] ${gpa} === ${(avgGPA)}`, item.scoreModifier, gpa === avgGPA);
         if (gpa === avgGPA) {
             return item.scoreModifier;
         }
-    } else if (item.condition === 'below') {
-        if (gpa <= (avgGPA - item.min!) && gpa >= (avgGPA - item.max!)) {
-            return item.scoreModifier
+    }
+
+    if (item.condition === 'below') {
+        if (item.max !== undefined) {
+            console.log(`[checkGPA] ${gpa} <= ${(avgGPA - item.min!)} && ${gpa} >= ${(avgGPA - item.max)}`, item.scoreModifier, gpa <= (avgGPA - item.min!) && gpa >= (avgGPA - item.max));
+            if (gpa <= (avgGPA - item.min!) && gpa >= (avgGPA - item.max)) {
+                return item.scoreModifier;
+            }
+        } else {
+            console.log(`[checkGPA] ${gpa} <= ${(avgGPA - item.min!)}`, item.scoreModifier, gpa <= (avgGPA - item.min!));
+            if (gpa <= (avgGPA - item.min!)) {
+                return item.scoreModifier;
+            }
         }
     }
 

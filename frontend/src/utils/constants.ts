@@ -1,5 +1,5 @@
-// export const BASE_URL: string = `https://www.thetestguytutors.com`;
-// export const BASE_URL: string = `https://real-ranker-backend.uc.r.appspot.com`;
+import { AccountCircle, ManageAccounts, SegmentOutlined } from "@mui/icons-material";
+
 export const BASE_URL: string = ``;
 
 export const DEFAULT_HEADERS = {
@@ -116,11 +116,11 @@ export const ACTIVITY_TYPE_LIST = [
     { text: 'Customer Service', value: 'cs' },
     { text: 'Education', value: 'education' },
     { text: 'Others', value: 'others' },
-]
+];
 
 export const ROUTING = {
     REDIRECT_AFTER_LOGIN: '/colleges/compare'
-}
+};
 
 export const FONT_FAMILY = {
     DEFAULT: 'Montserrat',
@@ -132,4 +132,21 @@ export const FONT_FAMILY = {
     MONTSERRAT_THIN: 'Montserrat-Thin',
     CAVEAT: 'Caveat',
     AVERIA: 'Averia',
-}
+};
+
+export const PROFILE_MENU_ITEMS = [
+    {
+        icon: ManageAccounts,
+        title: 'Account Information',
+        url: '/profile/account-info'
+    },
+    {
+        icon: AccountCircle,
+        title: 'Personal Information',
+        url: '/profile/personal-info'
+    }, {
+        icon: SegmentOutlined,
+        title: 'Real Ranker Colleges',
+        url: '/profile/selected-colleges'
+    },
+]
