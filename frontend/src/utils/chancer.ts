@@ -25,7 +25,7 @@ interface RateConditionOptions {
 const SCORE_OPTIONS: RateConditionOptions[] = [
     {
         min: 0,
-        max: 14.9,
+        max: 15,
         startingScore: 2.5,
         avgGPA: 3.93,
         gpaModifier: [
@@ -52,7 +52,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 15,
-        max: 29.9,
+        max: 30,
         startingScore: 3,
         avgGPA: 3.76,
         gpaModifier: [
@@ -79,7 +79,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 30,
-        max: 44.9,
+        max: 45,
         startingScore: 3.25,
         avgGPA: 3.68,
         gpaModifier: [
@@ -106,7 +106,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 45,
-        max: 64.9,
+        max: 65,
         startingScore: 4.5,
         avgGPA: 3.63,
         gpaModifier: [
@@ -133,7 +133,7 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
     },
     {
         min: 65,
-        max: 85.9,
+        max: 85,
         startingScore: 6,
         avgGPA: 3.52,
         gpaModifier: [

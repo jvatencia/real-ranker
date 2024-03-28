@@ -104,3 +104,10 @@ export const generateId = (len: number) => {
 export const getErrorMessage = (errors: FieldErrors<any>, fieldName: string, errorMessage: string, errorType: 'required' = 'required') => {
   return !!errors[fieldName] && errors[fieldName]?.type === errorType && errorMessage;
 }
+
+export const formatNumber = (value: any) => {
+  if (typeof value === 'number')
+    return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return value;
+}

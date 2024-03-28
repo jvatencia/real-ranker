@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, useMediaQuery } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { getScore, toPercent } from "../../utils/utilities";
+import { formatNumber, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
 import { ChevronLeftOutlined, RemoveOutlined, SortOutlined } from "@mui/icons-material";
 import SortCard from "./SortCard";
@@ -219,7 +219,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                 <ResultCardPrimaryItem
                                     style={{ color: theme.palette.light.main }}
                                     key={`collegeSuccessScore${college['name'].replace(' ', '')}`}>
-                                    <div>{(college[category.key].score * 100).toFixed(1)}%</div>
+                                    <div>{toLetterGrade(college[category.key].score * 100)}</div>
                                 </ResultCardPrimaryItem>
                             ))
                         }
@@ -246,7 +246,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                             key={`collegeSuccessScore${index}`}>
                                             {
                                                 college[category.key]?.moreInfo[scoreIndex]?.value != null &&
-                                                <div>{college[category.key].moreInfo[scoreIndex].value}</div>
+                                                <div>{formatNumber(college[category.key].moreInfo[scoreIndex].value)}</div>
                                             }
                                         </ResultCardPrimaryItem>
                                     ))

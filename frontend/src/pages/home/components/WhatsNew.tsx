@@ -7,6 +7,7 @@ import { makeStyles } from "@mui/styles";
 import Calendar from "./Calendar";
 import ChanceGraph from "../../../components/charts/ChanceGraph";
 import useCollegeStore from "../../../store/college/college.store";
+import ChanceGraphVertical from "../../../components/charts/ChanceGraphVertical";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -68,7 +69,7 @@ export default function WhatsNew() {
             <hr />
             <div className={classes.sectionTitle}>Chance Graph</div>
             <div className={classes.sectionCenteredContent}>
-                <ChanceGraph data={selectedColleges} />
+                <ChanceGraphVertical data={selectedColleges} />
             </div>
             <hr />
             <Calendar />

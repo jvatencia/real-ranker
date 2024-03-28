@@ -347,14 +347,12 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                             </Link>
                         </div>
                         <div>
-                            <Alert
-                                variant="filled"
-                                severity="info"
+                            <Chip
+                                size="small"
+                                label={`${(userScore * 10).toFixed(0)}% chance of getting in`}
                                 style={{ fontSize: '13px' }}
                                 color={userScore > 2 ? (userScore > 5 ? 'success' : 'warning') : 'error'}
-                            >
-                                {(userScore * 10).toFixed(0)}% chance of getting in
-                            </Alert>
+                            />
 
                         </div>
                     </CollegeInfoContent>
