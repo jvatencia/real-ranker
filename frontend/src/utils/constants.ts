@@ -123,7 +123,7 @@ export const ROUTING = {
 };
 
 export const FONT_FAMILY = {
-    DEFAULT: 'Montserrat',
+    DEFAULT: 'Poppins',
     POPPINS: 'Poppins',
     POPPINS_BOLD: 'Poppins-Bold',
     POPPINS_THIN: 'Poppins-Thin',

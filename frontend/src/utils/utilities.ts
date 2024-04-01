@@ -109,5 +109,8 @@ export const formatNumber = (value: any) => {
   if (typeof value === 'number')
     return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+  if (typeof value === 'string' && !value.includes('%'))
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return value;
 }

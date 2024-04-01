@@ -26,7 +26,7 @@ const useStyles = makeStyles(
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'flex-start',
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: theme.palette.primary.main,
             borderRadius: '15px',
             [theme.breakpoints.up('md')]: {
                 height: '200px'

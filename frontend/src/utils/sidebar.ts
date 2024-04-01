@@ -46,7 +46,7 @@ export const authItems: NavLinkItem[] = [
             {
                 text: 'Search Collge',
                 items: [],
-                url: '/colleges/search',
+                url: '/profile?search=1',
                 isActive: false,
                 icon: SearchOutlined
             },
@@ -54,13 +54,6 @@ export const authItems: NavLinkItem[] = [
         url: '/colleges',
         isActive: false,
         icon: SchoolOutlined
-    },
-    {
-        text: 'My Timeline',
-        items: [],
-        url: '/timeline',
-        isActive: false,
-        icon: TimelineOutlined
     },
     {
         text: 'Profile',

@@ -4,9 +4,11 @@ import useCollegeStore from "../../../store/college/college.store";
 import { Button, Chip, IconButton, MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast, FONT_FAMILY } from "../../../utils";
-import { AccessTime, Add, Delete, DeleteOutline } from "@mui/icons-material";
+import { AccessTime, Add, Delete } from "@mui/icons-material";
 import ActivityForm from "./ActivityForm";
 import SearchCollegeModal from "../../../components/modals/SearchCollege";
+import { useSearchParams } from "react-router-dom";
+import Alert from "../../../components/utilities/Alert";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -267,7 +269,7 @@ const DisplaySchoolCard = ({ canEdit, college, removeCollege }: any) => {
             </div>
             <div className={classes.collegeCardActions}>
                 <IconButton onClick={(e) => removeCollege(college)}>
-                    <DeleteOutline />
+                    <Delete color="error" />
                 </IconButton>
             </div>
         </div>
@@ -281,12 +283,26 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
     const addCollege = useCollegeStore((state) => state.addCollege);
     const removeCollege = useCollegeStore((state) => state.removeCollege);
     const [showCollegeSearchModal, setShowCollegeSearchModal] = useState(false);
+    let [searchParams, setSearchParams] = useSearchParams();
+
     useEffect(() => {
         if (!canEdit && form !== formDetail) {
             setFormDetail(form);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canEdit]);
+
+    useEffect(() => {
+        const openSearch = searchParams.get('search') || '0';
+        if (parseInt(openSearch) === 1) {
+            setShowCollegeSearchModal(true);
+        } else {
+            setShowCollegeSearchModal(false);
+        }
+
+    }, [searchParams])
+
+
 
     useEffect(() => {
         console.log('[FormDetails] formDetail', formDetail);
@@ -304,6 +320,14 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
         } else {
             showToast('College already exists. Please select a new one', { variant: 'error' });
         }
+    }
+
+    const confirmRemove = (college: any) => {
+        Alert.confirm(`Are you sure you want to remove ${college.instnm} from your list?`).then(({ isConfirmed }: any) => {
+            if (isConfirmed) {
+                removeCollege(college);
+            }
+        });
     }
 
     return (
@@ -352,7 +376,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         selectedColleges.map((college, index) => (
                             <DisplaySchoolCard
                                 key={`displaySchoolCard${index}${college.id}`}
-                                removeCollege={removeCollege}
+                                removeCollege={confirmRemove}
                                 college={college}
                                 canEdit={canEdit}
                             />
@@ -361,7 +385,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                     <div className={classes.newActivityBtnWrapper}>
                         {
                             selectedColleges.length < 10 &&
-                            <Button variant="outlined" startIcon={<Add />} onClick={() => setShowCollegeSearchModal(true)}>
+                            <Button variant="outlined" startIcon={<Add />} onClick={() => setSearchParams({ search: '1' })}>
                                 Add College
                             </Button>
                         }
@@ -480,7 +504,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
             </div>
             <SearchCollegeModal
                 showDialog={showCollegeSearchModal}
-                setDialog={setShowCollegeSearchModal}
+                setDialog={(state: boolean) => setSearchParams({ search: state ? '1' : '0' })}
                 setCollege={selectCollege}
             />
         </div>
