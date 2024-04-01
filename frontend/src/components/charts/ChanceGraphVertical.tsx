@@ -58,6 +58,9 @@ const useStyles = makeStyles(
             padding: '5px 5px',
             position: 'relative',
         },
+        graphLabelDotted: {
+            borderRight: '2px dotted ' + theme.palette.dark.main,
+        },
         graphPointIndicator: {
             position: 'absolute',
             top: '0px',
@@ -255,11 +258,8 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
                             labels.reverse().map((label, index) => (
 
                                 <div
-                                    className={classes.graphLabelWrapper}
-                                    key={`graphLabelWrapper${index}`}
-                                    style={{
-                                        borderRight: ((index + 1) >= 3 && (index + 1) <= 6) ? '2px dotted black !important' : ''
-                                    }}>
+                                    className={`${classes.graphLabelWrapper} ${((index + 1) > 3 && (index + 1) <= 6) && classes.graphLabelDotted}`}
+                                    key={`graphLabelWrapper${index}`}>
                                     <div className={classes.graphPointIndicator}></div>
                                     <div style={{ textAlign: 'right', paddingRight: '10px', transform: 'translateY(-15px)' }}>
                                         {label}
