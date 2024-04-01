@@ -20,7 +20,7 @@ const useStyles = makeStyles(
             height: '200px',
             border: '1px solid rgba(0,0,0,0.3)',
             borderRadius: '15px',
-            background: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 50%, ${theme.palette.secondary.main} 100%)`,
+            background: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 50%, ${theme.palette.primary.main} 100%)`,
             [theme.breakpoints.up('md')]: {
                 height: '250px'
             }

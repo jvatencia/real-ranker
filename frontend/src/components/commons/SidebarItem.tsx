@@ -68,7 +68,7 @@ export default function SidebarItem({ item, closeSidebar }: Readonly<SidebarItem
 
         const SidebarIcon = icon;
 
-        return <SidebarIcon color='secondary' />
+        return <SidebarIcon color='primary' />
     }
 
 

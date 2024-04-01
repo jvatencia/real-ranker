@@ -50,9 +50,9 @@ const useStyles = makeStyles(
             width: '100%',
         },
         timelineVertical: {
-            border: '1px solid ' + theme.palette.secondary.main,
+            border: '1px solid ' + theme.palette.primary.light,
             borderRadius: '50%',
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: theme.palette.primary.light,
             width: '40px',
             height: '40px',
             position: 'absolute',

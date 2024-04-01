@@ -1,5 +1,5 @@
 import { styled, useTheme } from "@mui/system";
-import { computeUserScore, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
+import { computeUserScore, formatNumber, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined } from "@mui/icons-material";
 import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom, Chip, Alert } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -159,7 +159,7 @@ const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, han
                 keyValueArray.map((item, index) => (
                     <div style={{ marginBottom: '5px' }} key={`tooltipContentItem${index}`}>
                         <div> {item.key}{item.value != null && <span>:</span>} </div>
-                        <div> {item.value}</div>
+                        <div> {formatNumber(item.value)}</div>
                     </div>
                 ))
             }
@@ -205,7 +205,19 @@ const GradeCustomToolTip = (props: ToolTipContentProps) => {
                     disableHoverListener
                     TransitionComponent={Zoom}
                     disableTouchListener
-                    style={{ marginBottom: matches ? '7px' : 'unset' }}
+                    style={{ marginBottom: matches ? '0' : 'unset' }}
+                    slotProps={{
+                        popper: {
+                            modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                        offset: [0, matches ? -8 : 0]
+                                    }
+                                }
+                            ]
+                        }
+                    }}
                     open={open}
                     title={<ToolTipContent {...props} handleTooltipClose={handleTooltipClose} />}>
                     <GradeInfoIcon onClick={handleTooltipOpen} />
@@ -330,7 +342,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                         Diversity
                     </StatusDesc>
                     <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'space-between' }}>{toLetterGrade(diversity)}
-                        <GradeCustomToolTip keyValueArray={diversityArray} gradeCategory={'Dviersity'} openDialog={openDialog} college={college} />
+                        <GradeCustomToolTip keyValueArray={diversityArray} gradeCategory={'Diversity'} openDialog={openDialog} college={college} />
                     </StatusDesc>
                 </StatusRow>
             </GradesInfo>

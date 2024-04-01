@@ -34,7 +34,7 @@ const useStyles = makeStyles(
                 borderRightWidth: '1px'
             },
             "&:hover": {
-                backgroundColor: theme.palette.secondary.main,
+                backgroundColor: theme.palette.primary.light,
                 color: theme.palette.light.main,
             },
             [theme.breakpoints.down('md')]: {

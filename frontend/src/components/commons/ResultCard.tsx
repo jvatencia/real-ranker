@@ -219,7 +219,7 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                 <ResultCardPrimaryItem
                                     style={{ color: theme.palette.light.main }}
                                     key={`collegeSuccessScore${college['name'].replace(' ', '')}`}>
-                                    <div>{toLetterGrade(college[category.key].score * 100)}</div>
+                                    <div>{toLetterGrade(college[category.key].score)}</div>
                                 </ResultCardPrimaryItem>
                             ))
                         }
@@ -332,7 +332,6 @@ function ResultCard({ colleges }: any) {
         }
     ];
 
-
     const initData = (colleges: Array<any>) => {
         setMounted(false);
 
@@ -347,8 +346,8 @@ function ResultCard({ colleges }: any) {
                 cost: {
                     score: getScore(college, `npt4${form['familyIncome']}`),
                     moreInfo: [
-                        { key: 'Net Price for Your Income Range', value: (college['npt43_pub'] + college['npt43_priv']) },
-                        { key: 'Net Cost of Your Degree', value: ((college['npt43_pub'] + college['npt43_priv']) * ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))))).toFixed(2) },
+                        { key: 'Net Price for Your Income Range', value: formatNumber(college['npt43_pub'] + college['npt43_priv']) },
+                        { key: 'Net Cost of Your Degree', value: formatNumber(((college['npt43_pub'] + college['npt43_priv']) * ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))))).toFixed(2)) },
                         { key: 'Filler', value: 'Filler' },
                     ]
                 },
@@ -409,15 +408,9 @@ function ResultCard({ colleges }: any) {
 
     useEffect(() => {
         initData(colleges);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
-    useMemo(() => {
-        if (mounted) {
-            initData(colleges);
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userScores, mounted]);
+    }, [userScores]);
 
     useEffect(() => {
         setCollegesDisplay(data.filter((college: any, i: number) => i >= index && i < (index + toDisplay)));
@@ -455,7 +448,7 @@ function ResultCard({ colleges }: any) {
     }
 
     const nextPage = () => {
-        if (index + toDisplay <= data.length) {
+        if (index + toDisplay < data.length) {
             setIndex((oldValue) => (oldValue + toDisplay));
         }
     }
@@ -531,7 +524,7 @@ function ResultCard({ colleges }: any) {
                                         flex: '0 0 ' + (buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)')
                                     }}>
 
-                                    <ResultCardPrimaryRow style={{ justifyContent: 'space-between', backgroundColor: theme.palette.secondary.main }}>
+                                    <ResultCardPrimaryRow style={{ justifyContent: 'space-between', backgroundColor: theme.palette.primary.light }}>
                                         <ResultCardPrimaryItemLabel>Your Score</ResultCardPrimaryItemLabel>
                                         <ResultCardPrimaryItemContainer>
                                             {
