@@ -15,15 +15,15 @@ function App() {
       mode: 'light',
       primary: {
         main: '#412a7c',
-        dark: '#39256d',
+        dark: '#3b45bb',
         light: '#543f89',
         contrastText: '#ffffff'
       },
       secondary: {
-        main: '#53359f',
-        dark: '#492f8c',
-        light: '#6449a9',
-        contrastText: '#ffffff'
+        main: '#707AE6',
+        dark: '#454da7',
+        light: '#a4b3ff',
+        contrastText: '#000000'
       },
       success: {
         main: '#84e1a9',
@@ -44,7 +44,7 @@ function App() {
         contrastText: '#000000'
       },
       light: {
-        main: '#f4f5f8',
+        main: '#fffaf5',
         dark: '#898a8c',
         light: '#f5f6f9',
         contrastText: '#000000'

@@ -59,14 +59,14 @@
 
 :root {
   --app-primary: #412a7c;
-  --app-primary-dark: #39256d;
+  --app-primary-dark: #3b45bb;
   --app-primary-light: #543f89;
   --app-primary-contrast-text: #ffffff;
 
-  --app-secondary: #53359f;
-  --app-secondary-dark: #492f8c;
-  --app-secondary-light: #6449a9;
-  --app-secondary-contrast-text: #ffffff;
+  --app-secondary: #707AE6;
+  --app-secondary-dark: #454da7;
+  --app-secondary-light: #a4b3ff;
+  --app-secondary-contrast-text: #000000;
 
   --app-success: #84e1a9;
   --app-success-dark: #74c695;
@@ -83,7 +83,7 @@
   --app-error-light: #f38f9c;
   --app-error-contrast-text: #000000;
 
-  --app-light: #f4f5f8;
+  --app-light: #fffaf5;
   --app-light-dark: #898a8c;
   --app-light-light: #f5f6f9;
   --app-light-contrast-text: #000000;
@@ -155,12 +155,23 @@ div:where(.swal2-container).swal2-noanimation {
 
 div:where(.testguy-custom-swal-alert) button:where(.swal2-styled).swal2-confirm {
   background-color: var(--app-primary) !important;
+  font-size: 1.1em !important;
 }
 
 div:where(.testguy-custom-swal-alert) button:where(.swal2-styled).swal2-deny {
-  background-color: var(--app-error) !important;
+  color: var(--app-error) !important;
+  background-color: transparent !important;
+  font-size: 1.1em !important;
+  font-weight: 600;
 }
 
 div:where(.testguy-custom-swal-alert) h2:where(.swal2-title) {
-  font-size: 24px !important;
+  font-size: 22px !important;
+}
+
+div:where(.swal2-container) div:where(.testguy-custom-swal-alert) div:where(.swal2-actions) {
+  width: 100%;
+  justify-content: flex-start !important;
+  flex-direction: row-reverse !important;
+  padding: 0 16px;
 }
