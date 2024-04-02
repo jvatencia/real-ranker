@@ -2,7 +2,7 @@ import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { COLOR_PALETTES, devices, getAcceptanceRate, randomColor } from "../../utils";
 import { Chip, ClickAwayListener, Tooltip, TooltipProps, Zoom, tooltipClasses, useMediaQuery } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/system";
 import useCollegeStore from "../../store/college/college.store";
 
 const useStyles = makeStyles(
@@ -18,11 +18,9 @@ const useStyles = makeStyles(
         },
         sectionSummaryScore: {
             fontSize: '12px !important',
-            color: theme.palette.light.main + ' !important',
             fontWeight: 'bold'
         },
         sectionSummaryChip: {
-            color: theme.palette.light.main + ' !important',
             marginRight: '5px',
             padding: '0px 5px'
         },
@@ -69,10 +67,20 @@ const useStyles = makeStyles(
             width: '12px',
             border: '1px solid ' + theme.palette.dark.main
         },
+        graphPointIndicatorDotted: {
+            width: '60vw',
+            right: 'unset',
+            left: '32px',
+            borderStyle: 'dashed',
+            [theme.breakpoints.down('md')]: {
+                width: '80vw'
+            }
+        },
         graphPoint: {
             position: 'absolute',
             left: '40px',
             bottom: '85px',
+            zIndex: '1'
         },
         graphPointCircle: {
             cursor: 'pointer',
@@ -96,7 +104,7 @@ const PointToolTip = styled(({ className, ...props }: TooltipProps) => (
     },
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: theme.palette.primary.main,
-        color: '#fff',
+        color: theme.palette.dark.main,
         fontSize: 12,
         padding: 10,
         zIndex: 10
@@ -147,10 +155,11 @@ const GraphPoint = ({ item, classes }: any) => {
                     }}
                     sx={{
                         [`& .${tooltipClasses.arrow}`]: {
-                            color: item.color
+                            color: item.color.bg
                         },
                         [`& .${tooltipClasses.tooltip}`]: {
-                            backgroundColor: item.color,
+                            backgroundColor: item.color.bg,
+                            color: item.color.text,
                             width: 'auto'
                         }
                     }}
@@ -159,7 +168,7 @@ const GraphPoint = ({ item, classes }: any) => {
                         className={classes.graphPointCircle}
                         onClick={handleTooltipOpen}
                         style={{
-                            backgroundColor: item.color
+                            backgroundColor: item.color.bg
                         }}
                     >
 
@@ -181,31 +190,38 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
     const [chartData, setChartData] = useState<any[]>([]);
     const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const form = useCollegeStore((state) => state.form);
+    const theme = useTheme();
 
     const initData = () => {
-        let colors: string[] = [];
 
-        const checkColor = (color: string): string => {
-            if (colors.length === COLOR_PALETTES.length) {
-                colors = [];
+        const getScoreColor = (score: number) => {
+            if (score < 3) {
+                return {
+                    bg: theme.palette.error.main,
+                    text: theme.palette.error.contrastText,
+                };
             }
 
-            if (colors.includes(color)) {
-                return checkColor(randomColor());
+            if (score >= 3 && score <= 6) {
+                return {
+                    bg: theme.palette.warning.main,
+                    text: theme.palette.warning.contrastText,
+                };
             }
 
-            return color;
+            return {
+                bg: theme.palette.success.main,
+                text: theme.palette.success.contrastText,
+            };
         }
 
         setChartData(
             data.map((college: any) => {
-                const color = checkColor(randomColor());
-                colors.push(color);
-
+                const score = getAcceptanceRate(college, form);
                 return {
                     college,
-                    color,
-                    userScore: getAcceptanceRate(college, form)
+                    color: getScoreColor(score),
+                    userScore: score
                 };
             })
         );
@@ -222,6 +238,8 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
         initData();
     }, []);
 
+    useEffect(() => console.log('[chanceGraphVertical] data', chartData), [chartData])
+
     return (
         <>
             <div className={classes.sectionTitle}>Your GPA: {form.gpa}</div>
@@ -234,7 +252,7 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
                             label={`${item.college.instnm}(${(item.college.adm_rate * 100).toFixed(2)})`}
                             key={`sectionSummary${index}`}
                             className={classes.sectionSummaryChip}
-                            style={{ backgroundColor: item.color }} />
+                            style={{ backgroundColor: item.color.bg, color: item.color.text }} />
                     ))
                 }
             </div>
@@ -258,9 +276,9 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
                             labels.reverse().map((label, index) => (
 
                                 <div
-                                    className={`${classes.graphLabelWrapper} ${((index + 1) > 3 && (index + 1) <= 6) && classes.graphLabelDotted}`}
+                                    className={`${classes.graphLabelWrapper}`}
                                     key={`graphLabelWrapper${index}`}>
-                                    <div className={classes.graphPointIndicator}></div>
+                                    <div className={`${classes.graphPointIndicator} ${index == 3 || index == 6 ? classes.graphPointIndicatorDotted : ''}`}></div>
                                     <div style={{ textAlign: 'right', paddingRight: '10px', transform: 'translateY(-15px)' }}>
                                         {label}
                                     </div>

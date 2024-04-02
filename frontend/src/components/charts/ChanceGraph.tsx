@@ -200,6 +200,10 @@ export default function ChanceGraph({ data }: Readonly<ChanceGraphProps>) {
             return color;
         }
 
+        const getStatusColor = (college: any) => {
+
+        }
+
         setChartData(
             data.map((college: any) => {
                 const color = checkColor(randomColor());
