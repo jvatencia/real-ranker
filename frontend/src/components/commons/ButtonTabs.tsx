@@ -10,8 +10,9 @@ const useStyles = makeStyles(
         },
         tabButton: {
             padding: '8px 16px',
-            border: '1px solid ' + theme.palette.primary.main,
-            color: theme.palette.primary.main,
+            border: '1px solid ' + theme.palette.secondary.dark,
+            backgroundColor: theme.palette.light.main,
+            color: theme.palette.dark.main,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -19,7 +20,6 @@ const useStyles = makeStyles(
             fontWeight: 'bold',
             transition: '0.3s linear',
             userSelect: 'none',
-            boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
             "&:not(:first-child)": {
                 borderRightWidth: 0,
             },
@@ -34,7 +34,7 @@ const useStyles = makeStyles(
                 borderRightWidth: '1px'
             },
             "&:hover": {
-                backgroundColor: theme.palette.primary.light,
+                backgroundColor: theme.palette.secondary.main,
                 color: theme.palette.light.main,
             },
             [theme.breakpoints.down('md')]: {
@@ -42,8 +42,8 @@ const useStyles = makeStyles(
             }
         },
         tabButtonActive: {
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.warning.main + ' !important',
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.light.main + ' !important',
         }
     })
 );

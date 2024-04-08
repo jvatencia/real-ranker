@@ -10,7 +10,7 @@ const useStyles = makeStyles(
         calendarTitle: {
             fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 'bold',
-            color: theme.palette.primary.main
+            color: theme.palette.dark.main
         },
         calendarSwiper: {
             width: '100%'
@@ -46,13 +46,13 @@ const useStyles = makeStyles(
             bottom: '60px'
         },
         timelineHorizontal: {
-            border: '2px solid ' + theme.palette.primary.main,
+            border: '2px solid ' + theme.palette.dark.main,
             width: '100%',
         },
         timelineVertical: {
-            border: '1px solid ' + theme.palette.primary.light,
+            border: '1px solid ' + theme.palette.dark.light,
             borderRadius: '50%',
-            backgroundColor: theme.palette.primary.light,
+            backgroundColor: theme.palette.dark.light,
             width: '40px',
             height: '40px',
             position: 'absolute',

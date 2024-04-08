@@ -13,6 +13,7 @@ import { useMediaQuery } from "@mui/material";
 import { devices, showToast } from "../../../utils";
 import CategorySliderModal from "../../../components/commons/CategorySliderModal";
 import FilterSlider from "../../../components/commons/FilterSlider";
+import CollegeItem from "../../../components/commons/CollegeItem";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -23,14 +24,14 @@ const useStyles = makeStyles(
             marginBottom: '10px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-start',
             [theme.breakpoints.down('md')]: {
                 justifyContent: 'space-between'
             }
         },
         filterButton: {
             padding: '8px 16px',
-            border: '1px solid ' + theme.palette.dark.main,
+            border: '1px solid ' + theme.palette.secondary.dark,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -38,7 +39,6 @@ const useStyles = makeStyles(
             fontWeight: 'bold',
             transition: '0.3s linear',
             userSelect: 'none',
-            boxShadow: '0px 2px 0px ' + theme.palette.primary.main,
             borderRadius: '5px',
             "&:hover": {
                 backgroundColor: theme.palette.secondary.main,
@@ -58,11 +58,7 @@ const useStyles = makeStyles(
             padding: '10px 16px'
         },
         resultContentSection: {
-            width: 'calc(100% - 180px)',
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            flexDirection: 'column',
+            width: 'calc(100% - 200px)',
             padding: '0 10px',
             [theme.breakpoints.down('md')]: {
                 width: '100%',
@@ -143,11 +139,12 @@ export default function ResultTabContent() {
                     activeTab === 'list' ?
                         <div className={classes.resultContentSection}>{
                             selectedColleges.map((college, index: number) => (
+                                // <CollegeItem college={college} key={`collegeCardComp${index}`} />
                                 <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
                             ))}
                         </div>
                         :
-                        <div style={{ width: '100%' }}>
+                        <div className={classes.resultContentSection}>
                             <ResultCard colleges={selectedColleges} />
                             <ComparisonSliders colleges={selectedColleges} />
                         </div>

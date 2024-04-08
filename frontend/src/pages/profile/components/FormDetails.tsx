@@ -85,9 +85,7 @@ const useStyles = makeStyles(
             }
         },
         formDetail: {
-            width: '100%',
             [theme.breakpoints.up('md')]: {
-                width: '400px',
                 marginLeft: '20px'
             }
         },

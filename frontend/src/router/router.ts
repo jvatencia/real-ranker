@@ -10,6 +10,7 @@ import CollegeProfile from "../pages/colleges/CollegeProfile";
 import SignUpPage from "../pages/auth/SignUpPage";
 import ProfileMenuPage from "../pages/profile/ProfileMenuPage";
 import ProfilePage from "../pages/profile/ProfilePage";
+import GraphTabContent from "../pages/dashboard/components/GraphTabContent";
 
 const routes: RouteObject[] = [
     {
@@ -31,6 +32,10 @@ const routes: RouteObject[] = [
             {
                 path: 'colleges/compare',
                 Component: DashboardPage,
+            },
+            {
+                path: 'colleges/graph',
+                Component: GraphTabContent,
             },
             {
                 path: 'profile',

@@ -105,12 +105,29 @@ export const getErrorMessage = (errors: FieldErrors<any>, fieldName: string, err
   return !!errors[fieldName] && errors[fieldName]?.type === errorType && errorMessage;
 }
 
-export const formatNumber = (value: any) => {
-  if (typeof value === 'number')
-    return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  if (typeof value === 'string' && !value.includes('%'))
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const checkValue = (val: any): string => {
 
-  return value;
+  if (typeof val === 'number')
+    return val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  if (typeof val === 'string' && !val.includes('%'))
+    return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return val;
+}
+
+export const formatNumber = (value: any, isMoney = false) => {
+
+  if (isMoney) {
+    console.log(`[formatNumber] value`, value);
+    console.log(`[formatNumber] typeof value`, typeof value);
+    console.log(`[formatNumber] checkValue`, checkValue(value));
+
+    let val: number = typeof value === 'number' ? value : parseFloat(value.toString().replace(/,/g, ''));
+    console.log(`[formatNumber] val`, val);
+    return val > 0 ? `$${checkValue(value)}` : `- $${(checkValue(val * -1))}`;
+  }
+
+  return checkValue(value);
 }

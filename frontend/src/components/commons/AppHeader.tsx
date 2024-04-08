@@ -19,12 +19,8 @@ const useStyles = makeStyles((theme: any) => ({
     header: {
         width: '100%',
         height: '56px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
         transition: '0.3s ease-in-out',
-        backgroundColor: theme.palette.light.main,
+        backgroundColor: theme.palette.secondary.main,
         fontFamily: FONT_FAMILY.DEFAULT,
         borderBottom: '1px solid rgba(0,0,0,0.3)',
         boxShadow: 'none',
@@ -35,13 +31,21 @@ const useStyles = makeStyles((theme: any) => ({
             minHeight: '80px',
         }
     },
+    headerWrapper: {
+
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+    },
     headerContent: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
+        padding: '0 16px',
         [theme.breakpoints.down('md')]: {
-            padding: '5px 8px'
+            padding: '0 8px'
         }
     },
     realRankerLabel: {
@@ -132,55 +136,57 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
 
     return (
         <header className={`${classes.header} ${unauthMode ? '' : classes.headerShadow}`}>
+
             <ResponsiveBox style={{ padding: '0 16px' }} >
-                <div className={classes.headerContent}>
-                    <div>
-                        <AppLogo />
+                <div className={classes.headerWrapper}>
+                    <div className={classes.headerContent}>
+                        <div>
+                            <AppLogo />
+                        </div>
+                        {
+                            !matches ?
+                                <div>
+                                    <IconButton aria-label="profile" size="large"
+                                        onClick={handleClick}
+                                        aria-describedby={id}>
+                                        <AccountCircleIcon color="light" fontSize="inherit" />
+                                    </IconButton>
+
+                                    <Popover
+                                        id={id}
+                                        open={open}
+                                        anchorEl={anchorEl}
+                                        onClose={handleClose}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'left',
+                                        }}
+                                    >
+                                        <div className={classes.popOverContent}>
+                                            {
+                                                profilePopoverItems.map((item, index) => (
+                                                    <div className={classes.popOverItem} onClick={(e) => item.handler(setAnchorEl)} key={`profilePopoverItem${index}`}>
+                                                        {item.icon}
+                                                        <span className={classes.popOverItemTitle}>{item.title}</span>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </Popover>
+                                </div>
+                                :
+                                <IconButton aria-label="menu" size="large"
+                                    onClick={toggleMenu}>
+                                    <MenuOutlined color="primary" fontSize="inherit" />
+                                </IconButton>
+                        }
                     </div>
                     {
-                        !matches ?
-                            <div>
-                                <IconButton aria-label="profile" size="large"
-                                    onClick={handleClick}
-                                    aria-describedby={id}>
-                                    <AccountCircleIcon color="primary" fontSize="inherit" />
-                                </IconButton>
-
-                                <Popover
-                                    id={id}
-                                    open={open}
-                                    anchorEl={anchorEl}
-                                    onClose={handleClose}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                    }}
-                                >
-                                    <div className={classes.popOverContent}>
-                                        {
-                                            profilePopoverItems.map((item, index) => (
-                                                <div className={classes.popOverItem} onClick={(e) => item.handler(setAnchorEl)} key={`profilePopoverItem${index}`}>
-                                                    {item.icon}
-                                                    <span className={classes.popOverItemTitle}>{item.title}</span>
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                </Popover>
-                            </div>
-                            :
-                            <IconButton aria-label="menu" size="large"
-                                onClick={toggleMenu}>
-                                <MenuOutlined color="primary" fontSize="inherit" />
-                            </IconButton>
+                        !matches &&
+                        <Navbar />
                     }
                 </div>
-            </ResponsiveBox> {
-                !matches &&
-                <ResponsiveBox>
-                    <Navbar />
-                </ResponsiveBox>
-            }
+            </ResponsiveBox>
         </header>
     );
 }

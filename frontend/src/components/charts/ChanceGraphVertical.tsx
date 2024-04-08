@@ -68,7 +68,7 @@ const useStyles = makeStyles(
             border: '1px solid ' + theme.palette.dark.main
         },
         graphPointIndicatorDotted: {
-            width: '60vw',
+            width: '80vw',
             right: 'unset',
             left: '32px',
             borderStyle: 'dashed',
@@ -79,7 +79,7 @@ const useStyles = makeStyles(
         graphPoint: {
             position: 'absolute',
             left: '40px',
-            bottom: '85px',
+            bottom: '40px',
             zIndex: '1'
         },
         graphPointCircle: {
@@ -91,6 +91,18 @@ const useStyles = makeStyles(
         graphPointContent: {
             width: 'auto',
             whiteSpace: 'nowrap'
+        },
+        graphZones: {
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            left: 38,
+            top: 0,
+            opacity: 0.7
+        },
+        graphZone: {
+            height: '111px',
+            width: '100%'
         }
     })
 );
@@ -188,7 +200,7 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
     const HEIGHT_MULTIPLIER = 40;
     const classes = useStyles({ height_multiplier: HEIGHT_MULTIPLIER });
     const [chartData, setChartData] = useState<any[]>([]);
-    const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const form = useCollegeStore((state) => state.form);
     const theme = useTheme();
 
@@ -215,12 +227,27 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
             };
         }
 
+        let colors: any[] = [];
+
+        const checkColor = (color: any): string => {
+            if (colors.length === COLOR_PALETTES.length) {
+                colors = [];
+            }
+
+            if (colors.map(item => item.bg).includes(color)) {
+                return checkColor(randomColor());
+            }
+
+            return color;
+        }
+
+
         setChartData(
             data.map((college: any) => {
                 const score = getAcceptanceRate(college, form);
                 return {
                     college,
-                    color: getScoreColor(score),
+                    color: checkColor(randomColor()),
                     userScore: score
                 };
             })
@@ -248,7 +275,7 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
                     chartData.map((item, index) => (
                         <Chip
                             size="small"
-                            icon={<div className={classes.sectionSummaryScore}>{item.userScore}</div>}
+                            icon={<div className={classes.sectionSummaryScore} style={{ color: item.color.text }}>{item.userScore}</div>}
                             label={`${item.college.instnm}(${(item.college.adm_rate * 100).toFixed(2)})`}
                             key={`sectionSummary${index}`}
                             className={classes.sectionSummaryChip}
@@ -259,9 +286,15 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
             <div className={classes.chanceGraphSection}>
                 <div className={classes.chanceGraphWrapper}
                     style={{
-                        width: chartData.length > 0 ? ((chartData.length + 2) * 50) + 'px' : '100px',
+                        width: '100%',
                         height: ((labels.length + 1) * HEIGHT_MULTIPLIER) + 'px'
                     }}>
+
+                    <div className={classes.graphZones}>
+                        <div className={classes.graphZone} style={{ background: theme.palette.primary.dark }}></div>
+                        <div className={classes.graphZone} style={{ background: theme.palette.warning.main }}></div>
+                        <div className={classes.graphZone} style={{ background: '#cc71ef' }}></div>
+                    </div>
                     {
                         chartData.length > 0 &&
                         chartData.map((item, index) => (
@@ -278,7 +311,7 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
                                 <div
                                     className={`${classes.graphLabelWrapper}`}
                                     key={`graphLabelWrapper${index}`}>
-                                    <div className={`${classes.graphPointIndicator} ${index == 3 || index == 6 ? classes.graphPointIndicatorDotted : ''}`}></div>
+                                    <div className={`${classes.graphPointIndicator} ${index === 3 || index === 6 ? classes.graphPointIndicatorDotted : ''}`}></div>
                                     <div style={{ textAlign: 'right', paddingRight: '10px', transform: 'translateY(-15px)' }}>
                                         {label}
                                     </div>

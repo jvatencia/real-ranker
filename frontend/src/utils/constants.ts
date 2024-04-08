@@ -1,6 +1,7 @@
 import { AccountCircle, ManageAccounts, SegmentOutlined } from "@mui/icons-material";
 
 export const BASE_URL: string = ``;
+export const ASSET_URL: string = `https://testing.thetestguytutors.com`;
 
 export const DEFAULT_HEADERS = {
     Accept: "application/json",
@@ -75,18 +76,18 @@ export const PUBLIC_TESTIMONIALS = [
 ];
 
 export const COLOR_PALETTES = [
-    '#3c7c28',
-    '#433ba8',
-    '#d9a900',
-    '#412a7c',
-    '#f28291',
-    '#222224',
-    '#c75700',
-    '#0514ca',
-    '#d70000',
-    '#009ade',
-    '#613838',
-    '#ce00ce'
+    { bg: '#3c7c28', text: '#fff' },
+    { bg: '#433ba8', text: '#fff' },
+    { bg: '#d9a900', text: '#fff' },
+    { bg: '#412a7c', text: '#fff' },
+    { bg: '#f28291', text: '#fff' },
+    { bg: '#222224', text: '#fff' },
+    { bg: '#c75700', text: '#fff' },
+    { bg: '#0514ca', text: '#fff' },
+    { bg: '#d70000', text: '#fff' },
+    { bg: '#009ade', text: '#fff' },
+    { bg: '#613838', text: '#fff' },
+    { bg: '#ce00ce', text: '#fff' },
 ];
 
 export const FAMILY_INCOME_RANGE = [
@@ -132,6 +133,12 @@ export const FONT_FAMILY = {
     MONTSERRAT_THIN: 'Montserrat-Thin',
     CAVEAT: 'Caveat',
     AVERIA: 'Averia',
+    PTSANS: 'PT Sans',
+    PTSANS_BOLD: 'PT Sans - Bold',
+    CHOCOLATE: 'Chocolate',
+    CHOCOLATE_BOLD: 'Chocolate - Bold',
+    CHOCOLATE_MEDIUM: 'Chocolate - Medium',
+    CHOCOLATE_ITALIC: 'Chocolate - Italic',
 };
 
 export const PROFILE_MENU_ITEMS = [
@@ -149,4 +156,65 @@ export const PROFILE_MENU_ITEMS = [
         title: 'Real Ranker Colleges',
         url: '/profile/selected-colleges'
     },
-]
+];
+
+export const FIPS_STATES = [
+    { id: 1, name: 'Alabama', },
+    { id: 2, name: 'Alaska', },
+    { id: 4, name: 'Arizona', },
+    { id: 5, name: 'Arkansas', },
+    { id: 6, name: 'California', },
+    { id: 8, name: 'Colorado', },
+    { id: 9, name: 'Connecticut', },
+    { id: 10, name: 'Delaware', },
+    { id: 11, name: 'District of Columbia', },
+    { id: 12, name: 'Florida' },
+    { id: 13, name: 'Georgia', },
+    { id: 15, name: 'Hawaii', },
+    { id: 16, name: 'Idaho', },
+    { id: 17, name: 'Illinois', },
+    { id: 18, name: 'Indiana', },
+    { id: 19, name: 'Iowa', },
+    { id: 20, name: 'Kansas', },
+    { id: 21, name: 'Kentucky', },
+    { id: 22, name: 'Louisiana', },
+    { id: 23, name: 'Maine', },
+    { id: 24, name: 'Maryland', },
+    { id: 25, name: 'Massachusetts', },
+    { id: 26, name: 'Michigan', },
+    { id: 27, name: 'Minnesota', },
+    { id: 28, name: 'Mississippi', },
+    { id: 29, name: 'Missouri', },
+    { id: 30, name: 'Montana', },
+    { id: 31, name: 'Nebraska', },
+    { id: 32, name: 'Nevada', },
+    { id: 33, name: 'New Hampshire', },
+    { id: 34, name: 'New Jersey', },
+    { id: 35, name: 'New Mexico', },
+    { id: 36, name: 'New York', },
+    { id: 37, name: 'North Carolina', },
+    { id: 38, name: 'North Dakota', },
+    { id: 39, name: 'Ohio', },
+    { id: 40, name: 'Oklahoma', },
+    { id: 41, name: 'Oregon', },
+    { id: 42, name: 'Pennsylvania', },
+    { id: 44, name: 'Rhode Island', },
+    { id: 45, name: 'South Carolina', },
+    { id: 46, name: 'South Dakota', },
+    { id: 47, name: 'Tennessee', },
+    { id: 48, name: 'Texas', },
+    { id: 49, name: 'Utah', },
+    { id: 50, name: 'Vermont', },
+    { id: 51, name: 'Virginia', },
+    { id: 53, name: 'Washington', },
+    { id: 54, name: 'West Virginia', },
+    { id: 55, name: 'Wisconsin', },
+    { id: 56, name: 'Wyoming', },
+    { id: 60, name: 'American Samoa', },
+    { id: 64, name: 'Federated States of Micronesia', },
+    { id: 66, name: 'Guam', },
+    { id: 69, name: 'Northern Mariana Islands', },
+    { id: 70, name: 'Palau', },
+    { id: 72, name: 'Puerto Rico', },
+    { id: 78, name: 'Virgin Islands', },
+];

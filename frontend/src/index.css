@@ -57,6 +57,49 @@
   src: url("./assets/fonts/Averia/AveriaSerifLibre-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/PT_Sans/PTSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "PT Sans - Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/PT_Sans/PTSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Chocolate";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Chocolates/TT-Chocolates-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Chocolate - Medium";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Chocolates/TT-Chocolates-Medium.otf") format("opentype");
+}
+
+
+@font-face {
+  font-family: "Chocolate - Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Chocolates/TT-Chocolates-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Chocolate - Italic";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Chocolates/TT-Chocolates-Italic.otf") format("opentype");
+}
+
 :root {
   --app-primary: #412a7c;
   --app-primary-dark: #3b45bb;
@@ -92,6 +135,11 @@
   --app-dark-dark: #1e1e20;
   --app-dark-light: #38383a;
   --app-dark-contrast-text: #ffffff;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
 }
 
 body {
@@ -148,14 +196,14 @@ div:where(.swal2-container).swal2-noanimation {
 }
 
 .testguy-custom-swal-alert {
-  box-shadow: 0px 5px 0px var(--app-primary) !important;
-  border: 1px solid var(--app-primary);
-  font-family: 'Montserrat', 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 div:where(.testguy-custom-swal-alert) button:where(.swal2-styled).swal2-confirm {
-  background-color: var(--app-primary) !important;
+  background-color: var(--app-secondary) !important;
+  color: var(--app-dark) !important;
   font-size: 1.1em !important;
+  font-weight: 600;
 }
 
 div:where(.testguy-custom-swal-alert) button:where(.swal2-styled).swal2-deny {

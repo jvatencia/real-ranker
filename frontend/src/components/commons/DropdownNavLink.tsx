@@ -12,7 +12,7 @@ const NavToolTip = styled(({ className, ...props }: TooltipProps) => (
 ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: theme.palette.light.main,
-        color: theme.palette.primary.main,
+        color: theme.palette.dark.main,
         maxWidth: 'none',
         fontSize: 12,
         padding: 10,
@@ -40,7 +40,7 @@ const renderIcon = (icon: OverridableComponent<any> | undefined) => {
 
     const SidebarIcon = icon;
 
-    return <SidebarIcon color='secondary' />
+    return <SidebarIcon color='dark' />
 }
 
 const DropdownItems = ({ item, classes, handleClose }: DropdownItemsProps) => {

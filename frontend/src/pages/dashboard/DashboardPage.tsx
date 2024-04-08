@@ -7,6 +7,7 @@ import useCollegeStore from "../../store/college/college.store";
 import ResultTabContent from "./components/ResultTabContent";
 import { makeStyles } from "@mui/styles";
 import GraphTabContent from "./components/GraphTabContent";
+import { AppPageTitle } from "../../components/styled";
 
 const getTabContent = ({ activeTab }: any) => {
     switch (activeTab) {
@@ -67,14 +68,8 @@ export default function DashboardPage() {
     return (
         <ResponsiveBox style={{ marginTop: '20px' }}>
             <PageBody>
-                <div className={classes.tabContainer}>
-                    <ButtonTabs
-                        setActiveTab={updateTab}
-                        activeTab={activeTab}
-                        buttons={buttons}
-                    />
-                </div>
-                {getTabContent({ activeTab })}
+                <AppPageTitle>These are your results</AppPageTitle>
+                <ResultTabContent />
             </PageBody>
         </ResponsiveBox>
     );

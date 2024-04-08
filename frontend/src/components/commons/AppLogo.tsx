@@ -8,7 +8,7 @@ const useStyles = makeStyles(
             fontFamily: FONT_FAMILY.POPPINS_BOLD,
             fontWeight: 'bold',
             fontSize: '2rem',
-            color: theme.palette.primary.main,
+            color: theme.palette.light.main,
             useSelect: 'none',
             letterSpacing: 0,
             [theme.breakpoints.down('md')]: {
@@ -16,7 +16,8 @@ const useStyles = makeStyles(
             }
         },
         headerLogoYellow: {
-            color: theme.palette.warning.dark
+            color: theme.palette.warning.main,
+            textShadow: '0px 0px 1px ' + theme.palette.dark.main
         }
     })
 )

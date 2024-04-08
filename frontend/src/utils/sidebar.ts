@@ -1,7 +1,7 @@
 import useAuthStore from "../store/auth/auth.store";
 import { NavLinkItem } from "./interfaces";
 import { sizes } from "./breakpoints";
-import { AccountBox, CompareArrows, HomeOutlined, LogoutOutlined, SchoolOutlined, SearchOutlined, TimelineOutlined } from "@mui/icons-material";
+import { AccountBox, CompareArrows, DonutLargeOutlined, HomeOutlined, LogoutOutlined, SchoolOutlined, SearchOutlined, TimelineOutlined } from "@mui/icons-material";
 
 export const publicItems: NavLinkItem[] = [
     {
@@ -44,6 +44,12 @@ export const authItems: NavLinkItem[] = [
                 icon: CompareArrows
             },
             {
+                text: 'Graph',
+                items: [],
+                url: '/colleges/graph',
+                isActive: false,
+                icon: DonutLargeOutlined
+            }, {
                 text: 'Search Collge',
                 items: [],
                 url: '/profile?search=1',

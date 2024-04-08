@@ -1,32 +1,67 @@
-import { Slide } from "@mui/material";
+import { IconButton, Slide, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles"
-import { FONT_FAMILY } from "../../utils";
+import { FONT_FAMILY, devices } from "../../utils";
+import { ArrowCircleLeftOutlined, ArrowCircleRightOutlined, DoubleArrowOutlined } from "@mui/icons-material";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 const useStyles = makeStyles(
     (theme: any) => ({
         pageBody: {
             width: '100%',
-            marginTop: '50px',
-            backgroundColor: theme.palette.light.main,
-            padding: '20px 16px',
+            padding: '10px 8px',
             borderRadius: '5px',
             fontFamily: FONT_FAMILY.DEFAULT,
+            display: 'flex',
+            overflowX: 'hidden',
+            [theme.breakpoints.up('md')]: {
+                flexDirection: 'column'
+            },
+            [theme.breakpoints.up('md')]: {
+                paddingTop: '50px',
+                padding: '20px 16px',
+            },
+        },
+        primaryContent: {
+            width: '80%',
+            background: theme.palette.light.main,
             [theme.breakpoints.down('md')]: {
-                padding: '10px 8px',
-                marginTop: '25px',
-
+                width: '100%',
             }
-        }
+        },
+        secondaryContent: {
+            width: '20%',
+            transition: '0.5s ease-in-out',
+            background: theme.palette.light.main,
+            [theme.breakpoints.down('md')]: {
+                width: '100%',
+                padding: '10px 16px',
+                zIndex: 2,
+            }
+        },
     })
 );
 
-export default function PageBody({ children }: any) {
+interface PageBodyProps {
+    children: any;
+    moreContentSlot?: any;
+}
+
+export default function PageBody({ children, moreContentSlot }: PageBodyProps) {
     const classes = useStyles();
 
     return (
         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <div className={classes.pageBody}>
-                {children}
+                <div className={classes.primaryContent}>
+                    {children}
+                </div>
+                {
+                    moreContentSlot &&
+                    <div className={classes.secondaryContent}
+                    >
+                        {moreContentSlot}
+                    </div>
+                }
             </div>
         </Slide>
     )

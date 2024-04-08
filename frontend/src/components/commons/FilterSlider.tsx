@@ -79,6 +79,7 @@ export default function FilterSlider() {
                 </div>
                 <Slider
                     key="successSliderControl"
+                    color="secondary"
                     aria-label="Success"
                     value={(scores.success)}
                     step={5}
@@ -92,6 +93,7 @@ export default function FilterSlider() {
                 </div>
                 <Slider
                     key="valueSliderControl"
+                    color="secondary"
                     aria-label="Value"
                     value={(scores.value)}
                     step={5}
@@ -105,6 +107,7 @@ export default function FilterSlider() {
                 </div>
                 <Slider
                     key="costSliderControl"
+                    color="secondary"
                     aria-label="Cost"
                     value={(scores.cost)}
                     step={5}
@@ -118,6 +121,7 @@ export default function FilterSlider() {
                 </div>
                 <Slider
                     key="outcomesSliderControl"
+                    color="secondary"
                     aria-label="Outcomes"
                     value={(scores.outcomes)}
                     step={5}
@@ -131,6 +135,7 @@ export default function FilterSlider() {
                 </div>
                 <Slider
                     key="diversitySliderControl"
+                    color="secondary"
                     aria-label="Diversity"
                     value={(scores.diversity)}
                     step={5}

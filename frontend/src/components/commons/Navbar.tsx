@@ -9,9 +9,10 @@ const useStyles = makeStyles(
     (theme) => ({
         navbar: {
             display: 'flex',
-            padding: '16px 20px',
+            width: '100%',
+            padding: '20px 16px',
             [theme.breakpoints.down('md')]: {
-                padding: '8px 20px'
+                padding: '10px 8px'
             }
         }
     })

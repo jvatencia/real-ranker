@@ -60,7 +60,7 @@ const ResultCardCollegeToggle = styled('div')(({ theme }) => ({
     alignSelf: 'normal',
     borderColor: theme.palette.dark.main,
     borderLeftWidth: '1px',
-    color: theme.palette.primary.main,
+    color: theme.palette.secondary.main,
 }));
 
 const ResultCardSecondaryRow = styled('div')(({ theme }) => ({
@@ -73,7 +73,7 @@ const ResultCardPrimaryRow = styled('div')(({ theme }) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     borderColor: theme.palette.dark.main,
     borderRightWidth: '1px',
     borderBottomWidth: '1px',
@@ -115,7 +115,7 @@ const ResultCardPrimaryItemLabel = styled('div')(({ theme }) => ({
     justifyContent: 'flex-start',
     height: '100%',
     width: 'calc(100% - 220px)',
-    color: theme.palette.light.main,
+    color: theme.palette.dark.main,
     fontSize: '14px',
     padding: '0 5px'
 }));
@@ -141,7 +141,7 @@ const ResultCardSecondaryItem = styled('div')(({ theme }) => ({
 }));
 
 const ResultCardPrimaryItem = styled('div')(({ theme }) => ({
-    color: theme.palette.light.main,
+    color: theme.palette.dark.main,
     marginLeft: '10px',
     height: '60px',
     width: '100px',
@@ -280,7 +280,7 @@ function ResultCard({ colleges }: any) {
             key: 'success',
             label: 'Success Score',
             scores: [
-                { key: 'Orientation to Graduation' },
+                { key: 'Real Graduation Rate' },
                 { key: 'Average Time to Graduation' },
                 { key: 'Student Support Score' },
                 { key: '% Left in 2 Years' },
@@ -292,14 +292,12 @@ function ResultCard({ colleges }: any) {
             label: 'Value Grade',
             scores: [
                 { key: 'Worth More to Pay More' },
-                { key: 'Filler' },
-                { key: 'Filler' },
                 { key: 'Some Professions' },
             ]
         },
         {
             key: 'outcomes',
-            label: 'Outcomes',
+            label: 'Career',
             scores: [
                 { key: 'Debt/Income Ratio' },
                 { key: 'Inventor Score' },
@@ -315,7 +313,6 @@ function ResultCard({ colleges }: any) {
             scores: [
                 { key: 'Net Price for Your Income Range' },
                 { key: 'Net Cost of Your Degree' },
-                { key: 'Filler' },
             ]
         },
         {
@@ -338,6 +335,8 @@ function ResultCard({ colleges }: any) {
         const items: any = colleges.map((college, index) => {
             let npt43Key = college['npt43_priv'] > 0 ? 'npt43_priv' : 'npt43_pub';
             npt43Key = college.hasOwnProperty(`${npt43Key}_absolute`) && college.hasOwnProperty(`${npt43Key}_relative`) ? npt43Key : 'npt43';
+            const netPrice = (college[`npt4${form.familyIncome}_pub`] + college[`npt4${form.familyIncome}_priv`]);
+            const avgGraduationRate = ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))));
 
             return {
                 order: index,
@@ -346,25 +345,22 @@ function ResultCard({ colleges }: any) {
                 cost: {
                     score: getScore(college, `npt4${form['familyIncome']}`),
                     moreInfo: [
-                        { key: 'Net Price for Your Income Range', value: formatNumber(college['npt43_pub'] + college['npt43_priv']) },
-                        { key: 'Net Cost of Your Degree', value: formatNumber(((college['npt43_pub'] + college['npt43_priv']) * ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))))).toFixed(2)) },
-                        { key: 'Filler', value: 'Filler' },
+                        { key: 'Net Price for Your Income Range', value: formatNumber(netPrice, true) },
+                        { key: 'Net Cost of Your Degree', value: formatNumber(netPrice * avgGraduationRate, true) },
                     ]
                 },
                 value: {
                     score: getScore(college, `value_${form['familyIncome']}`),
                     moreInfo: [
                         { key: 'Worth More to Pay More', value: null },
-                        { key: 'Filler', value: null },
-                        { key: 'Filler', value: null },
                         { key: 'Some Professions', value: null },
                     ]
                 },
                 success: {
                     score: (0.4 * college['success_relative']) + (0.6 * college['success_absolute']),
                     moreInfo: [
-                        { key: 'Orientation to Graduation', value: toPercent(college['comp_orig_yr4_rt']) },
-                        { key: 'Average Time to Graduation', value: ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4'])))).toFixed(2) },
+                        { key: 'Real Graduation Rate', value: toPercent(college['comp_orig_yr4_rt']) },
+                        { key: 'Average Time to Graduation', value: avgGraduationRate.toFixed(2) },
                         { key: 'Student Support Score', value: toPercent(((0.4 * college['support_relative']) + (0.6 * college['support_absolute']))) },
                         { key: '% Left in 2 Years', value: toPercent(college['enrl_orig_yr2_rt']) },
                         { key: 'Withdrawal Rate', value: toPercent(college['wdraw_orig_yr3_rt']) },
@@ -373,7 +369,13 @@ function ResultCard({ colleges }: any) {
                 outcomes: {
                     score: (0.4 * college['outcomes_relative']) + (0.6 * college['outcomes_absolute']),
                     moreInfo: [
-                        { key: 'Debt/Income Ratio', value: (((0.4 * college['weighted_debt_relative']) + (0.6 * college['weighted_debt_absolute'])) / ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute']))).toFixed(2) },
+                        {
+                            key: 'Debt/Income Ratio', value:
+                                (
+                                    (1 + ((0.4 * college['weighted_debt_relative']) + (0.6 * college['weighted_debt_absolute']))) /
+                                    (1 + ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute'])))
+                                ).toFixed(2)
+                        },
                         { key: 'Inventor Score', value: college['inventor'] },
                         { key: 'Income 90% at 10 Years', value: college['pct90_earn_wne_p10'] },
                         { key: 'Income 75% at 10 Years', value: college['pct75_earn_wne_p10'] },
@@ -524,7 +526,7 @@ function ResultCard({ colleges }: any) {
                                         flex: '0 0 ' + (buttonsDisplay ? 'calc(100% - 40px)' : 'calc(100% - 20px)')
                                     }}>
 
-                                    <ResultCardPrimaryRow style={{ justifyContent: 'space-between', backgroundColor: theme.palette.primary.light }}>
+                                    <ResultCardPrimaryRow style={{ justifyContent: 'space-between', backgroundColor: theme.palette.secondary.light }}>
                                         <ResultCardPrimaryItemLabel>Your Score</ResultCardPrimaryItemLabel>
                                         <ResultCardPrimaryItemContainer>
                                             {

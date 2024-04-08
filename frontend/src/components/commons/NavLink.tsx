@@ -11,11 +11,11 @@ const useStyles = makeStyles(
             cursor: 'pointer',
             fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700,
-            color: theme.palette.primary.main,
+            color: theme.palette.light.main,
             textDecoration: 'none',
             marginRight: '25px',
             '&:hover': {
-                color: theme.palette.warning.dark
+                color: theme.palette.light.main,
             },
         },
         dropdownNavItem: {
@@ -23,18 +23,19 @@ const useStyles = makeStyles(
             display: 'flex',
             alignItems: 'center',
             cursor: 'pointer',
+            backgroundColor: theme.palette.light.main,
             "&:not(:first-child)": {
                 borderTop: '1px solid rgba(0,0,0,0.3)'
             },
             '&:hover *': {
-                color: theme.palette.warning.dark
+                color: theme.palette.primary.dark,
             },
         },
         dropdownNavItemIcon: {
             marginRight: '10px'
         },
         dropdownNavItemText: {
-            color: theme.palette.primary.main,
+            color: theme.palette.dark.main,
             fontFamily: FONT_FAMILY.DEFAULT,
             fontWeight: 700,
             textDecoration: 'none',

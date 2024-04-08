@@ -190,6 +190,8 @@ const SCORE_OPTIONS: RateConditionOptions[] = [
 export const getAcceptanceRate = ({ adm_rate, instnm }: any, form: any) => {
     if (instnm) console.log('[getAcceptanceRate] college', instnm);
     const scoreOption = getStartingScore(adm_rate * 100);
+    let totalScore = 0;
+
     if (scoreOption) {
         const score: number = scoreOption.startingScore;
         console.log('[pointsModifier] starting score', scoreOption.startingScore);
@@ -203,7 +205,13 @@ export const getAcceptanceRate = ({ adm_rate, instnm }: any, form: any) => {
         console.log('[pointsModifier] evaluation', pointModifiers);
         console.log('[pointsModifier] total addition', pointModifiers.reduce((a: number, b: number) => a + b, 0));
         console.log('[pointsModifier] final score', score + pointModifiers.reduce((a: number, b: number) => a + b, 0));
-        return score + pointModifiers.reduce((a: number, b: number) => a + b, 0);
+        totalScore = score + pointModifiers.reduce((a: number, b: number) => a + b, 0);
+
+        if (totalScore > 8.5) {
+            return 8.5;
+        }
+
+        return totalScore;
     }
 
     return 0;

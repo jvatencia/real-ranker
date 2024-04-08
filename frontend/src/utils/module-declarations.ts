@@ -49,6 +49,14 @@ declare module '@mui/material/IconButton' {
     }
 }
 
+// Update the Icon's color options to include a violet option
+declare module '@mui/material/SvgIcon' {
+    interface SvgIconPropsColorOverrides {
+        light: true;
+        dark: true;
+    }
+}
+
 
 export class ModuleDeclarations {
     public static declare() {

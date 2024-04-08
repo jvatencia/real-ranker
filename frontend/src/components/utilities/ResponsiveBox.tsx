@@ -6,21 +6,20 @@ import { useEffect } from "react";
 const useStyles = makeStyles(
     (theme: any) => ({
         responsiveContainer: {
-            margin: '0 auto',
-            width: '100%',
+            width: '100vw',
             [theme.breakpoints.up('md')]: {
-                width: '960px'
+                // width: '960px',
+                padding: '0 40px',
             },
-            [theme.breakpoints.up('lg')]: {
-                width: '1024px'
-            },
-            [theme.breakpoints.up('xl')]: {
-                width: '1240px'
-
-            }
+            // [theme.breakpoints.up('lg')]: {
+            //     width: '1024px'
+            // },
+            // [theme.breakpoints.up('xl')]: {
+            //     width: '1240px'
+            // }
         },
         boxStyling: {
-            padding: '10px 16px',
+            padding: '10px 24px',
             [theme.breakpoints.down('md')]: {
                 padding: '5px 8px',
             }

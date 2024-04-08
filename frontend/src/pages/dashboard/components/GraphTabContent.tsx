@@ -1,10 +1,12 @@
 import { makeStyles } from "@mui/styles";
 import useCollegeStore from "../../../store/college/college.store";
-import { AppCustomCard } from "../../../components/styled";
+import { AppCustomCard, AppPageTitle } from "../../../components/styled";
 import { useEffect, useMemo, useState } from "react";
 import { COLOR_PALETTES, computeUserScore, getScore, randomColor } from "../../../utils";
 import CommonRadarChart from "../../../components/charts/CommonRadarChart";
 import { FormControlLabel, Checkbox } from "@mui/material";
+import PageBody from "../../../components/commons/PageBody";
+import ResponsiveBox from "../../../components/utilities/ResponsiveBox";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -71,14 +73,14 @@ export default function GraphTabContent() {
     const [data, setData] = useState<any[]>([]);
 
 
-    let colors: string[] = [];
+    let colors: any[] = [];
 
-    const checkColor = (color: string): string => {
+    const checkColor = (color: any): any => {
         if (colors.length === COLOR_PALETTES.length) {
             colors = [];
         }
 
-        if (colors.includes(color)) {
+        if (colors.map(item => item.bg).includes(color)) {
             return checkColor(randomColor());
         }
 
@@ -94,9 +96,9 @@ export default function GraphTabContent() {
             title: college.instnm,
             active: true,
             theme: {
-                fill: color,
+                fill: color.bg,
                 fillOpacity: 0.6,
-                stroke: color
+                stroke: color.bg
             }
         }
     }));
@@ -182,32 +184,37 @@ export default function GraphTabContent() {
     }, [data, collegeKeys])
 
     return (
-        <div className={classes.graphTabContainer}>
-            <div className={classes.filterTabContainer}>
-                <div>
-                    {
-                        collegeKeys.map((college) => (
-                            <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
-                                <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} onClick={(e: any) => toggleCollege(college)} />} label={college.title} />
-                                <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
-                            </div>
-                        ))
-                    }
+        <ResponsiveBox style={{ marginTop: '20px' }}>
+            <PageBody>
+                <AppPageTitle>College Comparison</AppPageTitle>
+                <div className={classes.graphTabContainer}>
+                    <div className={classes.filterTabContainer}>
+                        <div>
+                            {
+                                collegeKeys.map((college) => (
+                                    <div className={classes.checkboxGroup} key={`checkBox${college.key}`}>
+                                        <FormControlLabel className={classes.checkboxControl} control={<Checkbox checked={college.active} onClick={(e: any) => toggleCollege(college)} />} label={college.title} />
+                                        <div className={classes.graphCollegeIndicator} style={{ background: college.theme.fill }}></div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div className={classes.resultContentWrapper}>
+                        <AppCustomCard className={classes.graphCard}>
+                            {
+                                mounted && data.length > 0 &&
+                                <CommonRadarChart data={data}
+                                    width={500}
+                                    height={500}
+                                    radarKeys={collegeKeys}
+                                    dataKey="category"
+                                />
+                            }
+                        </AppCustomCard>
+                    </div>
                 </div>
-            </div>
-            <div className={classes.resultContentWrapper}>
-                <AppCustomCard className={classes.graphCard}>
-                    {
-                        mounted && data.length > 0 &&
-                        <CommonRadarChart data={data}
-                            width={500}
-                            height={500}
-                            radarKeys={collegeKeys}
-                            dataKey="category"
-                        />
-                    }
-                </AppCustomCard>
-            </div>
-        </div>
+            </PageBody>
+        </ResponsiveBox>
     );
 }
