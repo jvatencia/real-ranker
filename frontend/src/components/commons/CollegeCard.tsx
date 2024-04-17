@@ -1,7 +1,7 @@
 import { styled, useTheme } from "@mui/system";
 import { formatNumber, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
-import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined, ArrowCircleRight, ArrowDropDownCircleOutlined } from "@mui/icons-material";
-import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom, Chip } from "@mui/material";
+import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined, ArrowDropDownCircleOutlined } from "@mui/icons-material";
+import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom } from "@mui/material";
 import { useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
 import { devices } from "../../utils/breakpoints";

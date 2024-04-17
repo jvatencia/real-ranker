@@ -206,27 +206,6 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
 
     const initData = () => {
 
-        const getScoreColor = (score: number) => {
-            if (score < 3) {
-                return {
-                    bg: theme.palette.error.main,
-                    text: theme.palette.error.contrastText,
-                };
-            }
-
-            if (score >= 3 && score <= 6) {
-                return {
-                    bg: theme.palette.warning.main,
-                    text: theme.palette.warning.contrastText,
-                };
-            }
-
-            return {
-                bg: theme.palette.success.main,
-                text: theme.palette.success.contrastText,
-            };
-        }
-
         let colors: any[] = [];
 
         const checkColor = (color: any): string => {
@@ -263,6 +242,7 @@ export default function ChanceGraphVertical({ data }: Readonly<ChanceGraphVertic
 
     useEffect(() => {
         initData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => console.log('[chanceGraphVertical] data', chartData), [chartData])

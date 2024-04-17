@@ -134,6 +134,7 @@ export default function GraphTabContent() {
                 diversity: (diversity * 100)
             };
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         , [userScores]);
 
     const initData = () => {

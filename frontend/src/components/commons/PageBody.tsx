@@ -1,8 +1,6 @@
-import { IconButton, Slide, useMediaQuery } from "@mui/material";
+import { Slide } from "@mui/material";
 import { makeStyles } from "@mui/styles"
-import { FONT_FAMILY, devices } from "../../utils";
-import { ArrowCircleLeftOutlined, ArrowCircleRightOutlined, DoubleArrowOutlined } from "@mui/icons-material";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme: any) => ({

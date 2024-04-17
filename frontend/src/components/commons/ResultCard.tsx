@@ -3,14 +3,13 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, useMediaQuery } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { formatNumber, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
 import { ChevronLeftOutlined, RemoveOutlined, SortOutlined } from "@mui/icons-material";
 import SortCard from "./SortCard";
 import { FONT_FAMILY } from "../../utils";
 
-// styled('div')(({ theme }) => ({}))
 const ResultCardContainer = styled('div')(({ theme }) => ({
     userSelect: 'none'
 }));

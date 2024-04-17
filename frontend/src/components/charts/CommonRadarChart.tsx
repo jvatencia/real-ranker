@@ -12,6 +12,7 @@ export default function CommonRadarChart({ dataKey, data, radarKeys, width, heig
 
     useEffect(() => {
         console.log('CommonRadarChart data', data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -8,7 +8,6 @@ import PrivateRoutes from "../components/utilities/PrivateRoutes";
 import WelcomePage from "../pages/home/WelcomePage";
 import CollegeProfile from "../pages/colleges/CollegeProfile";
 import SignUpPage from "../pages/auth/SignUpPage";
-import ProfileMenuPage from "../pages/profile/ProfileMenuPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import GraphTabContent from "../pages/dashboard/components/GraphTabContent";
 

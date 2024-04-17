@@ -1,52 +1,52 @@
-# TheTestGuy: College Ranker
+# Real Ranker Project
 
-## Meeting Jacob/Agi Friday 17 Nov
+## Project Setup
 
-- share data update
-- share flyer
-- share Stef update
+### Clone Repository:
 
-### To ask:
+```
+git clone https://github.com/jvatencia/real-ranker
+```
 
-### Requests:
+### Install dependencies
 
-- interactive code book showing calculations and how their equation changes yield data differences
-- interactive plots for 'best X colleges in state Y' type stuff (for best value, ranked, support, success)
+```
+cd frontend && npm install
+```
 
-## Schedule of work
+### Create .env file and add firebase credentials
 
-1. Data
-1. Login
-1. Content
-1. Hiring (Agi's got the phillipinos, Roman's got the CMU homies)
+```
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+```
 
-1. First sprint
-   1. misc todos: add stabbr as correct type on backend, re-upload db, fix decimals running long/money formatting/etc.
-   1. (collective) Slider (COMPLETE)
-   1. (collective) Fixing scores for colleges (NEXT UP)
-      - Jacob mentioned to check out UCLA cost scores, look amiss, success-> %left in 2 years
-1. (@injuredroman) Token/User Creation (Sunday)
-1. (collective) Getting frontend/full-stack developer
-1. content addition for Jacob/others to post information
-1. google analytics integration
+### Run App
 
-## Wanted features (when do we want these features by?):
+```
+npm run start
+```
 
-1. homepage (important)
-1. hyperlinked videos on every page, explaining certain things ("why out-of-state publics probably aren't a good idea") (important)
-1. Recommendation engine (important)
-1. spreadsheet of user activity on site
-1. managing multiple schools, more than 2, semantic groupings of cards
+## Design Documentations
 
-1. content addition for Jacob/others to post information
-   1. What is success/value/outcomes/diversity/etc.?
-   1. Would help: questions Jacob wants and video/text answers we should show
-1. info 'i' button associated with colleges
-1. Pop-up frame fro vertical video integration
-1.
+- [Figma](https://www.figma.com/proto/oeU07p1vkntKg7esO9jddz/The-Test-Guy-Table?type=design&node-id=306-393&t=gEHqFYbeedJVloto-1&scaling=scale-down&page-id=0%3A1&starting-point-node-id=1%3A3)
+- [Miro Board](https://miro.com/app/board/uXjVM26fWE8=/)
 
-## Collecting user feedback
+## Development Tools
 
-1. Possible solution:
+- [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)
+- [React Router](https://reactrouter.com/en/main/start/overview)
+- [MUI 5](https://mui.com/material-ui/getting-started/)
 
-https://stackoverflow.com/questions/71403616/when-uploading-react-app-to-server-all-routes-except-return-internal-server
+## Frontend File Structure
+
+```
+├──src
+   ├── api     // api calls
+   ├── assets  // assets
+   ├── components // custom components
+   ├── pages // pages for navigation
+   ├── router // router file
+   ├── store // state management folder
+   ├── utils // reusable custom functions
+```

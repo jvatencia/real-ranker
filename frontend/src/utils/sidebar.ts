@@ -1,7 +1,7 @@
 import useAuthStore from "../store/auth/auth.store";
 import { NavLinkItem } from "./interfaces";
 import { sizes } from "./breakpoints";
-import { AccountBox, CompareArrows, DonutLargeOutlined, HomeOutlined, LogoutOutlined, SchoolOutlined, SearchOutlined, TimelineOutlined } from "@mui/icons-material";
+import { AccountBox, CompareArrows, DonutLargeOutlined, HomeOutlined, LogoutOutlined, SchoolOutlined, SearchOutlined } from "@mui/icons-material";
 
 export const publicItems: NavLinkItem[] = [
     {

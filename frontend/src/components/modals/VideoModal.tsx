@@ -1,8 +1,8 @@
 import { Dialog, DialogContent, IconButton, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ASSET_URL, devices } from "../../utils";
-import { SwiperSlide, Swiper, SwiperRef, useSwiper } from 'swiper/react';
-import { useEffect, useRef, useState } from "react";
+import { SwiperSlide, Swiper } from 'swiper/react';
+import { useEffect, useState } from "react";
 import { CloseOutlined } from "@mui/icons-material";
 
 const useStyles = makeStyles(

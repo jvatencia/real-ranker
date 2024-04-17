@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useCollegeStore from "../../store/college/college.store";
-import { Badge, Slider } from "@mui/material";
+import { Slider } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(

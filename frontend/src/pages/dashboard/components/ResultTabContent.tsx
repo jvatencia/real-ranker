@@ -13,7 +13,6 @@ import { useMediaQuery } from "@mui/material";
 import { devices, showToast } from "../../../utils";
 import CategorySliderModal from "../../../components/commons/CategorySliderModal";
 import FilterSlider from "../../../components/commons/FilterSlider";
-import CollegeItem from "../../../components/commons/CollegeItem";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -139,7 +138,6 @@ export default function ResultTabContent() {
                     activeTab === 'list' ?
                         <div className={classes.resultContentSection}>{
                             selectedColleges.map((college, index: number) => (
-                                // <CollegeItem college={college} key={`collegeCardComp${index}`} />
                                 <CollegeCard college={college} key={`collegeCardComp${index}`} openDialog={openDialog} />
                             ))}
                         </div>

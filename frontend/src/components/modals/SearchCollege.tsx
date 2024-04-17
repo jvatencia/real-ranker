@@ -92,6 +92,7 @@ export default function SearchCollegeModal({ showDialog, setDialog, setCollege }
         if (colleges.length === 0)
             fetchUniversities()
         console.log('[searchCollege] colleges', colleges);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [colleges]);
 
 
