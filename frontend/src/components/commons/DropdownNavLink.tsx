@@ -72,7 +72,7 @@ export default function DropdownNavLink({ classes, item }: Readonly<DropdownNavL
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
-        setOpen(true);
+        setOpen(!open);
     }
 
     const handleClose = () => {
@@ -108,11 +108,12 @@ export default function DropdownNavLink({ classes, item }: Readonly<DropdownNavL
                     }}
                     sx={{ zIndex: 1044 }}
                     onMouseEnter={handleOpen}
+                    onClick={handleOpen}
                     open={open}
                 >
                     <span>
                         {item.text}
-                        <ExpandMoreIcon fontSize="small" />
+                        <ExpandMoreIcon fontSize="small" style={{ transform: open ? 'rotate(180deg)' : '' }} />
                     </span>
                 </NavToolTip>
             </div>

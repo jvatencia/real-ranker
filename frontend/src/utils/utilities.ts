@@ -84,10 +84,7 @@ export const computeUserScore = (college: any, userScores: any, form: any) => {
 
 export const randomColor = () => {
   const rand = Math.floor(Math.random() * COLOR_PALETTES.length);
-  console.log('[randomColor]', {
-    index: rand,
-    item: COLOR_PALETTES[rand]
-  });
+
   return COLOR_PALETTES[rand];
 }
 
@@ -120,12 +117,7 @@ const checkValue = (val: any): string => {
 export const formatNumber = (value: any, isMoney = false) => {
 
   if (isMoney) {
-    console.log(`[formatNumber] value`, value);
-    console.log(`[formatNumber] typeof value`, typeof value);
-    console.log(`[formatNumber] checkValue`, checkValue(value));
-
     let val: number = typeof value === 'number' ? value : parseFloat(value.toString().replace(/,/g, ''));
-    console.log(`[formatNumber] val`, val);
     return val > 0 ? `$${checkValue(value)}` : `- $${(checkValue(val * -1))}`;
   }
 

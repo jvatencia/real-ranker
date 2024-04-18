@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, IconButton, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ASSET_URL, devices } from "../../utils";
-import { SwiperSlide, Swiper } from 'swiper/react';
-import { useEffect, useState } from "react";
-import { CloseOutlined } from "@mui/icons-material";
+import { SwiperSlide, Swiper, SwiperRef, useSwiper } from 'swiper/react';
+import { useEffect, useRef, useState } from "react";
+import { CloseOutlined, PlayArrow } from "@mui/icons-material";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -24,21 +24,38 @@ const useStyles = makeStyles(
             height: '100%',
             width: '100%',
             userSelect: 'none',
-            objectFit: 'cover',
-            [theme.breakpoints.up('md')]: {
-                objectFit: 'scale-down'
-            }
+            objectFit: 'scale-down',
+        },
+        videoToolbarOverlay: {
+            position: 'absolute',
+            background: 'rgba(0,0,0,0.0)',
+            width: '100%',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            height: '56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         videoToolbar: {
-            position: 'absolute',
             width: '100%',
+            height: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            height: '56px',
-            top: 0,
-            left: 0,
-            zIndex: 1
+        },
+        videoToolbarBody: {
+            width: '100%',
+            height: 'calc(100% - 56px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        videoPlayerPlayPause: {
+            bottom: '-50vh',
+            position: 'absolute',
+            alignSelf: 'center'
         }
     })
 );
@@ -55,8 +72,11 @@ export function VideoModal({
     const classes = useStyles();
     const isMobileLg = useMediaQuery(devices.mobileL);
     const [swiper, setSwiper] = useState<any | null>(null);
+    const [play, setPlay] = useState(false);
+
     const handleModalClose = () => {
         pauseVideo(currentIndex);
+        setPlay(false);
         setShowDialog(false);
     }
 
@@ -69,6 +89,7 @@ export function VideoModal({
             setTimeout(() => {
                 swiper?.slideTo(currentIndex, 0);
                 playVideo(currentIndex);
+                setPlay(true);
             }, 100);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,6 +97,16 @@ export function VideoModal({
 
     const onVideoEnded = () => {
         swiper?.slideNext();
+    }
+
+    const handleAction = () => {
+        if (play) {
+            pauseVideo(currentIndex, false);
+        } else {
+            playVideo(currentIndex);
+        }
+
+        setPlay(!play);
     }
 
     return (
@@ -103,12 +134,12 @@ export function VideoModal({
                         videos.map((item: any) => (
 
                             <SwiperSlide key={`whatsFullVideoSwiperSlide${item.url.replace(/\//g, '_')}`}>
-                                <div className={classes.videoSwiper}>
+                                <div className={classes.videoSwiper} onClick={handleAction}>
                                     <video
                                         id={`whatsFullVideoBg${item.url.replace(/\//g, '_')}`}
                                         onEnded={onVideoEnded}
                                         className={classes.videoPlayer} muted={false}>
-                                        <source src={`${ASSET_URL}${item.url}`} />
+                                        <source src={`${ASSET_URL}${item.url}`} type='video/mp4' />
                                     </video>
                                 </div>
                             </SwiperSlide>
@@ -116,10 +147,20 @@ export function VideoModal({
                         ))
                     }
                 </Swiper>
-                <div className={classes.videoToolbar}>
-                    <IconButton onClick={handleModalClose}>
-                        <CloseOutlined color="light" fontSize="large" />
-                    </IconButton>
+                <div className={classes.videoToolbarOverlay}>
+                    <div className={classes.videoToolbar}>
+                        <IconButton onClick={handleModalClose}>
+                            <CloseOutlined color="light" fontSize="large" />
+                        </IconButton>
+                    </div>
+                    {
+                        !play &&
+                        <div className={classes.videoPlayerPlayPause}>
+                            <IconButton>
+                                <PlayArrow color="light" fontSize="large" style={{ fontSize: '100px' }} />
+                            </IconButton>
+                        </div>
+                    }
                 </div>
             </DialogContent>
         </Dialog>

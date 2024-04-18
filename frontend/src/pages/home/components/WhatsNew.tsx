@@ -18,13 +18,13 @@ const useStyles = makeStyles(
         videoItem: {
             width: '100%',
             height: '200px',
-            border: '1px solid rgba(0,0,0,0.3)',
-            borderRadius: '10px',
+            boxShadow: '0px 0px 3px 3px rgba(0,0,0,0.1)',
+            borderRadius: '5px',
             overflow: 'hidden',
             background: `linear-gradient(180deg, ${theme.palette.dark.main} 0%, ${theme.palette.dark.dark} 50%, ${theme.palette.dark.light} 100%)`,
             cursor: 'pointer',
             [theme.breakpoints.up('md')]: {
-                height: '250px'
+                height: '300px'
             }
         },
         sectionTitle: {
@@ -63,17 +63,28 @@ export default function WhatsNew() {
         setVideoModal(true);
     }
 
-    const playVideo = (index: number) => {
-        const video = document.getElementById(`whatsFullVideoBg${videoItems[index].url.replace(/\//g, '_')}`) as HTMLVideoElement;
-        video?.play();
+    const pauseOtherVideos = (index: number) => {
+        return new Promise((resolve) => {
+            resolve(videoItems.filter((item, i) => index !== i).map((item, i) => pauseVideo(index)));
+        });
     }
 
-    const pauseVideo = (index: number) => {
+    const playVideo = async (index: number) => {
         const video = document.getElementById(`whatsFullVideoBg${videoItems[index].url.replace(/\//g, '_')}`) as HTMLVideoElement;
-        if (video) {
+        await video?.play();
+    }
+
+    const pauseVideo = async (index: number, resetVideo = true) => {
+        const video = document.getElementById(`whatsFullVideoBg${videoItems[index].url.replace(/\//g, '_')}`) as HTMLVideoElement;
+        if (video?.currentTime > 0 || !video?.paused || !video?.ended) {
+            video?.pause();
+        }
+
+        if (video && resetVideo) {
             video.currentTime = 0;
         }
-        video?.pause();
+
+        return video?.paused;
     }
 
     return (
@@ -81,7 +92,7 @@ export default function WhatsNew() {
             <Swiper
                 ref={swiperRef}
                 spaceBetween={10}
-                slidesPerView={matches ? 3.25 : 5}
+                slidesPerView={matches ? 3.25 : 5.5}
                 watchSlidesProgress={true}
                 className={classes.videoSwiper}
             >
@@ -90,7 +101,7 @@ export default function WhatsNew() {
                         <SwiperSlide key={`swiperWhatsNewVideoItemSlide${index}`}>
                             <div className={classes.videoItem} onClick={(e) => openVideoModal(index)}>
                                 <video id={`whatsNewVideoBg${item.url.replace(/\//g, '_')}`} className={classes.videoPlayer} muted={false}>
-                                    <source src={`${ASSET_URL}${item.url}`} />
+                                    <source src={`${ASSET_URL}${item.url}`} type="video/mp4" />
                                 </video>
                             </div>
                         </SwiperSlide>

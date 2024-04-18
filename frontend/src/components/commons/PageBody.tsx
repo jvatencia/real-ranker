@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles"
 import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
-    (theme: any) => ({
+    (theme) => ({
         pageBody: {
             width: '100%',
             padding: '10px 8px',
@@ -22,6 +22,9 @@ const useStyles = makeStyles(
         primaryContent: {
             width: '80%',
             background: theme.palette.light.main,
+            [theme.breakpoints.between(1000, 1025)]: {
+                width: '85% !important',
+            },
             [theme.breakpoints.down('md')]: {
                 width: '100%',
             }

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { getUniversities } from "../../api/university.api";
+import { getUniversities, getUniversity } from "../../api/university.api";
 import { StateStorage, createJSONStorage, persist } from "zustand/middleware";
 
 type CollegeState = {
@@ -9,6 +9,7 @@ type CollegeState = {
     userScore: any;
     form: any;
     comparisonChunks: any[];
+    currentCollege: any;
 }
 
 type Actions = {
@@ -20,6 +21,8 @@ type Actions = {
     reset: () => void;
     updateUserScores: (score: any) => void;
     setComparisonChunks: (arr: any[]) => void;
+    resetSelectedCollege: () => void;
+    getCollege: (collegeId: number) => void;
 }
 
 const persistStorage: StateStorage = localStorage;
@@ -48,7 +51,8 @@ const initialState: CollegeState = {
         diversity: 20
     },
     form: {},
-    comparisonChunks: []
+    comparisonChunks: [],
+    currentCollege: null
 }
 
 const useCollegeStore = create<CollegeState & Actions>()(
@@ -77,7 +81,15 @@ const useCollegeStore = create<CollegeState & Actions>()(
                 set(initialState);
             },
             updateUserScores: (score: any) => set((state) => ({ userScore: { ...state.userScore, ...score } })),
-            setComparisonChunks: (arr: any[]) => set((state) => ({ comparisonChunks: arr }))
+            setComparisonChunks: (arr: any[]) => set((state) => ({ comparisonChunks: arr })),
+            resetSelectedCollege: () => set((state) => ({ currentCollege: null })),
+            getCollege: async (collegeId: number) => {
+                const response = await getUniversity(collegeId);
+                console.log(response);
+                if (response) {
+                    set((state) => ({ currentCollege: response }));
+                }
+            }
         })),
         storageOptions
     )

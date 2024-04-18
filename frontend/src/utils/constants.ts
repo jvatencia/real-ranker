@@ -133,12 +133,12 @@ export const FONT_FAMILY = {
     MONTSERRAT_THIN: 'Montserrat-Thin',
     CAVEAT: 'Caveat',
     AVERIA: 'Averia',
-    PTSANS: 'PT Sans',
-    PTSANS_BOLD: 'PT Sans - Bold',
+    PTSANS: '"PT Sans"',
+    PTSANS_BOLD: '"PT Sans - Bold"',
     CHOCOLATE: 'Chocolate',
-    CHOCOLATE_BOLD: 'Chocolate - Bold',
-    CHOCOLATE_MEDIUM: 'Chocolate - Medium',
-    CHOCOLATE_ITALIC: 'Chocolate - Italic',
+    CHOCOLATE_BOLD: '"Chocolate - Bold"',
+    CHOCOLATE_MEDIUM: '"Chocolate - Medium"',
+    CHOCOLATE_ITALIC: '"Chocolate - Italic"',
 };
 
 export const PROFILE_MENU_ITEMS = [
@@ -218,3 +218,12 @@ export const FIPS_STATES = [
     { id: 72, name: 'Puerto Rico', },
     { id: 78, name: 'Virgin Islands', },
 ];
+
+export const COLLEGE_CONTROL = [
+    { key: 1, value: 'Public' },
+    { key: 2, value: 'Private' },
+    { key: 3, value: 'Private' },
+    { key: 4, value: 'Foreign' },
+];
+
+export const FLAG_MAIN_CAMPUS = ['Not main campus', 'Main Campus'];

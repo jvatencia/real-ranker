@@ -1,15 +1,16 @@
-import { styled, useTheme } from "@mui/system";
+import { borderRadius, styled, useTheme } from "@mui/system";
 import { formatNumber, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
-import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined, ArrowDropDownCircleOutlined } from "@mui/icons-material";
-import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom } from "@mui/material";
+import { InfoOutlined, Diversity3Outlined, CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined, ArrowCircleRight, ArrowDropDownCircleOutlined } from "@mui/icons-material";
+import { Tooltip, TooltipProps, tooltipClasses, ClickAwayListener, useMediaQuery, Zoom, Chip } from "@mui/material";
 import { useState } from "react";
 import useCollegeStore from "../../store/college/college.store";
 import { devices } from "../../utils/breakpoints";
 import { Link } from "react-router-dom";
 import { getAcceptanceRate } from "../../utils";
+import { TooltipModal } from "../modals/TooltipModal";
 
 const CollegeCardContainer = styled('div')(({ theme }) => ({
-    border: '1px solid ' + theme.palette.secondary.main,
+    // border: '1px solid ' + theme.palette.secondary.main,
     padding: '20px',
     background: '#fff',
     margin: '10px 0',
@@ -18,25 +19,42 @@ const CollegeCardContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     color: theme.palette.dark.main,
     backgroundColor: theme.palette.secondary.light,
+    position: 'relative',
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column-reverse',
         margin: '10px 0'
     },
+    [theme.breakpoints.between('sm', 'md')]: {
+        maxWidth: '500px',
+        margin: '10px auto'
+    },
     [theme.breakpoints.up('md')]: {
         maxWidth: '700px',
+    },
+    borderTopRightRadius: '50px',
+    "&:before": {
+        content: "' '",
+        height: '85px',
+        width: '105px',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        borderRadius: '0px 0px 0px 5px',
+        background: theme.palette.light.main
     }
 }));
 
 const CollegeInfo = styled('div')(({ theme }) => ({
     fontSize: 18,
     fontWeight: 'bold',
-    width: 'calc(100% - 230px)',
+    width: 'calc(100% - 190px)',
     padding: '10px',
     borderLeft: '1px solid rgba(0,0,0,0.1)',
     [theme.breakpoints.down('md')]: {
         width: '100%',
         borderLeft: 'none',
         borderBottom: '1px solid rgba(0,0,0,0.1)',
+        height: '155px'
     }
 }));
 
@@ -49,8 +67,12 @@ const CollegeInfoHeader = styled('div')({
 
 const CollegeInfoContent = styled('div')(({ theme }) => ({
     width: 'calc(100% - 110px)',
+    fontSize: 20,
+    [theme.breakpoints.between('md', 'lg')]: {
+        fontSize: 16,
+    },
     [theme.breakpoints.down('md')]: {
-        fontSize: 14
+        fontSize: 18
     }
 }));
 
@@ -63,7 +85,10 @@ const StatusRow = styled('div')({
 })
 
 const StatusDesc = styled('div')({
-    width: '50%',
+    width: 'auto',
+    "&:last-child": {
+        marginLeft: 'auto',
+    },
     fontSize: 14,
     fontWeight: 'normal',
     display: 'flex',
@@ -71,10 +96,10 @@ const StatusDesc = styled('div')({
 })
 
 const GradesInfo = styled('div')(({ theme }) => ({
-    width: '230px',
+    width: '190px',
     padding: '10px',
     [theme.breakpoints.down('md')]: {
-        width: '250px',
+        width: '200px',
         margin: '0 auto !important',
     }
 }));
@@ -84,10 +109,16 @@ const UserGrade = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    background: theme.palette.primary.dark,
+    background: theme.palette.secondary.main,
     color: theme.palette.light.main,
     width: '100px',
-    height: '80px'
+    height: '80px',
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    right: 0,
+    borderRadius: '5px',
+    overflow: 'hidden'
 }));
 
 const ScoreLabel = styled('div')(({ theme }) => ({
@@ -122,19 +153,35 @@ const GradeToolTip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
 ))(({ theme }) => ({
     [`& .${tooltipClasses.arrow}`]: {
-        color: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
     },
     [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: theme.palette.primary.main,
-        color: '#fff',
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.light.main,
         maxWidth: 'none',
         fontSize: 12,
         padding: 10,
     },
 }));
 
+const HowYouStand = styled('div')(({ theme }) => ({
+    border: '1px solid ' + theme.palette.secondary.main,
+    height: '80px',
+    width: '100px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    borderRadius: '5px',
+    position: 'absolute',
+    top: '90px',
+    right: '5px',
+    color: theme.palette.light.main,
+    background: theme.palette.secondary.main
+}));
+
 interface ToolTipContentProps {
-    keyValueArray: Array<{ key: string, value?: string }>;
+    keyValueArray: Array<any>;
     gradeCategory?: string;
     openDialog?: any;
     college?: any;
@@ -159,7 +206,7 @@ const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, han
             {
                 keyValueArray.map((item, index) => (
                     <div style={{ marginBottom: '5px' }} key={`tooltipContentItem${index}`}>
-                        <div> {item.key}{item.value != null && <span>:</span>} </div>
+                        <div> {item.key}{item.value != null && ':'}{item?.tooltip && <TooltipModal tooltipContent={item.tooltipContent} />} </div>
                         <div> {formatNumber(item.value)}</div>
                     </div>
                 ))
@@ -219,6 +266,9 @@ const GradeCustomToolTip = (props: ToolTipContentProps) => {
                             ]
                         }
                     }}
+                    sx={{
+                        zIndex: 1100
+                    }}
                     open={open}
                     title={<ToolTipContent {...props} handleTooltipClose={handleTooltipClose} />}>
                     <GradeInfoIcon onClick={handleTooltipOpen} />
@@ -258,8 +308,8 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
     const avgGraduationRate = ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))));
 
     const successArray = [
-        { key: 'Real Graduation Rate', value: toPercent(college['comp_orig_yr4_rt']) },
-        { key: 'Average Time to Graduation', value: avgGraduationRate.toFixed(2) },
+        { key: 'Real Graduation Rate', value: toPercent(college['comp_orig_yr4_rt']), tooltip: true, tooltipContent: 'Real Graduation Rate' },
+        { key: 'Average Time to Graduation', value: avgGraduationRate.toFixed(2), tooltip: true, tooltipContent: 'Average Time to Graduation' },
         { key: 'Student Support Score', value: toPercent(((0.4 * college['support_relative']) + (0.6 * college['support_absolute']))) },
         { key: '% Left in 2 Years', value: toPercent(college['enrl_orig_yr2_rt']) },
         { key: 'Withdrawal Rate', value: toPercent(college['wdraw_orig_yr3_rt']) },
@@ -274,7 +324,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
 
     const costArray = [
         { key: 'Net Price for Your Income Range ', value: `${formatNumber(netPriceIncomeRange, true)}` },
-        { key: 'Net Cost of Your Degree', value: `${formatNumber((netPriceIncomeRange * avgGraduationRate), true)}` },
+        { key: 'Net Cost of Your Degree', value: `${formatNumber((netPriceIncomeRange * avgGraduationRate), true)}`, tooltip: true, tooltipContent: 'Net Cost of Your Degree' },
     ];
 
     const outcomeArray = [
@@ -282,13 +332,13 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
             key: 'Debt/Income Ratio', value: (
                 (1 + ((0.4 * college['weighted_debt_relative']) + (0.6 * college['weighted_debt_absolute']))) /
                 (1 + ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute'])))
-            ).toFixed(2)
+            ).toFixed(2), tooltip: true, tooltipContent: 'Debt/Income Ratio'
         },
-        { key: 'Inventor Score', value: college['inventor'] },
-        { key: 'Income 90% at 10 Years', value: college['pct90_earn_wne_p10'] },
-        { key: 'Income 75% at 10 Years', value: college['pct75_earn_wne_p10'] },
-        { key: 'Income 25% at 10 Years', value: college['pct25_earn_wne_p10'] },
-        { key: 'Income 10% at 10 Years', value: college['pct10_earn_wne_p10'] },
+        { key: 'Inventor Score', value: college['inventor'], tooltip: true, tooltipContent: 'Inventor Score' },
+        { key: 'Income 90% at 10 Years', value: formatNumber(college['pct90_earn_wne_p10'], true) },
+        { key: 'Income 75% at 10 Years', value: formatNumber(college['pct75_earn_wne_p10'], true) },
+        { key: 'Income 25% at 10 Years', value: formatNumber(college['pct25_earn_wne_p10'], true) },
+        { key: 'Income 10% at 10 Years', value: formatNumber(college['pct10_earn_wne_p10'], true) },
 
     ];
 
@@ -298,67 +348,46 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
         { key: 'Parents in Top 10% of Household Income', value: toPercent(college['par_top10pc']) },
         { key: 'Parents in Top 1% of Household Income', value: toPercent(college['par_top1pc']) },
         { key: 'Parents in Top 0.1% of Household Income', value: toPercent(college['par_toppt1pc']) },
-        { key: 'Economic Inclusion Score', value: toPercent((0.4 * college['economic_inclusion_score_relative']) + (0.6 * college['economic_inclusion_score_absolute'])) },
+        {
+            key: 'Economic Inclusion Score', value: toPercent((0.4 * college['economic_inclusion_score_relative']) + (0.6 * college['economic_inclusion_score_absolute'])),
+            tooltip: true, tooltipContent: 'Economic Inclusion Score'
+        },
 
+    ];
+
+    const gradeInfoArray = [
+        { title: 'Success', value: toLetterGrade(success), moreInfo: successArray, icon: () => <CheckOutlined fontSize={"small"} style={{ marginRight: '5px' }} /> },
+        { title: 'Value', value: toLetterGrade(value), moreInfo: valueArray, icon: () => <StarOutlineRounded fontSize={"small"} style={{ marginRight: '5px' }} /> },
+        { title: 'Cost', value: toLetterGrade(cost), moreInfo: costArray, icon: () => <PaidOutlined fontSize={"small"} style={{ marginRight: '5px' }} /> },
+        { title: 'Career', value: toLetterGrade(outcomes), moreInfo: outcomeArray, icon: () => <AssessmentOutlined fontSize={"small"} style={{ marginRight: '5px' }} /> },
+        { title: 'Diversity', value: toLetterGrade(diversity), moreInfo: diversityArray, icon: () => <Diversity3Outlined fontSize={"small"} style={{ marginRight: '5px' }} /> },
     ];
 
     return (
         <CollegeCardContainer>
             <GradesInfo>
-                <StatusRow>
-                    <StatusDesc>
-                        <CheckOutlined fontSize={"small"} style={{ marginRight: '5px' }} />
-                        Success
-                    </StatusDesc>
-                    <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'space-between' }}>{toLetterGrade(success)}
-                        <GradeCustomToolTip keyValueArray={successArray} gradeCategory={'Success'} openDialog={openDialog} college={college} />
-                    </StatusDesc>
-                </StatusRow>
-                <StatusRow>
-                    <StatusDesc>
-                        <StarOutlineRounded fontSize={"small"} style={{ marginRight: '5px' }} />
-                        Value
-                    </StatusDesc>
-                    <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'space-between' }}>{toLetterGrade(value)}
-                        <GradeCustomToolTip keyValueArray={valueArray} gradeCategory={'Value'} openDialog={openDialog} college={college} />
-
-                    </StatusDesc>
-                </StatusRow>
-                <StatusRow>
-                    <StatusDesc>
-                        <PaidOutlined fontSize={"small"} style={{ marginRight: '5px' }} />
-                        Cost
-                    </StatusDesc>
-                    <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'space-between' }}>{toLetterGrade(cost)}
-                        <GradeCustomToolTip keyValueArray={costArray} gradeCategory={'Cost'} openDialog={openDialog} college={college} />
-
-                    </StatusDesc>
-                </StatusRow>
-                <StatusRow>
-                    <StatusDesc>
-                        <AssessmentOutlined fontSize={"small"} style={{ marginRight: '5px' }} />
-                        Career
-                    </StatusDesc>
-                    <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'space-between' }}>{toLetterGrade(outcomes)}
-                        <GradeCustomToolTip keyValueArray={outcomeArray} gradeCategory={'Outcomes'} openDialog={openDialog} college={college} />
-
-                    </StatusDesc>
-                </StatusRow>
-                <StatusRow>
-                    <StatusDesc>
-                        <Diversity3Outlined fontSize={"small"} style={{ marginRight: '5px' }} />
-                        Diversity
-                    </StatusDesc>
-                    <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'space-between' }}>{toLetterGrade(diversity)}
-                        <GradeCustomToolTip keyValueArray={diversityArray} gradeCategory={'Diversity'} openDialog={openDialog} college={college} />
-                    </StatusDesc>
-                </StatusRow>
+                {
+                    gradeInfoArray.map((item, index) => (
+                        <StatusRow key={`${item.title.toLowerCase()}statusRow${index}`}>
+                            <StatusDesc>
+                                {item.icon()}
+                                {item.title}
+                            </StatusDesc>
+                            <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'flex-end' }}>
+                                <div style={{ marginRight: '8px', width: '15px', textAlign: 'left' }}>
+                                    {item.value}
+                                </div>
+                                <GradeCustomToolTip keyValueArray={item.moreInfo} gradeCategory={item.title} openDialog={openDialog} college={college} />
+                            </StatusDesc>
+                        </StatusRow>
+                    ))
+                }
             </GradesInfo>
             <CollegeInfo>
                 <CollegeInfoHeader>
                     <CollegeInfoContent>
                         <div>
-                            <Link to={`/college/${college.id}`}
+                            <Link to={`/colleges/${college.unitid}`}
                                 style={{
                                     textDecoration: 'none',
                                     color: theme.palette.dark.main
@@ -367,24 +396,23 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                             </Link>
                         </div>
                     </CollegeInfoContent>
-                    <UserGrade>
-                        <ScoreLabel>YOUR SCORE</ScoreLabel>
-                        <ScoreValue>{yourscore}</ScoreValue>
-                    </UserGrade>
+
                 </CollegeInfoHeader>
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-end'
                 }}>
-                    <div style={{
-                        textAlign: 'center'
-                    }}>
+                    <UserGrade>
+                        <ScoreLabel>YOUR SCORE</ScoreLabel>
+                        <ScoreValue>{yourscore}</ScoreValue>
+                    </UserGrade>
+                    <HowYouStand>
                         <div>{userScore}</div>
                         <div style={{
-                            fontSize: '12px'
-                        }}>YOUR STAND</div>
-                    </div>
+                            fontSize: '11px'
+                        }}>YOUR STANDING</div>
+                    </HowYouStand>
                 </div>
             </CollegeInfo>
 

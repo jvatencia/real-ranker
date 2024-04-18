@@ -7,6 +7,8 @@ import CommonRadarChart from "../../../components/charts/CommonRadarChart";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import PageBody from "../../../components/commons/PageBody";
 import ResponsiveBox from "../../../components/utilities/ResponsiveBox";
+import { BarChartOutlined, RadarOutlined } from "@mui/icons-material";
+import ButtonTabs from "../../../components/commons/ButtonTabs";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -30,9 +32,6 @@ const useStyles = makeStyles(
             }
         },
         resultContentWrapper: {
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
             padding: '0 16px',
             width: '60%',
             [theme.breakpoints.down('md')]: {
@@ -71,7 +70,12 @@ export default function GraphTabContent() {
     const userScores = useCollegeStore((state) => state.userScore);
     const [mounted, setMounted] = useState(false);
     const [data, setData] = useState<any[]>([]);
+    const buttons = [
+        { key: 'radar', title: 'Radar', icon: <RadarOutlined /> },
+        { key: 'bar', title: 'Bar', icon: <BarChartOutlined /> },
+    ];
 
+    const [activeTab, setActiveTab] = useState('radar');
 
     let colors: any[] = [];
 
@@ -134,7 +138,6 @@ export default function GraphTabContent() {
                 diversity: (diversity * 100)
             };
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         , [userScores]);
 
     const initData = () => {
@@ -152,7 +155,7 @@ export default function GraphTabContent() {
                     newObj[item.code] = item[category];
                     newObj[`${item.code}_theme`] = {
                         fill: item.color,
-                        fillOpacity: 0.1,
+                        fillOpacity: 0.3,
                         stroke: item.color
                     }
                 }
@@ -202,15 +205,27 @@ export default function GraphTabContent() {
                         </div>
                     </div>
                     <div className={classes.resultContentWrapper}>
-                        <AppCustomCard className={classes.graphCard}>
+
+                        <div>
+                            <ButtonTabs
+                                setActiveTab={setActiveTab}
+                                activeTab={activeTab}
+                                buttons={buttons}
+                            />
+                        </div>
+                        <AppCustomCard className={classes.graphCard} style={{ marginTop: '10px' }}>
                             {
                                 mounted && data.length > 0 &&
-                                <CommonRadarChart data={data}
-                                    width={500}
-                                    height={500}
-                                    radarKeys={collegeKeys}
-                                    dataKey="category"
-                                />
+                                (
+                                    activeTab === 'radar' ?
+                                        <CommonRadarChart data={data}
+                                            width={500}
+                                            height={500}
+                                            radarKeys={collegeKeys}
+                                            dataKey="category"
+                                        />
+                                        : <></>
+                                )
                             }
                         </AppCustomCard>
                     </div>

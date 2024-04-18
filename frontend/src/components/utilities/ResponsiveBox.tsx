@@ -6,7 +6,7 @@ import { useEffect } from "react";
 const useStyles = makeStyles(
     (theme: any) => ({
         responsiveContainer: {
-            width: '100vw',
+            width: '100%',
             [theme.breakpoints.up('md')]: {
                 // width: '960px',
                 padding: '0 40px',

@@ -16,7 +16,8 @@ const useStyles = makeStyles(
         sidebarLogo: {
             height: '55px',
             width: '100%',
-            padding: '10px'
+            padding: '10px',
+            background: theme.palette.secondary.main
         }
     })
 );

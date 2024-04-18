@@ -53,15 +53,15 @@ const useStyles = makeStyles(
             }
         },
         resultContentFilterSection: {
-            width: '200px',
+            width: '150px',
             padding: '10px 16px'
         },
         resultContentSection: {
-            width: 'calc(100% - 200px)',
+            width: 'calc(100% - 150px)',
             padding: '0 10px',
             [theme.breakpoints.down('md')]: {
+                display: 'block',
                 width: '100%',
-                display: 'block'
             }
         },
     })

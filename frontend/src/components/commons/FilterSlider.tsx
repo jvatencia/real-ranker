@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useCollegeStore from "../../store/college/college.store";
-import { Slider } from "@mui/material";
+import { Badge, Slider } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(
@@ -117,12 +117,12 @@ export default function FilterSlider() {
             </div>
             <div>
                 <div className={classes.sliderLabel}>
-                    <span className={classes.sliderLabelText}>Outcomes</span>
+                    <span className={classes.sliderLabelText}>Career</span>
                 </div>
                 <Slider
                     key="outcomesSliderControl"
                     color="secondary"
-                    aria-label="Outcomes"
+                    aria-label="Career"
                     value={(scores.outcomes)}
                     step={5}
                     onChange={(e: any, value: any, thumb: any) => updateSliderValue(e, value, 'outcomes')}

@@ -3,13 +3,15 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatNumber, getScore, toLetterGrade, toPercent } from "../../utils/utilities";
 import useCollegeStore from "../../store/college/college.store";
 import { ChevronLeftOutlined, RemoveOutlined, SortOutlined } from "@mui/icons-material";
 import SortCard from "./SortCard";
 import { FONT_FAMILY } from "../../utils";
+import { TooltipModal } from "../modals/TooltipModal";
 
+// styled('div')(({ theme }) => ({}))
 const ResultCardContainer = styled('div')(({ theme }) => ({
     userSelect: 'none'
 }));
@@ -235,7 +237,10 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                             <ResultCardPrimaryItemLabel
                                 style={{ color: theme.palette.light.main }}
                             >
-                                {item.key}
+                                {item.key} {
+                                    item.tooltip &&
+                                    <TooltipModal tooltipContent={item.tooltipContent} />
+                                }
                             </ResultCardPrimaryItemLabel>
                             <ResultCardPrimaryItemContainer>
                                 {
@@ -279,8 +284,8 @@ function ResultCard({ colleges }: any) {
             key: 'success',
             label: 'Success Score',
             scores: [
-                { key: 'Real Graduation Rate' },
-                { key: 'Average Time to Graduation' },
+                { key: 'Real Graduation Rate', tooltip: true, tooltipContent: 'Real Graduation Rate' },
+                { key: 'Average Time to Graduation', tooltip: true, tooltipContent: 'Average Time to Graduation' },
                 { key: 'Student Support Score' },
                 { key: '% Left in 2 Years' },
                 { key: 'Withdrawal Rate' }
@@ -298,8 +303,8 @@ function ResultCard({ colleges }: any) {
             key: 'outcomes',
             label: 'Career',
             scores: [
-                { key: 'Debt/Income Ratio' },
-                { key: 'Inventor Score' },
+                { key: 'Debt/Income Ratio', tooltip: true, tooltipContent: 'Debt/Income Ratio' },
+                { key: 'Inventor Score', tooltip: true, tooltipContent: 'Inventor Score' },
                 { key: 'Income 90% at 10 Years' },
                 { key: 'Income 75% at 10 Years' },
                 { key: 'Income 25% at 10 Years' },
@@ -311,7 +316,7 @@ function ResultCard({ colleges }: any) {
             label: 'Cost Score',
             scores: [
                 { key: 'Net Price for Your Income Range' },
-                { key: 'Net Cost of Your Degree' },
+                { key: 'Net Cost of Your Degree', tooltip: true, tooltipContent: 'Net Cost of Your Degree' },
             ]
         },
         {
@@ -323,7 +328,7 @@ function ResultCard({ colleges }: any) {
                 { key: 'Parents in Top 10% of Household Income' },
                 { key: 'Parents in Top 1% of Household Income' },
                 { key: 'Parents in Top 0.1% of Household Income' },
-                { key: 'Economic Inclusion Score' },
+                { key: 'Economic Inclusion Score', tooltip: true, tooltipContent: 'Economic Inclusion Score' },
             ]
         }
     ];
@@ -375,11 +380,11 @@ function ResultCard({ colleges }: any) {
                                     (1 + ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute'])))
                                 ).toFixed(2)
                         },
-                        { key: 'Inventor Score', value: college['inventor'] },
-                        { key: 'Income 90% at 10 Years', value: college['pct90_earn_wne_p10'] },
-                        { key: 'Income 75% at 10 Years', value: college['pct75_earn_wne_p10'] },
-                        { key: 'Income 25% at 10 Years', value: college['pct25_earn_wne_p10'] },
-                        { key: 'Income 10% at 10 Years', value: college['pct10_earn_wne_p10'] },
+                        { key: 'Inventor Score', value: college['inventor'], tooltipContent: 'Inventor Score' },
+                        { key: 'Income 90% at 10 Years', value: formatNumber(college['pct90_earn_wne_p10'], true) },
+                        { key: 'Income 75% at 10 Years', value: formatNumber(college['pct75_earn_wne_p10'], true) },
+                        { key: 'Income 25% at 10 Years', value: formatNumber(college['pct25_earn_wne_p10'], true) },
+                        { key: 'Income 10% at 10 Years', value: formatNumber(college['pct10_earn_wne_p10'], true) },
                     ]
                 },
                 diversity: {
