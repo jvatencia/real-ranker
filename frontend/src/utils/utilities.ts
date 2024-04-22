@@ -123,3 +123,17 @@ export const formatNumber = (value: any, isMoney = false) => {
 
   return checkValue(value);
 }
+
+export const getSchoolAcronym = (value: string) => {
+  const excludedWords = ['of', 'the'];
+  const stringArr = value.split(' ');
+  const acronymArr: string[] = [];
+
+  stringArr.forEach((word: string, index: number) => {
+    if (!excludedWords.includes(word.toLowerCase())) {
+      acronymArr.push(word.charAt(0).toUpperCase());
+    }
+  });
+
+  return acronymArr.join('');
+}

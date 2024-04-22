@@ -17,7 +17,7 @@ export default function CommonRadarChart({ dataKey, data, radarKeys, width, heig
 
     return (
         <RadarChart
-            outerRadius="80%" data={data} width={width || 250} height={height || 200}>
+            outerRadius="80%" data={data} width={width ?? 250} height={height ?? 200}>
             <PolarGrid />
             <PolarAngleAxis tickLine={false} dataKey={dataKey} style={{
                 fontSize: '11px'

@@ -88,11 +88,11 @@ export default function LoginPage() {
                                         onChange={(e) => onInputChange(e, 'password')}
                                     ></TextField>
                                 </CustomFormControl>
-                                <Button variant="contained" type="submit" size="large">Sign In</Button>
+                                <Button color="secondary" variant="contained" type="submit" size="large">Sign In</Button>
                             </FormGroup>
                         </form>
                         <hr />
-                        <p>Don't have an account? <Link to='/sign-up' color="primary">Sign up here.</Link></p>
+                        <p>Don't have an account? <Link to='/sign-up' color="secondary">Sign up here.</Link></p>
                     </Paper>
                 </div>
             </ResponsiveBox>

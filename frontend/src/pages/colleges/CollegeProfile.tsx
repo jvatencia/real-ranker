@@ -4,7 +4,7 @@ import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { COLLEGE_CONTROL, FIPS_STATES, FONT_FAMILY, formatNumber, getAcceptanceRate, getScore, toLetterGrade, toPercent } from "../../utils";
-import { letterSpacing, useTheme } from "@mui/system";
+import { fontSize, letterSpacing, useTheme } from "@mui/system";
 import { CheckOutlined, StarOutlineRounded, PaidOutlined, AssessmentOutlined, Diversity3Outlined, PlaceOutlined, SchoolOutlined, LanguageOutlined } from "@mui/icons-material";
 import useCollegeStore from "../../store/college/college.store";
 import { TooltipModal } from "../../components/modals/TooltipModal";
@@ -16,6 +16,12 @@ const useStyles = makeStyles(
             fontFamily: FONT_FAMILY.POPPINS_BOLD,
             [theme.breakpoints.down('md')]: {
                 fontSize: '20px'
+            }
+        },
+        profileWrapper: {
+            width: '100%',
+            [theme.breakpoints.up(1025)]: {
+                width: '80%'
             }
         },
         profileCard: {
@@ -31,14 +37,15 @@ const useStyles = makeStyles(
         },
         profileHeader: {
             fontFamily: FONT_FAMILY.POPPINS_BOLD,
-            fontSize: '2rem',
+            fontSize: '1.8rem',
             marginBottom: '15px',
             [theme.breakpoints.down('md')]: {
-                fontSize: '24px'
+                fontSize: '20px'
             }
         },
         schoolUserGrade: {
             display: 'flex',
+            flexWrap: 'wrap',
             [theme.breakpoints.down('sm')]: {
                 flexDirection: 'column-reverse'
             }
@@ -121,7 +128,7 @@ const useStyles = makeStyles(
             justifyContent: 'center',
             flexDirection: 'column',
             [theme.breakpoints.down('md')]: {
-                width: '150px',
+                width: '200px',
                 height: '150px',
             }
         },
@@ -152,8 +159,10 @@ const useStyles = makeStyles(
         profileDetail: {
             width: '30%',
             fontFamily: FONT_FAMILY.PTSANS,
+            fontSize: '16px',
             [theme.breakpoints.down('md')]: {
                 width: '50%',
+                fontSize: '12px',
             },
             "& a": {
                 textDecoration: 'none',
@@ -183,11 +192,17 @@ const useStyles = makeStyles(
         },
         profileLabelValue: {
             fontSize: '24px',
-            fontFamily: FONT_FAMILY.POPPINS
+            fontFamily: FONT_FAMILY.POPPINS,
+            [theme.breakpoints.down('md')]: {
+                fontSize: '18px'
+            }
         },
         profileLabelValueLg: {
             fontSize: '4rem',
-            fontFamily: FONT_FAMILY.POPPINS
+            fontFamily: FONT_FAMILY.POPPINS,
+            [theme.breakpoints.down('md')]: {
+                fontSize: '3rem'
+            }
         }
     })
 );
@@ -202,6 +217,7 @@ export default function CollegeProfile() {
     const userScores = useCollegeStore((state) => state.userScore);
     const theme = useTheme();
     const [userDetail, setUserDetail] = useState<any>(null);
+
 
     const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
         return weights.reduce((a: number, b: number, index: number) => {
@@ -332,7 +348,8 @@ export default function CollegeProfile() {
                     score: diversity,
                     moreInfo: diversityArray
                 },
-                score: score
+                score: score,
+                standing: getAcceptanceRate(selectedCollege, form)
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -388,10 +405,18 @@ export default function CollegeProfile() {
         )
     }
 
+    const getSchoolLabel = (name: string) => {
+        if (name.toLowerCase().charAt(name.length - 1) === 's') {
+            return `${name}'`;
+        }
+
+        return `${name}'s`;
+    }
+
     return (
         <ResponsiveBox>
             <PageBody>
-                <div style={{ width: '80%' }}>
+                <div className={classes.profileWrapper}>
                     {
                         userDetail && selectedCollege &&
                         <div>
@@ -422,21 +447,24 @@ export default function CollegeProfile() {
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${classes.profileCard} ${classes.schoolUserGrade}`}>
-                                <div className={classes.schoolCategoryGrade}>
-                                    {
-                                        gradeInfoArray.map((item, index) => (
-                                            <div key={`gradeInfoitem${item.key}${index}`} className={classes.gradeInfoItem}>
-                                                <div className={classes.gradeInfoScore}
-                                                    style={{ backgroundColor: getGradeColor(toLetterGrade(userDetail[item.key]?.score)) }}>
-                                                    {toLetterGrade(userDetail[item.key]?.score)}
+                            <div className={classes.profileCard}>
+                                <div className={classes.profileHeader} style={{ width: '100%' }}>Report Card</div>
+                                <div className={classes.schoolUserGrade}>
+                                    <div className={classes.schoolCategoryGrade}>
+                                        {
+                                            gradeInfoArray.map((item, index) => (
+                                                <div key={`gradeInfoitem${item.key}${index}`} className={classes.gradeInfoItem}>
+                                                    <div className={classes.gradeInfoScore}
+                                                        style={{ backgroundColor: getGradeColor(toLetterGrade(userDetail[item.key]?.score)) }}>
+                                                        {toLetterGrade(userDetail[item.key]?.score)}
+                                                    </div>
+                                                    <div className={classes.gradeInfoCategory}>
+                                                        {item.title}
+                                                    </div>
                                                 </div>
-                                                <div className={classes.gradeInfoCategory}>
-                                                    {item.title}
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
+                                            ))
+                                        }
+                                    </div>
                                 </div>
                             </div>
                             <div className={classes.profileCard}>
@@ -547,6 +575,81 @@ export default function CollegeProfile() {
                                     </div>
                                 </div>
                             </div>
+
+                            <div className={classes.profileCard}>
+                                <div className={classes.profileHeader}>Diversity</div>
+                                <div className={classes.profileInfoSection} style={{ height: 'unset' }}>
+                                    <div className={classes.profileUserGrade}>
+                                        <div>
+                                            <div className={classes.profileLabelKey}>Economic Inclusion Score</div>
+                                            <div className={classes.profileLabelValueLg}>{((0.4 * selectedCollege['economic_inclusion_score_relative']) + (0.6 * selectedCollege['economic_inclusion_score_absolute']) * 100).toFixed(0)}%</div>
+                                        </div>
+                                    </div>
+                                    <div className={classes.profileDetailsSection}>
+
+                                        <div className={classes.admissionCol}
+                                            style={{
+                                                width: '100%',
+                                                fontFamily: FONT_FAMILY.POPPINS_BOLD,
+                                                marginBottom: '10px'
+                                            }}>
+                                            Percent of Household Income
+                                        </div>
+                                        <div className={classes.admissionCol}>
+                                            <div>
+                                                <div className={classes.profileLabelKey}>Parents in Top Quintile</div>
+                                                <div className={classes.profileLabelValue}>{(selectedCollege['par_q5'] * 100).toFixed(1)}%</div>
+                                            </div>
+                                            <div>
+                                                <div className={classes.profileLabelKey}>Parents in Bottom Quintile</div>
+                                                <div className={classes.profileLabelValue}>{(selectedCollege['par_q1'] * 100).toFixed(1)}%</div>
+                                            </div>
+                                        </div>
+                                        <div className={classes.admissionCol}>
+                                            <div>
+                                                <div className={classes.profileLabelKey}>Parents in Top 10%</div>
+                                                <div className={classes.profileLabelValue}>{(selectedCollege['par_top10pc'] * 100).toFixed(1)}%</div>
+                                            </div>
+                                            <div>
+                                                <div className={classes.profileLabelKey}>Parents in Top 1%</div>
+                                                <div className={classes.profileLabelValue}>{(selectedCollege['par_top1pc'] * 100).toFixed(1)}%</div>
+                                            </div>
+                                            <div>
+                                                <div className={classes.profileLabelKey}>Parents in Top 0.1%</div>
+                                                <div className={classes.profileLabelValue}>{(selectedCollege['par_toppt1pc'] * 100).toFixed(1)}%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={classes.profileCard}>
+                                <div className={classes.profileHeader}>How you Stand in {getSchoolLabel(selectedCollege.instnm)} Admission Process</div>
+                                <div className={classes.profileInfoSection} style={{ height: 'unset' }}>
+                                    <div className={classes.profileUserGrade}>
+                                        <div>
+                                            <div className={classes.profileLabelKey}>Your Stand <TooltipModal iconSize="medium" infoTheme="primary" tooltipContent={'How standing is computed'} /></div>
+                                            <div className={classes.profileLabelValueLg}>{userDetail.standing}</div>
+                                        </div>
+                                    </div>
+                                    <div className={classes.profileDetailsSection} style={{ flexDirection: 'column', flexWrap: 'unset' }}>
+                                        <div style={{ width: '100%', fontFamily: FONT_FAMILY.POPPINS_BOLD, }}>
+                                            Admission Criteria
+                                        </div>
+                                        <div style={{ width: '100%', padding: '10px' }}>
+                                            <div className={classes.costItem}>
+                                                <div>SAT/ACT </div>
+                                                <div>Optional</div>
+                                            </div>
+                                            <div className={classes.costItem}>
+                                                <div>High School GPA</div>
+                                                <div>Required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     }
                 </div>

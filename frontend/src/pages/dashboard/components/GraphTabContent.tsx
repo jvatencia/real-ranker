@@ -2,13 +2,14 @@ import { makeStyles } from "@mui/styles";
 import useCollegeStore from "../../../store/college/college.store";
 import { AppCustomCard, AppPageTitle } from "../../../components/styled";
 import { useEffect, useMemo, useState } from "react";
-import { COLOR_PALETTES, computeUserScore, getScore, randomColor } from "../../../utils";
+import { COLOR_PALETTES, computeUserScore, getSchoolAcronym, getScore, randomColor } from "../../../utils";
 import CommonRadarChart from "../../../components/charts/CommonRadarChart";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import PageBody from "../../../components/commons/PageBody";
 import ResponsiveBox from "../../../components/utilities/ResponsiveBox";
 import { BarChartOutlined, RadarOutlined } from "@mui/icons-material";
 import ButtonTabs from "../../../components/commons/ButtonTabs";
+import CommonBarChart from "../../../components/charts/CommonBarChart";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -106,7 +107,7 @@ export default function GraphTabContent() {
             }
         }
     }));
-    const categories = ['cost', 'value', 'success', 'outcomes', 'diversity'];
+    const categories = ['cost', 'value', 'success', 'career', 'diversity'];
 
     const collegeData = useMemo(
         () => selectedColleges.map((college) => {
@@ -130,11 +131,12 @@ export default function GraphTabContent() {
             return {
                 code: college.instnm.toLowerCase().replace(/ /g, '_'),
                 title: college.instnm,
+                acronym: getSchoolAcronym(college.instnm),
                 grade: userScore,
                 cost: (cost * 100),
                 value: (value * 100),
                 success: (success * 100),
-                outcomes: (outcomes * 100),
+                career: (outcomes * 100),
                 diversity: (diversity * 100)
             };
         })
@@ -177,6 +179,25 @@ export default function GraphTabContent() {
         setData([]);
     }
 
+    const getBarChartKey = () => {
+        colors = [];
+
+        return categories.map((item) => {
+            const color = checkColor(randomColor());
+            colors.push(color);
+
+            return {
+                category: item,
+                active: true,
+                theme: {
+                    fill: color.bg,
+                    fillOpacity: 0.6,
+                    stroke: color.bg
+                }
+            };
+        })
+    }
+
     useEffect(() => {
         console.log(collegeKeys);
         if (data.length > 0) {
@@ -214,19 +235,24 @@ export default function GraphTabContent() {
                             />
                         </div>
                         <AppCustomCard className={classes.graphCard} style={{ marginTop: '10px' }}>
-                            {
-                                mounted && data.length > 0 &&
-                                (
-                                    activeTab === 'radar' ?
-                                        <CommonRadarChart data={data}
-                                            width={500}
-                                            height={500}
-                                            radarKeys={collegeKeys}
-                                            dataKey="category"
-                                        />
-                                        : <></>
-                                )
-                            }
+                            <div style={{ width: '100%', overflow: 'auto', height: '50vh' }}>
+                                {
+                                    mounted && data.length > 0 &&
+                                    (
+                                        activeTab === 'radar' ?
+                                            <CommonRadarChart data={data}
+                                                width={500}
+                                                height={500}
+                                                radarKeys={collegeKeys}
+                                                dataKey="category"
+                                            />
+                                            : <CommonBarChart data={collegeData}
+                                                barKeys={getBarChartKey()}
+                                                dataKey="category"
+                                            />
+                                    )
+                                }
+                            </div>
                         </AppCustomCard>
                     </div>
                 </div>
