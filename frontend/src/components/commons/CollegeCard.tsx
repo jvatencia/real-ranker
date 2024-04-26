@@ -165,7 +165,7 @@ const GradeToolTip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 const HowYouStand = styled('div')(({ theme }) => ({
-    border: '1px solid ' + theme.palette.secondary.main,
+    border: '1px solid ' + theme.palette.light.main,
     height: '80px',
     width: '100px',
     display: 'flex',
@@ -176,8 +176,8 @@ const HowYouStand = styled('div')(({ theme }) => ({
     position: 'absolute',
     top: '90px',
     right: '5px',
-    color: theme.palette.light.main,
-    background: theme.palette.secondary.main
+    color: theme.palette.dark.main,
+    background: theme.palette.light.main
 }));
 
 interface ToolTipContentProps {
@@ -334,7 +334,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                 (1 + ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute'])))
             ).toFixed(2), tooltip: true, tooltipContent: 'Debt/Income Ratio'
         },
-        { key: 'Inventor Score', value: college['inventor'], tooltip: true, tooltipContent: 'Inventor Score' },
+        { key: 'Inventor Score', value: college['inventor'] ?? 0, tooltip: true, tooltipContent: 'Inventor Score' },
         { key: 'Income 90% at 10 Years', value: formatNumber(college['pct90_earn_wne_p10'], true) },
         { key: 'Income 75% at 10 Years', value: formatNumber(college['pct75_earn_wne_p10'], true) },
         { key: 'Income 25% at 10 Years', value: formatNumber(college['pct25_earn_wne_p10'], true) },
@@ -362,6 +362,19 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
         { title: 'Career', value: toLetterGrade(outcomes), moreInfo: outcomeArray, icon: () => <AssessmentOutlined fontSize={"small"} style={{ marginRight: '5px' }} /> },
         { title: 'Diversity', value: toLetterGrade(diversity), moreInfo: diversityArray, icon: () => <Diversity3Outlined fontSize={"small"} style={{ marginRight: '5px' }} /> },
     ];
+
+
+    const getGradeColor = (userScore: number) => {
+        if (userScore > 6) {
+            return theme.palette.success.main;
+        }
+
+        if (userScore >= 3 && userScore <= 6) {
+            return theme.palette.warning.main;
+        }
+
+        return theme.palette.error.light;
+    }
 
     return (
         <CollegeCardContainer>
@@ -405,12 +418,13 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                 }}>
                     <UserGrade>
                         <ScoreLabel>YOUR SCORE</ScoreLabel>
-                        <ScoreValue>{yourscore}</ScoreValue>
+                        <ScoreValue style={{ color: theme.palette.warning.main }}>{yourscore}</ScoreValue>
                     </UserGrade>
                     <HowYouStand>
-                        <div>{userScore}</div>
+                        <div style={{ color: getGradeColor(userScore) }}>{userScore}</div>
                         <div style={{
-                            fontSize: '11px'
+                            fontSize: '11px',
+
                         }}>YOUR STANDING</div>
                     </HowYouStand>
                 </div>

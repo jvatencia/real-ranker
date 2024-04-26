@@ -144,15 +144,18 @@ export const FONT_FAMILY = {
 export const PROFILE_MENU_ITEMS = [
     {
         icon: ManageAccounts,
+        key: 'account_info',
         title: 'Account Information',
         url: '/profile/account-info'
     },
     {
         icon: AccountCircle,
+        key: 'personal_info',
         title: 'Personal Information',
         url: '/profile/personal-info'
     }, {
         icon: SegmentOutlined,
+        key: 'selected_college',
         title: 'Real Ranker Colleges',
         url: '/profile/selected-colleges'
     },

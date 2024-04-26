@@ -364,7 +364,7 @@ function ResultCard({ colleges }: any) {
                     score: (0.4 * college['success_relative']) + (0.6 * college['success_absolute']),
                     moreInfo: [
                         { key: 'Real Graduation Rate', value: toPercent(college['comp_orig_yr4_rt']) },
-                        { key: 'Average Time to Graduation', value: avgGraduationRate.toFixed(2) },
+                        { key: 'Average Time to Graduation', value: avgGraduationRate > 0 ? avgGraduationRate.toFixed(2) : 0 },
                         { key: 'Student Support Score', value: toPercent(((0.4 * college['support_relative']) + (0.6 * college['support_absolute']))) },
                         { key: '% Left in 2 Years', value: toPercent(college['enrl_orig_yr2_rt']) },
                         { key: 'Withdrawal Rate', value: toPercent(college['wdraw_orig_yr3_rt']) },
@@ -380,7 +380,7 @@ function ResultCard({ colleges }: any) {
                                     (1 + ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute'])))
                                 ).toFixed(2)
                         },
-                        { key: 'Inventor Score', value: college['inventor'], tooltipContent: 'Inventor Score' },
+                        { key: 'Inventor Score', value: college['inventor'] ?? 0, tooltipContent: 'Inventor Score' },
                         { key: 'Income 90% at 10 Years', value: formatNumber(college['pct90_earn_wne_p10'], true) },
                         { key: 'Income 75% at 10 Years', value: formatNumber(college['pct75_earn_wne_p10'], true) },
                         { key: 'Income 25% at 10 Years', value: formatNumber(college['pct25_earn_wne_p10'], true) },
