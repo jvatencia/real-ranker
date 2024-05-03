@@ -97,6 +97,7 @@ export interface AppHeaderProps {
 function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
     const classes = useStyles();
     const matches = useMediaQuery(devices.mobileL);
+    const authenticated = useAuthStore((state) => !!state.token);
 
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const navigate = useNavigate();
@@ -145,6 +146,7 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
                         </div>
                         {
                             !matches ?
+                                authenticated &&
                                 <div>
                                     <IconButton aria-label="profile" size="large"
                                         onClick={handleClick}
@@ -175,6 +177,7 @@ function AppHeader({ unauthMode }: Readonly<AppHeaderProps>) {
                                     </Popover>
                                 </div>
                                 :
+                                authenticated &&
                                 <IconButton aria-label="menu" size="large"
                                     onClick={toggleMenu}>
                                     <MenuOutlined color="primary" fontSize="inherit" />

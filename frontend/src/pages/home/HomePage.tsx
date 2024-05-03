@@ -3,8 +3,9 @@ import ButtonTabs from "../../components/commons/ButtonTabs";
 import PageBody from "../../components/commons/PageBody";
 import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import WhatsNew from "./components/WhatsNew";
+import useCollegeStore from "../../store/college/college.store";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -35,6 +36,18 @@ export default function HomePage() {
     const [activeTab, setActiveTab] = useState('');
     let [searchParams, setSearchParams] = useSearchParams();
     const tab = searchParams.get('tab');
+    const hasInvalidForm = useCollegeStore((state) => state.selectedColleges.length === 0);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (hasInvalidForm) {
+            return navigate('/getting-started', { state: { from: '/dashboard' } });
+        }
+
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (tab === null || tab === '') {

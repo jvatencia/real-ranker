@@ -1,4 +1,4 @@
-import { Step, StepLabel, Stepper } from "@mui/material";
+import { Step, StepLabel, Stepper, stepIconClasses, stepLabelClasses } from "@mui/material";
 import PageBody from "../../components/commons/PageBody";
 import ResponsiveBox from "../../components/utilities/ResponsiveBox";
 import { useState } from "react";
@@ -9,12 +9,14 @@ import SelectUniversity from "./components/SelectUniversity";
 import { makeStyles } from "@mui/styles";
 import useCollegeStore from "../../store/college/college.store";
 import { useShallow } from "zustand/react/shallow";
+import { useTheme } from "@mui/system";
 
 const useStyles = makeStyles(
     (theme: any) => ({
         formContainer: {
             marginTop: '50px',
             width: '500px',
+            height: 'calc(100vh - 56px)',
             margin: '0 auto',
             [theme.breakpoints.down('sm')]: {
                 marginTop: '20px',
@@ -28,6 +30,11 @@ const useStyles = makeStyles(
             [theme.breakpoints.down('sm')]: {
                 justifyContent: 'flex-end',
             }
+        },
+        stepComponent: {
+            "svg.MuiSvgIcon-root.Mui-active": {
+                color: theme.palette.secondary.main + ' !important'
+            },
         }
     })
 );
@@ -35,11 +42,11 @@ const useStyles = makeStyles(
 
 const getStepContent = (props: any) => {
     switch (props.activeStep) {
-        case 0:
-        default: return <StepperFormPersonalInfo {...props} />
         case 1: return <StepperDisclaimer {...props} />
         case 2: return <StepperFormOtherInfo {...props} />
         case 3: return <SelectUniversity {...props} />
+        case 0:
+        default: return <StepperFormPersonalInfo {...props} />
     }
 }
 
@@ -56,7 +63,7 @@ export default function GettingStartedPage() {
 
     const [activeStep, setActiveStep] = useState(0);
     const collegeForm = useCollegeStore(useShallow((state) => state.form));
-
+    const theme = useTheme();
 
 
     return (
@@ -67,7 +74,7 @@ export default function GettingStartedPage() {
                     orientation={'horizontal'}>
                     {steppers.map((step) => (
                         <Step key={step.key}>
-                            <StepLabel>{step.title}</StepLabel>
+                            <StepLabel className={classes.stepComponent}>{step.title}</StepLabel>
                         </Step>
                     ))}
                 </Stepper>

@@ -150,7 +150,7 @@ const ResultCardPrimaryItem = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
-    fontSize: '18px',
+    fontSize: '16px',
     fontFamily: FONT_FAMILY.DEFAULT,
 }));
 
@@ -169,6 +169,29 @@ const EmptySecondaryRow = ({ collegesDisplay, rowNumber }: any) => {
                 }
             </ResultCardSecondaryItemContainer>
         </ResultCardSecondaryRow>
+    );
+}
+
+const GetCategoryValue = ({ moreInfo, category }: any) => {
+    if (!moreInfo.hasOwnProperty('value')) {
+        return null;
+    }
+
+    if (moreInfo.value != null) {
+        return (
+            <div>{formatNumber(moreInfo.value)}</div>
+        );
+    }
+
+    return (
+        category.key !== 'diversity' ?
+            <div>
+                null <TooltipModal tooltipContent={"Often times university's leave out information due to privacy reasons and this is why the information is not available, however, this can sometimes be taken advantage of to leave out unfavorable data"} />
+            </div>
+            :
+            <div>
+                null
+            </div>
     );
 }
 
@@ -249,8 +272,12 @@ const PrimaryToggleRow = ({ colleges, theme, category, scoreLabels }: any) => {
                                             style={{ color: theme.palette.light.main }}
                                             key={`collegeSuccessScore${index}`}>
                                             {
-                                                college[category.key]?.moreInfo[scoreIndex]?.value != null &&
-                                                <div>{formatNumber(college[category.key].moreInfo[scoreIndex].value)}</div>
+                                                <GetCategoryValue
+                                                    moreInfo={college[category.key]?.moreInfo[scoreIndex]}
+                                                    category={category}
+                                                />
+
+
                                             }
                                         </ResultCardPrimaryItem>
                                     ))
@@ -339,9 +366,12 @@ function ResultCard({ colleges }: any) {
         const items: any = colleges.map((college, index) => {
             let npt43Key = college['npt43_priv'] > 0 ? 'npt43_priv' : 'npt43_pub';
             npt43Key = college.hasOwnProperty(`${npt43Key}_absolute`) && college.hasOwnProperty(`${npt43Key}_relative`) ? npt43Key : 'npt43';
-            const netPrice = (college[`npt4${form.familyIncome}_pub`] + college[`npt4${form.familyIncome}_priv`]);
             const avgGraduationRate = ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))));
+            const netPriceIncomeRange = (college[`npt4${form.familyIncome}_pub`] !== null || college[`npt4${form.familyIncome}_priv`] !== null) ?
+                (college[`npt4${form.familyIncome}_pub`]) + (college[`npt4${form.familyIncome}_priv`]) : null;
+            const netPrice = netPriceIncomeRange !== null ? formatNumber(netPriceIncomeRange, true) : null;
 
+            const netCostOfYourDegree = netPriceIncomeRange !== null ? formatNumber((netPriceIncomeRange * avgGraduationRate), true) : null;
             return {
                 order: index,
                 name: college['instnm'],
@@ -349,15 +379,15 @@ function ResultCard({ colleges }: any) {
                 cost: {
                     score: getScore(college, `npt4${form['familyIncome']}`),
                     moreInfo: [
-                        { key: 'Net Price for Your Income Range', value: formatNumber(netPrice, true) },
-                        { key: 'Net Cost of Your Degree', value: formatNumber(netPrice * avgGraduationRate, true) },
+                        { key: 'Net Price for Your Income Range', value: netPrice },
+                        { key: 'Net Cost of Your Degree', value: netCostOfYourDegree },
                     ]
                 },
                 value: {
                     score: getScore(college, `value_${form['familyIncome']}`),
                     moreInfo: [
-                        { key: 'Worth More to Pay More', value: null },
-                        { key: 'Some Professions', value: null },
+                        { key: 'Worth More to Pay More' },
+                        { key: 'Some Professions' },
                     ]
                 },
                 success: {
@@ -380,7 +410,7 @@ function ResultCard({ colleges }: any) {
                                     (1 + ((0.4 * college['weighted_income_relative']) + (0.6 * college['weighted_income_absolute'])))
                                 ).toFixed(2)
                         },
-                        { key: 'Inventor Score', value: college['inventor'] ?? 0, tooltipContent: 'Inventor Score' },
+                        { key: 'Inventor Score', value: parseFloat(college['inventor']) >= 0 ? college['inventor'] : 'null', tooltipContent: 'Inventor Score' },
                         { key: 'Income 90% at 10 Years', value: formatNumber(college['pct90_earn_wne_p10'], true) },
                         { key: 'Income 75% at 10 Years', value: formatNumber(college['pct75_earn_wne_p10'], true) },
                         { key: 'Income 25% at 10 Years', value: formatNumber(college['pct25_earn_wne_p10'], true) },
@@ -393,12 +423,12 @@ function ResultCard({ colleges }: any) {
                         + ((0.4 * college['economic_inclusion_score_relative'])
                             + (0.6 * college['economic_inclusion_score_absolute']))),
                     moreInfo: [
-                        { key: 'Parents in Top Quintile of Household Income (%)', value: toPercent(college['par_q5']) },
-                        { key: 'Parents in Bottom Quintile of Household Income (%)', value: toPercent(college['par_q1']) },
-                        { key: 'Parents in Top 10% of Household Income', value: toPercent(college['par_top10pc']) },
-                        { key: 'Parents in Top 1% of Household Income', value: toPercent(college['par_top1pc']) },
-                        { key: 'Parents in Top 0.1% of Household Income', value: toPercent(college['par_toppt1pc']) },
-                        { key: 'Economic Inclusion Score', value: toPercent((0.4 * college['economic_inclusion_score_relative']) + (0.6 * college['economic_inclusion_score_absolute'])) },
+                        { key: 'Parents in Top Quintile of Household Income (%)', value: toPercent(college['par_q5'], 2) },
+                        { key: 'Parents in Bottom Quintile of Household Income (%)', value: toPercent(college['par_q1'], 2) },
+                        { key: 'Parents in Top 10% of Household Income', value: toPercent(college['par_top10pc'], 2) },
+                        { key: 'Parents in Top 1% of Household Income', value: toPercent(college['par_top1pc'], 2) },
+                        { key: 'Parents in Top 0.1% of Household Income', value: toPercent(college['par_toppt1pc'], 2) },
+                        { key: 'Economic Inclusion Score', value: toPercent((0.4 * college['economic_inclusion_score_relative']) + (0.6 * college['economic_inclusion_score_absolute']), 2) },
                     ]
                 },
                 admissionRate: college['adm_rate'],

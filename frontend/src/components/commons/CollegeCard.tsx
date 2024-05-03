@@ -193,6 +193,29 @@ interface CollegeCardProps {
     openDialog?: any;
 }
 
+const GetCategoryValue = ({ item, category }: any) => {
+    if (!item.hasOwnProperty('value')) {
+        return null;
+    }
+
+    if (item.value != null) {
+        return (
+            <div>{formatNumber(item.value)}</div>
+        );
+    }
+
+    return (
+        category.key !== 'diversity' ?
+            <div>
+                null <TooltipModal tooltipContent={"Often times university's leave out information due to privacy reasons and this is why the information is not available, however, this can sometimes be taken advantage of to leave out unfavorable data"} />
+            </div>
+            :
+            <div>
+                null
+            </div>
+    );
+}
+
 const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, handleTooltipClose }: ToolTipContentProps) => {
     const theme = useTheme();
 
@@ -207,7 +230,10 @@ const ToolTipContent = ({ keyValueArray, gradeCategory, openDialog, college, han
                 keyValueArray.map((item, index) => (
                     <div style={{ marginBottom: '5px' }} key={`tooltipContentItem${index}`}>
                         <div> {item.key}{item.value != null && ':'}{item?.tooltip && <TooltipModal tooltipContent={item.tooltipContent} />} </div>
-                        <div> {formatNumber(item.value)}</div>
+                        <GetCategoryValue
+                            item={item}
+                            category={{ key: gradeCategory?.toLowerCase() }}
+                        />
                     </div>
                 ))
             }
@@ -304,6 +330,13 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
             userScores['outcomes'] / 100],
             [success, value, cost, diversity, outcomes])
     );
+    console.log('CollegeCard yourscore', weighted_mult_sum([
+        userScores['success'] / 100,
+        userScores['value'] / 100,
+        userScores['cost'] / 100,
+        userScores['diversity'] / 100,
+        userScores['outcomes'] / 100],
+        [success, value, cost, diversity, outcomes]))
 
     const avgGraduationRate = ((4 * college['c100_4'] / ((college['c150_4'] + college['c100_4']))) + (6 * college['c150_4'] / ((college['c150_4'] + college['c100_4']))));
 
@@ -320,11 +353,14 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
         { key: 'Some Professions' },
     ];
 
-    const netPriceIncomeRange = (college[`npt4${form.familyIncome}_pub`] || 0) + (college[`npt4${form.familyIncome}_priv`] || 0);
+    const netPriceIncomeRange = (college[`npt4${form.familyIncome}_pub`] !== null || college[`npt4${form.familyIncome}_priv`] !== null) ?
+        (college[`npt4${form.familyIncome}_pub`]) + (college[`npt4${form.familyIncome}_priv`]) : null;
+
+    const netCostOfYourDegree = netPriceIncomeRange !== null ? formatNumber((netPriceIncomeRange * avgGraduationRate), true) : null;
 
     const costArray = [
-        { key: 'Net Price for Your Income Range ', value: `${formatNumber(netPriceIncomeRange, true)}` },
-        { key: 'Net Cost of Your Degree', value: `${formatNumber((netPriceIncomeRange * avgGraduationRate), true)}`, tooltip: true, tooltipContent: 'Net Cost of Your Degree' },
+        { key: 'Net Price for Your Income Range ', value: netPriceIncomeRange != null ? formatNumber(netPriceIncomeRange, true) : null },
+        { key: 'Net Cost of Your Degree', value: netCostOfYourDegree, tooltip: true, tooltipContent: 'Net Cost of Your Degree' },
     ];
 
     const outcomeArray = [

@@ -216,8 +216,8 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 </FormGroup>
 
                 <div className={outerClasses.actionBtns}>
-                    <Button variant="text" size="large" onClick={handleBack}>Back</Button>
-                    <Button variant="contained" size="large" type="submit">Next</Button>
+                    <Button variant="text" size="large" onClick={handleBack} color="secondary">Back</Button>
+                    <Button variant="contained" size="large" type="submit" color="secondary">Next</Button>
                 </div>
             </form>
         </div>

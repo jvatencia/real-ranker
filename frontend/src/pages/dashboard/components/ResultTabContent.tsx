@@ -111,7 +111,7 @@ export default function ResultTabContent() {
     }
 
     useEffect(() => {
-        showToast('Welcome back User!');
+        showToast('Welcome back!');
     }, []);
 
     return (

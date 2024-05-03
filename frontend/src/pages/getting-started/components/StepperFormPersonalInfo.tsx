@@ -95,7 +95,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                     </CustomFormControl>
                 </FormGroup>
                 <div className={outerClasses.actionBtns}>
-                    <Button variant="contained" size="large" type="submit">Next</Button>
+                    <Button variant="contained" size="large" type="submit" color="secondary">Next</Button>
                 </div>
             </form>
         </div>

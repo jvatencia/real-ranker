@@ -38,7 +38,7 @@ const StepperDisclaimer = ({ activeStep, setActiveStep, outerClasses }: StepperD
             <form action="" className={classes.disclaimerForm}>
                 <div className={outerClasses.actionBtns}>
                     <Button variant="text" size="large" color="secondary" onClick={handleBack}>Back</Button>
-                    <Button variant="contained" size="large" onClick={handleNext}>Next</Button>
+                    <Button variant="contained" size="large" color="secondary" onClick={handleNext}>Next</Button>
                 </div>
             </form>
         </div>

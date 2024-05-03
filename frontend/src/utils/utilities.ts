@@ -1,8 +1,16 @@
 import { FieldErrors } from "react-hook-form";
 import { COLOR_PALETTES } from "./constants";
 
-export const toPercent = (val: number) => {
-  return Math.round(val * 100) + '%';
+export const toPercent = (val: number, decimalPlaces: number = 0) => {
+  if (val === null) {
+    return val;
+  }
+
+  if (decimalPlaces === 0)
+    return Math.round(val * 100) + '%';
+
+  return (val * 100).toFixed(decimalPlaces) + '%';
+
 }
 export const toLetterGrade = (val: number) => {
   if (val > .9333) {

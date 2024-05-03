@@ -23,7 +23,7 @@ function App() {
         main: '#707AE6',
         dark: '#454da7',
         light: '#a4b3ff',
-        contrastText: '#000000'
+        contrastText: '#ffffff'
       },
       success: {
         main: '#84e1a9',
