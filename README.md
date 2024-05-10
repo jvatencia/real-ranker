@@ -37,6 +37,7 @@ npm run start
 - [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)
 - [React Router](https://reactrouter.com/en/main/start/overview)
 - [MUI 5](https://mui.com/material-ui/getting-started/)
+- [Recharts](https://recharts.org/en-US/guide)
 
 ## Frontend File Structure
 
@@ -50,3 +51,9 @@ npm run start
    ├── store // state management folder
    ├── utils // reusable custom functions
 ```
+
+## Documentations
+
+- [Real Ranker Computations/Formulas](https://docs.google.com/document/d/1vadmYUa3usvTL5Uw6G_7ulbO3mI2lsthPuTBs-NUzcY/edit?usp=sharing)
+- [Admission Calculator](https://docs.google.com/spreadsheets/d/1xximGJnFxi4x6cfMy1Ko4kxl_jnz3UXgpkSy5tihSTg/edit#gid=2070051921)
+- [Real Ranker Design Guide](https://www.canva.com/design/DAFicirteJU/PeNSL5rrhbAo4vS1Xk4Nkw/edit)
