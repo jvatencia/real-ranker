@@ -243,7 +243,7 @@ export default function GraphTabContent() {
                                             <CommonRadarChart data={data}
                                                 width={500}
                                                 height={500}
-                                                radarKeys={collegeKeys}
+                                                radarKeys={data}
                                                 dataKey="category"
                                             />
                                             : <CommonBarChart data={collegeData}

@@ -1,9 +1,11 @@
-import { Button, ClassNameMap, FormGroup, MenuItem, TextField } from "@mui/material";
+import { Checkbox, ClassNameMap, Fab, FormControlLabel, FormGroup, MenuItem, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import useCollegeStore from "../../../store/college/college.store";
 import { CustomFormControl } from "../../../components/styled";
 import { FAMILY_INCOME_RANGE, SELF_EVALUATION, getErrorMessage } from "../../../utils";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ArrowBackIosOutlined, ArrowForwardIosOutlined } from "@mui/icons-material";
+import { useState } from "react";
 
 
 const useStyles = makeStyles(
@@ -17,12 +19,13 @@ const useStyles = makeStyles(
 type OtherInfoForm = {
     gradYear: string | null,
     gpa: number | null,
+    scoreMode: 'act' | 'sat' | null,
     actSatScore: number | null,
-    firstGen: number,
+    firstGen?: number,
     selfEvaluation: number,
-    academicDisruption: number,
-    upwardTrajectory: number,
-    familyObligation: number,
+    academicDisruption?: number,
+    upwardTrajectory?: number,
+    familyObligation?: number,
     familyIncome: number,
     activity: any[]
 }
@@ -38,9 +41,11 @@ interface StepperOtherInfoProps {
 const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, collegeForm }: StepperOtherInfoProps) => {
     const classes: any = useStyles(outerClasses);
     const setCollegeForm = useCollegeStore((state) => state.setForm);
+    const [scoreMode, setScoreMode] = useState('sat');
     const defaultForm = {
         gradYear: null,
         gpa: null,
+        scoreMode: null,
         actSatScore: null,
         firstGen: 0,
         selfEvaluation: 0,
@@ -70,12 +75,12 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
 
     const handleFormSubmit: SubmitHandler<OtherInfoForm> = (data: any) => {
         console.log('[other-info-form] handleFormSubmit', data);
-        setCollegeForm(data);
+        setCollegeForm({ ...data, scoreMode });
         handleNext();
     }
 
     return (
-        <div className={outerClasses.formContainer}>
+        <div>
             <form action="" onSubmit={handleSubmit(handleFormSubmit)} className={classes.otherInfoForm}>
                 <FormGroup>
                     <CustomFormControl>
@@ -92,6 +97,9 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                     <CustomFormControl>
                         <TextField label="GPA"
                             type="number"
+                            inputProps={{
+                                step: 0.1
+                            }}
                             error={!!errors.gpa}
                             defaultValue={defaultForm.gpa}
                             helperText={getErrorMessage(errors, 'gpa', 'GPA is required')}
@@ -99,9 +107,17 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                         />
                     </CustomFormControl>
                 </FormGroup>
+                <FormGroup sx={{ flexDirection: 'row' }}>
+                    <FormControlLabel control={
+                        <Checkbox color="secondary" onClick={(e) => setScoreMode('sat')} checked={scoreMode === 'sat'} />
+                    } label="SAT" />
+                    <FormControlLabel control={
+                        <Checkbox color="secondary" onClick={(e) => setScoreMode('act')} checked={scoreMode === 'act'} />
+                    } label="ACT" />
+                </FormGroup>
                 <FormGroup>
                     <CustomFormControl>
-                        <TextField label="ACT/SAT Score"
+                        <TextField label={scoreMode === 'sat' ? 'SAT Score' : 'ACT Score'}
                             type="number"
                             error={!!errors.actSatScore}
                             defaultValue={defaultForm.actSatScore}
@@ -110,74 +126,7 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                         />
                     </CustomFormControl>
                 </FormGroup>
-                <FormGroup>
-                    <CustomFormControl>
-                        <TextField select label="First Generation"
-                            error={!!errors.firstGen}
-                            defaultValue={defaultForm.firstGen}
-                            helperText={getErrorMessage(errors, 'firstGen', 'First Generation is required')}
-                            {...register('firstGen', { required: true })}
-                        >
-                            <MenuItem value={0}>
-                                No
-                            </MenuItem>
-                            <MenuItem value={1}>
-                                Yes
-                            </MenuItem>
-                        </TextField>
-                    </CustomFormControl>
-                </FormGroup>
-                <FormGroup>
-                    <CustomFormControl>
-                        <TextField select label="Academic Disruption"
-                            error={!!errors.academicDisruption}
-                            defaultValue={defaultForm.academicDisruption}
-                            helperText={getErrorMessage(errors, 'academicDisruption', 'Academic Disruption is required')}
-                            {...register('academicDisruption', { required: true })}
-                        >
-                            <MenuItem value={0}>
-                                No
-                            </MenuItem>
-                            <MenuItem value={1}>
-                                Yes
-                            </MenuItem>
-                        </TextField>
-                    </CustomFormControl>
-                </FormGroup>
-                <FormGroup>
-                    <CustomFormControl>
-                        <TextField select label="Upward Trajectory"
-                            error={!!errors.upwardTrajectory}
-                            defaultValue={defaultForm.upwardTrajectory}
-                            helperText={getErrorMessage(errors, 'upwardTrajectory', 'Upward Trajectory is required')}
-                            {...register('upwardTrajectory', { required: true })}
-                        >
-                            <MenuItem value={0}>
-                                No
-                            </MenuItem>
-                            <MenuItem value={1}>
-                                Yes
-                            </MenuItem>
-                        </TextField>
-                    </CustomFormControl>
-                </FormGroup>
-                <FormGroup>
-                    <CustomFormControl>
-                        <TextField select label="Family Obligations"
-                            error={!!errors.familyObligation}
-                            defaultValue={defaultForm.familyObligation}
-                            helperText={getErrorMessage(errors, 'familyObligation', 'Family Obligations is required')}
-                            {...register('familyObligation', { required: true })}
-                        >
-                            <MenuItem value={0}>
-                                No
-                            </MenuItem>
-                            <MenuItem value={1}>
-                                Yes
-                            </MenuItem>
-                        </TextField>
-                    </CustomFormControl>
-                </FormGroup>
+
                 <FormGroup>
                     <CustomFormControl>
                         <TextField select label="Evaluation"
@@ -216,8 +165,12 @@ const StepperFormOtherInfo = ({ activeStep, setActiveStep, outerClasses, college
                 </FormGroup>
 
                 <div className={outerClasses.actionBtns}>
-                    <Button variant="text" size="large" onClick={handleBack} color="secondary">Back</Button>
-                    <Button variant="contained" size="large" type="submit" color="secondary">Next</Button>
+                    <Fab color="secondary" onClick={handleBack}>
+                        <ArrowBackIosOutlined fontSize="inherit" />
+                    </Fab>
+                    <Fab type="submit" sx={{ marginLeft: '10px' }} color="secondary">
+                        <ArrowForwardIosOutlined fontSize="inherit" />
+                    </Fab>
                 </div>
             </form>
         </div>

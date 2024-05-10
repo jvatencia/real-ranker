@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { CustomFormControl } from "../../../components/styled";
 import useCollegeStore from "../../../store/college/college.store";
-import { Button, Chip, IconButton, MenuItem, TextField } from "@mui/material";
+import { Button, Checkbox, Chip, FormControlLabel, FormGroup, IconButton, MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ACTIVITY_TYPE_LIST, DEFAULT_YES_NO_LIST, FAMILY_INCOME_RANGE, SELF_EVALUATION, showToast, FONT_FAMILY } from "../../../utils";
 import { AccessTime, Add, Delete } from "@mui/icons-material";
@@ -95,8 +95,8 @@ const useStyles = makeStyles(
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            border: '1px solid ' + theme.palette.primary.main,
-            boxShadow: '0px 3px 0px ' + theme.palette.primary.main,
+            border: '1px solid  rgba(0,0,0,0.1)',
+            boxShadow: '0px 3px 3px rgba(0,0,0,0.3)',
             marginBottom: '10px',
             borderRadius: '5px',
             fontSize: '14px'
@@ -281,6 +281,7 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
     const addCollege = useCollegeStore((state) => state.addCollege);
     const removeCollege = useCollegeStore((state) => state.removeCollege);
     const [showCollegeSearchModal, setShowCollegeSearchModal] = useState(false);
+    const [scoreMode, setScoreMode] = useState(form.scoreMode ?? 'sat');
     let [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
@@ -299,6 +300,10 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
         }
 
     }, [searchParams])
+
+    useEffect(() => {
+        setFormDetail((oldValue: any) => ({ ...oldValue, scoreMode: scoreMode }));
+    }, [scoreMode])
 
 
 
@@ -412,8 +417,18 @@ export default function FormDetails({ canEdit, formDetail, setFormDetail }: Read
                         type={'number'}
                         label={formDetail.gpa}
                     />
-
-                    <div className={classes.formDetailFormTitle}>ACT/SAT Score</div>
+                    {
+                        canEdit &&
+                        <FormGroup sx={{ flexDirection: 'row' }}>
+                            <FormControlLabel control={
+                                <Checkbox color="secondary" onClick={(e) => setScoreMode('sat')} checked={scoreMode === 'sat'} />
+                            } label="SAT" />
+                            <FormControlLabel control={
+                                <Checkbox color="secondary" onClick={(e) => setScoreMode('act')} checked={scoreMode === 'act'} />
+                            } label="ACT" />
+                        </FormGroup>
+                    }
+                    <div className={classes.formDetailFormTitle}>{scoreMode === 'sat' ? 'SAT Score' : 'ACT Score'}</div>
                     <DisplayLabelInput
                         canEdit={canEdit}
                         formKey={'actSatScore'}

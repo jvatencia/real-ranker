@@ -1,4 +1,5 @@
-import { Button, ClassNameMap } from "@mui/material";
+import { ArrowBackIosOutlined, ArrowForwardIosOutlined } from "@mui/icons-material";
+import { ClassNameMap, Fab } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(
@@ -27,7 +28,7 @@ const StepperDisclaimer = ({ activeStep, setActiveStep, outerClasses }: StepperD
     }
 
     return (
-        <div className={outerClasses.formContainer}>
+        <div>
             <p>To get results from our admissions calculator,
                 get actionable college advice, create a curated admissions experience,
                 and get a wholly custom, curated college ranking made just for you...
@@ -37,8 +38,12 @@ const StepperDisclaimer = ({ activeStep, setActiveStep, outerClasses }: StepperD
                 (All questions are mandatory but there are options for prefer not to say).</p>
             <form action="" className={classes.disclaimerForm}>
                 <div className={outerClasses.actionBtns}>
-                    <Button variant="text" size="large" color="secondary" onClick={handleBack}>Back</Button>
-                    <Button variant="contained" size="large" color="secondary" onClick={handleNext}>Next</Button>
+                    <Fab color="secondary" onClick={handleBack}>
+                        <ArrowBackIosOutlined fontSize="inherit" />
+                    </Fab>
+                    <Fab onClick={handleNext} sx={{ marginLeft: '10px' }} color="secondary">
+                        <ArrowForwardIosOutlined fontSize="inherit" />
+                    </Fab>
                 </div>
             </form>
         </div>

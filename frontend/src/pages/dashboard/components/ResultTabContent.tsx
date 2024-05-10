@@ -54,7 +54,11 @@ const useStyles = makeStyles(
         },
         resultContentFilterSection: {
             width: '150px',
-            padding: '10px 16px'
+            padding: '10px 16px',
+            [theme.breakpoints.between('sm', 'md')]: {
+                maxWidth: '400px',
+                padding: '10px 8px',
+            },
         },
         resultContentSection: {
             width: 'calc(100% - 150px)',
@@ -85,7 +89,7 @@ const FilterButton = ({ classes, icon, title, onClick }: any) => {
 }
 export default function ResultTabContent() {
     const classes = useStyles();
-    const matches = useMediaQuery(devices.tablet);
+    const matches = useMediaQuery(devices.mobileL);
     const selectedColleges = useCollegeStore((state) => state.selectedColleges);
     const buttons = [
         { key: 'list', title: 'List', icon: <SummarizeIcon /> },

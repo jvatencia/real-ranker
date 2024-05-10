@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import WelcomeHeader from "../commons/WelcomeHeader";
 import Sidebar from "../utilities/Sidebar";
 import useAuthStore from "../../store/auth/auth.store";
+import { AppFooter } from "../commons/AppFooter";
 
 const useStyles = makeStyles(
   (theme: any) => ({
@@ -16,7 +17,7 @@ const useStyles = makeStyles(
       }
     },
     main: {
-      minHeight: 'calc(100vh - 80px)',
+      minHeight: 'calc(100vh - 210px)',
     }
   })
 )
@@ -39,6 +40,7 @@ const Layout = ({ children, unauthMode }: any) => {
       <main className={classes.main}>
         {children}
       </main>
+      <AppFooter />
     </div>
   );
 };

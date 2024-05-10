@@ -25,6 +25,27 @@ export const publicItems: NavLinkItem[] = [
     { text: 'Login', items: [], url: '/login', isActive: false }
 ];
 
+export const testguyLinks: NavLinkItem[] = [
+    {
+        text: 'Our Services',
+        items: [],
+        url: 'https://thetestguy.com/dev/test-prep/',
+        isActive: false,
+    },
+    {
+        text: 'Results',
+        items: [],
+        url: 'https://thetestguy.com/dev/results/',
+        isActive: false,
+    },
+    {
+        text: 'Blog',
+        items: [],
+        url: 'https://thetestguy.com/dev/testguyblog/',
+        isActive: false,
+    },
+]
+
 export const authItems: NavLinkItem[] = [
     {
         text: 'Home',

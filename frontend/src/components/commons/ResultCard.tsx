@@ -186,11 +186,11 @@ const GetCategoryValue = ({ moreInfo, category }: any) => {
     return (
         category.key !== 'diversity' ?
             <div>
-                null <TooltipModal tooltipContent={"Often times university's leave out information due to privacy reasons and this is why the information is not available, however, this can sometimes be taken advantage of to leave out unfavorable data"} />
+                SUPPR <TooltipModal tooltipContent={"Often times university's leave out information due to privacy reasons and this is why the information is not available, however, this can sometimes be taken advantage of to leave out unfavorable data"} />
             </div>
             :
             <div>
-                null
+                null <TooltipModal tooltipContent={"There's no available data for this particular category"} />
             </div>
     );
 }

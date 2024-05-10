@@ -25,8 +25,8 @@ const CollegeCardContainer = styled('div')(({ theme }) => ({
         margin: '10px 0'
     },
     [theme.breakpoints.between('sm', 'md')]: {
-        maxWidth: '500px',
-        margin: '10px auto'
+        maxWidth: '400px',
+        margin: '10px 0'
     },
     [theme.breakpoints.up('md')]: {
         maxWidth: '700px',
@@ -53,8 +53,7 @@ const CollegeInfo = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         width: '100%',
         borderLeft: 'none',
-        borderBottom: '1px solid rgba(0,0,0,0.1)',
-        height: '155px'
+        height: '200px'
     }
 }));
 
@@ -99,8 +98,7 @@ const GradesInfo = styled('div')(({ theme }) => ({
     width: '190px',
     padding: '10px',
     [theme.breakpoints.down('md')]: {
-        width: '200px',
-        margin: '0 auto !important',
+        width: '50%',
     }
 }));
 
@@ -309,6 +307,7 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
     const userScores = useCollegeStore((state) => state.userScore);
     const theme = useTheme();
     const userScore = getAcceptanceRate(college, form);
+    const matches = useMediaQuery(devices.tablet);
 
     const weighted_mult_sum = (weights: Array<number>, nums: Array<number>) => {
         return weights.reduce((a: number, b: number, index: number) => {
@@ -414,24 +413,29 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
 
     return (
         <CollegeCardContainer>
-            <GradesInfo>
-                {
-                    gradeInfoArray.map((item, index) => (
-                        <StatusRow key={`${item.title.toLowerCase()}statusRow${index}`}>
-                            <StatusDesc>
-                                {item.icon()}
-                                {item.title}
-                            </StatusDesc>
-                            <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'flex-end' }}>
-                                <div style={{ marginRight: '8px', width: '15px', textAlign: 'left' }}>
-                                    {item.value}
-                                </div>
-                                <GradeCustomToolTip keyValueArray={item.moreInfo} gradeCategory={item.title} openDialog={openDialog} college={college} />
-                            </StatusDesc>
-                        </StatusRow>
-                    ))
-                }
-            </GradesInfo>
+            {
+                !matches &&
+                (
+                    <GradesInfo>
+                        {
+                            gradeInfoArray.map((item, index) => (
+                                <StatusRow key={`${item.title.toLowerCase()}statusRow${index}`}>
+                                    <StatusDesc>
+                                        {item.icon()}
+                                        {item.title}
+                                    </StatusDesc>
+                                    <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'flex-end' }}>
+                                        <div style={{ marginRight: '8px', width: '15px', textAlign: 'left' }}>
+                                            {item.value}
+                                        </div>
+                                        <GradeCustomToolTip keyValueArray={item.moreInfo} gradeCategory={item.title} openDialog={openDialog} college={college} />
+                                    </StatusDesc>
+                                </StatusRow>
+                            ))
+                        }
+                    </GradesInfo>
+                )
+            }
             <CollegeInfo>
                 <CollegeInfoHeader>
                     <CollegeInfoContent>
@@ -447,6 +451,31 @@ function CollegeCard({ college, openDialog }: Readonly<CollegeCardProps>) {
                     </CollegeInfoContent>
 
                 </CollegeInfoHeader>
+                <div>
+                    {
+                        matches &&
+                        (
+                            <GradesInfo>
+                                {
+                                    gradeInfoArray.map((item, index) => (
+                                        <StatusRow key={`${item.title.toLowerCase()}statusRow${index}`}>
+                                            <StatusDesc>
+                                                {item.icon()}
+                                                {item.title}
+                                            </StatusDesc>
+                                            <StatusDesc style={{ fontWeight: 'bold', justifyContent: 'flex-end' }}>
+                                                <div style={{ marginRight: '8px', width: '15px', textAlign: 'left' }}>
+                                                    {item.value}
+                                                </div>
+                                                <GradeCustomToolTip keyValueArray={item.moreInfo} gradeCategory={item.title} openDialog={openDialog} college={college} />
+                                            </StatusDesc>
+                                        </StatusRow>
+                                    ))
+                                }
+                            </GradesInfo>
+                        )
+                    }
+                </div>
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',

@@ -11,6 +11,7 @@ const useStyles = makeStyles(
             fontFamily: FONT_FAMILY.DEFAULT,
             display: 'flex',
             overflowX: 'hidden',
+            minHeight: '65vh',
             [theme.breakpoints.up('md')]: {
                 flexDirection: 'column'
             },
@@ -23,7 +24,7 @@ const useStyles = makeStyles(
             width: '80%',
             background: theme.palette.light.main,
             [theme.breakpoints.between(1000, 1025)]: {
-                width: '85% !important',
+                width: '80% !important',
             },
             [theme.breakpoints.down('md')]: {
                 width: '100%',

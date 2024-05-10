@@ -1,4 +1,4 @@
-import { Button, CircularProgress, ClassNameMap } from "@mui/material";
+import { Button, CircularProgress, ClassNameMap, IconButton } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import useCollegeStore from "../../../store/college/college.store";
@@ -7,6 +7,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../../../utils";
 import { CustomFormControl } from "../../../components/styled";
+import { ArrowBackIosOutlined, ArrowForwardIosOutlined } from "@mui/icons-material";
 
 
 const useStyles = makeStyles(
@@ -66,7 +67,7 @@ const SelectUniversity = ({ activeStep, setActiveStep, outerClasses }: SelectUni
 
     return (
         <div>
-            <div className={outerClasses.formContainer}>
+            <div>
                 <form action="">
                     {
                         colleges.length > 0 ?
@@ -88,8 +89,16 @@ const SelectUniversity = ({ activeStep, setActiveStep, outerClasses }: SelectUni
                             </div>
                     }
                     <div className={outerClasses.actionBtns}>
-                        <Button variant="text" size="large" color="secondary" onClick={handleBack}>Back</Button>
-                        <Button variant="contained" size="large" onClick={handleNext} disabled={selectedColleges.length === 0}>Next</Button>
+                        <Button variant="text" size="large" color="secondary" onClick={handleBack}>Go Back</Button>
+                        <Button variant="contained" size="large" onClick={handleNext} disabled={selectedColleges.length === 0} color="secondary">Submit</Button>
+                        {/* <IconButton size="large"
+                            onClick={handleBack}>
+                            <ArrowBackIosOutlined color="secondary" fontSize="inherit" />
+                        </IconButton>
+                        <IconButton size="large"
+                            onClick={handleNext}>
+                            <ArrowForwardIosOutlined color="secondary" fontSize="inherit" />
+                        </IconButton> */}
                     </div>
                 </form>
             </div>

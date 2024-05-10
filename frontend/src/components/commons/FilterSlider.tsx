@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import useCollegeStore from "../../store/college/college.store";
-import { Badge, Slider } from "@mui/material";
+import { Badge, Slider, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { FONT_FAMILY } from "../../utils";
 
 const useStyles = makeStyles(
     (theme) => ({
@@ -15,6 +16,12 @@ const useStyles = makeStyles(
             fontSize: '16px',
             fontWeight: 'bold'
         },
+        sliderError: {
+            fontSize: '12px',
+            fontFamily: FONT_FAMILY.CHOCOLATE,
+            color: theme.palette.error.main,
+            lineHeight: '1.2'
+        }
     })
 );
 
@@ -143,6 +150,13 @@ export default function FilterSlider() {
                     valueLabelDisplay="auto"
                 />
             </div>
+
+            {
+                allocationPoints > 0 &&
+                <p className={classes.sliderError}>
+                    * You still have points to spend, your overall grade is not accurate right now
+                </p>
+            }
         </div>
     );
 }

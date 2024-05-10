@@ -223,3 +223,13 @@ div:where(.swal2-container) div:where(.testguy-custom-swal-alert) div:where(.swa
   flex-direction: row-reverse !important;
   padding: 0 16px;
 }
+
+.rbt-input-multi.focus {
+  border-color: var(--app-secondary);
+  box-shadow: 0 0 0 0.2rem var(--app-secondary-light);
+}
+
+.rbt-token {
+  color: var(--app-primary);
+  background-color: var(--app-secondary-light);
+}

@@ -1,10 +1,11 @@
-import { Button, ClassNameMap, FormGroup, TextField } from "@mui/material";
+import { ClassNameMap, Fab, FormGroup, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect } from "react";
 import { CustomFormControl } from "../../../components/styled";
 import useAuthStore from "../../../store/auth/auth.store";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { getErrorMessage } from "../../../utils";
+import { ArrowBackIosOutlined, ArrowForwardIosOutlined } from "@mui/icons-material";
 
 const useStyles = makeStyles(
     (theme: any) => ({
@@ -58,7 +59,7 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
     }
 
     return (
-        <div className={outerClasses.formContainer}>
+        <div>
             <p>Real Ranker works for you, but it needs to know you.</p>
             <form onSubmit={handleSubmit(handleFormSubmit)} className={classes.personalInfoForm}>
                 <FormGroup>
@@ -95,7 +96,13 @@ const StepperFormPersonalInfo = ({ activeStep, setActiveStep, outerClasses, coll
                     </CustomFormControl>
                 </FormGroup>
                 <div className={outerClasses.actionBtns}>
-                    <Button variant="contained" size="large" type="submit" color="secondary">Next</Button>
+                    {/* <Button variant="contained" size="large" type="submit" color="secondary">Next</Button> */}
+                    <Fab color="secondary" disabled>
+                        <ArrowBackIosOutlined fontSize="inherit" />
+                    </Fab>
+                    <Fab type="submit" sx={{ marginLeft: '10px' }} color="secondary">
+                        <ArrowForwardIosOutlined fontSize="inherit" />
+                    </Fab>
                 </div>
             </form>
         </div>
